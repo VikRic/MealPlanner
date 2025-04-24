@@ -47,19 +47,24 @@ export class RecipeController {
       }
       const savedRecipes = []
       const data = await response.json()
-      /*     console.log(data)
-      console.log('DishTypes')
-      for (const type of data.recipes[0].dishTypes) {
-        console.log(type)
+      const query = {}
+      query[allergies] = true
+      console.log('TYPE', typeof allergies)
+      console.log('value', allergies)
+      if (allergies) {
+        const specific = await RecipeModel.aggregate([
+          { $match: query },
+          { $sample: { size: parseInt(recipeAmnt) } }
+        ])
+        console.log('-----------------------------------------', specific)
       }
-      console.log('Cuisines')
-      for (const type of data.recipes[0].cuisines) {
-        console.log(type)
+      if (!allergies) {
+        const specific = await RecipeModel.aggregate([
+          { $sample: { size: parseInt(recipeAmnt) } }
+        ])
+
+        console.log('-----------------------------------------', specific)
       }
-      console.log('Diets')
-      for (const type of data.recipes[0].diets) {
-        console.log(type)
-      } */
 
       for (const recipe of data.recipes) {
         const exists = await RecipeModel.findOne({ spoonacularId: recipe.id })
@@ -72,6 +77,10 @@ export class RecipeController {
               unit: ing.measures.metric.unitShort
             })
           )
+          console.log(data)
+          console.log('cuis', recipe.cuisines)
+
+          console.log('diets', recipe.diets)
 
           const newRecipe = new RecipeModel({
             spoonacularId: recipe.id,
@@ -84,6 +93,8 @@ export class RecipeController {
             dairyFree: recipe.dairyFree,
             vegetarian: recipe.vegetarian,
             dishTypes: recipe.dishTypes,
+            diets: recipe.diets,
+            cuisines: recipe.cuisines,
             ingredients: formattedIngredients,
             instructions: recipe.instructions,
             source: 'spoonacular'
@@ -97,8 +108,20 @@ export class RecipeController {
         }
       }
       /* console.log(data) */
+      /*       console.log('DishTypes')
+      for (const type of data.recipes[0].dishTypes) {
+        console.log(type)
+      }
+      console.log('Cuisines')
+      for (const type of data.recipes[0].cuisines) {
+        console.log(type)
+      }
+      console.log('Diets')
+      for (const type of data.recipes[0].diets) {
+        console.log(type)
+      } */
 
-      console.log('Title', data.recipes[0].title)
+      /*       console.log('Title', data.recipes[0].title)
       console.log('image', data.recipes[0].image)
       console.log('Ready in', data.recipes[0].readyInMinutes)
       console.log('servings', data.recipes[0].servings)
@@ -113,7 +136,7 @@ export class RecipeController {
             metric.unitShort
           }`
         )
-      })
+      }) */
       return res.status(200).json({
         success: true,
         recipes: savedRecipes
