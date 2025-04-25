@@ -13,7 +13,7 @@ export class RecipeController {
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
    */
-  index (req, res) {
+  index(req, res) {
     const directoryFullName = dirname(fileURLToPath(import.meta.url))
     res.sendFile(
       join(directoryFullName, '..', '..', '..', 'client', 'build', 'index.html')
@@ -26,7 +26,7 @@ export class RecipeController {
    * @param formattedIngredients
    * @param savedRecipes
    */
-  async createRecipe (recipe, formattedIngredients, savedRecipes) {
+  async createRecipe(recipe, formattedIngredients, savedRecipes) {
     const newRecipe = new RecipeModel({
       spoonacularId: recipe.id,
       title: recipe.title,
@@ -55,38 +55,39 @@ export class RecipeController {
    * @param amnt
    * @param savedRecipes
    */
-  async getReq (amnt) {
-    const response = await fetch(
-      `${process.env.SPOONACULAR_BASE_API}/random?type=main%20course&apiKey=${process.env.SPOONACULAR_APIKEY}&number=${amnt}`,
-      {
-        method: 'GET'
-      }
-    )
-
-    if (!response.ok) {
-      console.log(response)
-      throw new Error('API request failed')
-    }
-
-    /* return await response.json() */
-    const data = await response.json()
+  async getReq(amnt) {
     const savedRecipes = []
+    try {
+      const response = await fetch(
+        `${process.env.SPOONACULAR_BASE_API}/random?type=main%20course&apiKey=${process.env.SPOONACULAR_APIKEY}&number=${amnt}`,
+        {
+          method: 'GET'
+        }
+      )
 
-    for (const recipe of data.recipes) {
-      const exists = await RecipeModel.findOne({ spoonacularId: recipe.id })
-      /* console.log('Exists', exists) */
-      /*       if (!exists) { */
-      const formattedIngredients = recipe.extendedIngredients.map(
-        (ing) => ({
+      if (!response.ok) {
+        console.log('Fetch failed', response.statusText)
+        return savedRecipes
+      }
+
+      const data = await response.json()
+
+      for (const recipe of data.recipes) {
+        const exists = await RecipeModel.findOne({ spoonacularId: recipe.id })
+        /* console.log('Exists', exists) */
+        /*       if (!exists) { */
+        const formattedIngredients = recipe.extendedIngredients.map((ing) => ({
           name: ing.name,
           amount: Math.round(ing.measures.metric.amount * 4) / 4,
           unit: ing.measures.metric.unitShort
-        })
-      )
-      console.log(recipe.title)
+        }))
+        console.log('FETCH', recipe.title)
 
-      this.createRecipe(recipe, formattedIngredients, savedRecipes)
-
+        this.createRecipe(recipe, formattedIngredients, savedRecipes)
+      }
+    } catch (error) {
+      console.error('Error during getReq:', error)
+      // optionally log or handle error
     }
 
     return savedRecipes
@@ -97,7 +98,7 @@ export class RecipeController {
    * @param req
    * @param res
    */
-  async frontEndPost (req, res) {
+  async frontEndPost(req, res) {
     try {
       const recipeAmnt = req.body.recipeAmnt
       const allergies = req.body.allergies
@@ -108,18 +109,22 @@ export class RecipeController {
 
       let recipes = []
 
-      this.getReq(recipeAmnt)
+      await this.getReq(recipeAmnt)
 
       // Use ternery operator to shorten remove if statement
       const query = allergies ? { [allergies]: true } : {}
+      const getCuisine = cuisine ? { cuisines: cuisine } : {}
 
-      /* console.log(query) */
       const specific = await RecipeModel.aggregate([
         { $match: query },
+        { $match: getCuisine },
         { $sample: { size: parseInt(recipeAmnt) } }
       ])
 
-      console.log('-----------------------------------------', specific[0].title)
+      console.log(
+        '----------------------------------------- SPECIFIC',
+        specific[0].title
+      )
       recipes = specific
 
       return res.status(200).json({
