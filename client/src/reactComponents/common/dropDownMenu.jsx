@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 function DropDownMenu({onChange}) {
-  const [value, setValue] = useState('none')
+  const [value, setValue] = useState('')
 
   const handleChange = (e) => {
     setValue(e.target.value)
@@ -8,8 +8,8 @@ function DropDownMenu({onChange}) {
   }
   return (
     <div>
-      <select value={value} onChange={handleChange}>
-        <option value="none">Choose restriction</option>
+      <select id='dropdown01' value={value} onChange={handleChange}>
+        <option value="">Choose restriction</option>
         <option value="dairyFree">No dairy</option>
         <option value="glutenFree">No gluten</option>
         <option value="vegan">Vegan</option>
