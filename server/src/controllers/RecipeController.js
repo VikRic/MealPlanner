@@ -13,7 +13,7 @@ export class RecipeController {
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
    */
-  index(req, res) {
+  index (req, res) {
     const directoryFullName = dirname(fileURLToPath(import.meta.url))
     res.sendFile(
       join(directoryFullName, '..', '..', '..', 'client', 'build', 'index.html')
@@ -22,10 +22,82 @@ export class RecipeController {
 
   /**
    *
+   * @param recipe
+   * @param formattedIngredients
+   * @param savedRecipes
+   */
+  async createRecipe (recipe, formattedIngredients, savedRecipes) {
+    const newRecipe = new RecipeModel({
+      spoonacularId: recipe.id,
+      title: recipe.title,
+      image: recipe.image,
+      readyInMinutes: recipe.readyInMinutes,
+      servings: recipe.servings,
+      vegan: recipe.vegan,
+      glutenFree: recipe.glutenFree,
+      dairyFree: recipe.dairyFree,
+      vegetarian: recipe.vegetarian,
+      dishTypes: recipe.dishTypes,
+      diets: recipe.diets,
+      cuisines: recipe.cuisines,
+      ingredients: formattedIngredients,
+      instructions: recipe.instructions,
+      source: 'spoonacular'
+    })
+
+    await newRecipe.save()
+    savedRecipes.push(newRecipe)
+    return savedRecipes
+  }
+
+  /**
+   *
+   * @param amnt
+   * @param savedRecipes
+   */
+  async getReq (amnt) {
+    const response = await fetch(
+      `${process.env.SPOONACULAR_BASE_API}/random?type=main%20course&apiKey=${process.env.SPOONACULAR_APIKEY}&number=${amnt}`,
+      {
+        method: 'GET'
+      }
+    )
+
+    if (!response.ok) {
+      console.log(response)
+      throw new Error('API request failed')
+    }
+
+    /* return await response.json() */
+    const data = await response.json()
+    const savedRecipes = []
+
+    for (const recipe of data.recipes) {
+      const exists = await RecipeModel.findOne({ spoonacularId: recipe.id })
+      /* console.log('Exists', exists) */
+      /*       if (!exists) { */
+      const formattedIngredients = recipe.extendedIngredients.map(
+        (ing) => ({
+          name: ing.name,
+          amount: Math.round(ing.measures.metric.amount * 4) / 4,
+          unit: ing.measures.metric.unitShort
+        })
+      )
+      console.log(recipe.title)
+
+      this.createRecipe(recipe, formattedIngredients, savedRecipes)
+
+    }
+
+    return savedRecipes
+  }
+
+  /**
+   *
    * @param req
    * @param res
    */
-  async frontEndPost(req, res) {
+  async frontEndPost (req, res) {
     try {
       const recipeAmnt = req.body.recipeAmnt
       const allergies = req.body.allergies
@@ -34,112 +106,25 @@ export class RecipeController {
       const budget = req.body.budget
       const servings = req.body.servings
 
-      console.log('Received Data:', recipeAmnt, allergies)
-      const response = await fetch(
-        `${process.env.SPOONACULAR_BASE_API}/random?type=main%20course&apiKey=${process.env.SPOONACULAR_APIKEY}&number=${recipeAmnt}`,
-        {
-          method: 'GET'
-        }
-      )
+      let recipes = []
 
-      if (!response.ok) {
-        console.log(response)
-      }
-      const savedRecipes = []
-      const data = await response.json()
-      const query = {}
-      query[allergies] = true
-      console.log('TYPE', typeof allergies)
-      console.log('value', allergies)
-      if (allergies) {
-        const specific = await RecipeModel.aggregate([
-          { $match: query },
-          { $sample: { size: parseInt(recipeAmnt) } }
-        ])
-        console.log('-----------------------------------------', specific)
-      }
-      if (!allergies) {
-        const specific = await RecipeModel.aggregate([
-          { $sample: { size: parseInt(recipeAmnt) } }
-        ])
+      this.getReq(recipeAmnt)
 
-        console.log('-----------------------------------------', specific)
-      }
+      // Use ternery operator to shorten remove if statement
+      const query = allergies ? { [allergies]: true } : {}
 
-      for (const recipe of data.recipes) {
-        const exists = await RecipeModel.findOne({ spoonacularId: recipe.id })
-        console.log('Exists', exists)
-        if (!exists) {
-          const formattedIngredients = recipe.extendedIngredients.map(
-            (ing) => ({
-              name: ing.name,
-              amount: Math.round(ing.measures.metric.amount * 4) / 4,
-              unit: ing.measures.metric.unitShort
-            })
-          )
-          console.log(data)
-          console.log('cuis', recipe.cuisines)
+      /* console.log(query) */
+      const specific = await RecipeModel.aggregate([
+        { $match: query },
+        { $sample: { size: parseInt(recipeAmnt) } }
+      ])
 
-          console.log('diets', recipe.diets)
+      console.log('-----------------------------------------', specific[0].title)
+      recipes = specific
 
-          const newRecipe = new RecipeModel({
-            spoonacularId: recipe.id,
-            title: recipe.title,
-            image: recipe.image,
-            readyInMinutes: recipe.readyInMinutes,
-            servings: recipe.servings,
-            vegan: recipe.vegan,
-            glutenFree: recipe.glutenFree,
-            dairyFree: recipe.dairyFree,
-            vegetarian: recipe.vegetarian,
-            dishTypes: recipe.dishTypes,
-            diets: recipe.diets,
-            cuisines: recipe.cuisines,
-            ingredients: formattedIngredients,
-            instructions: recipe.instructions,
-            source: 'spoonacular'
-          })
-
-          await newRecipe.save()
-          savedRecipes.push(newRecipe)
-        } else {
-          // Add so it can be sent to my frontend (for now)
-          savedRecipes.push(exists)
-        }
-      }
-      /* console.log(data) */
-      /*       console.log('DishTypes')
-      for (const type of data.recipes[0].dishTypes) {
-        console.log(type)
-      }
-      console.log('Cuisines')
-      for (const type of data.recipes[0].cuisines) {
-        console.log(type)
-      }
-      console.log('Diets')
-      for (const type of data.recipes[0].diets) {
-        console.log(type)
-      } */
-
-      /*       console.log('Title', data.recipes[0].title)
-      console.log('image', data.recipes[0].image)
-      console.log('Ready in', data.recipes[0].readyInMinutes)
-      console.log('servings', data.recipes[0].servings)
-      console.log('vegan', data.recipes[0].vegan)
-      console.log('glutenFree', data.recipes[0].glutenFree)
-      console.log('instructions')
-      console.log(data.recipes[0].instructions)
-      data.recipes[0].extendedIngredients.forEach((ingredient) => {
-        const metric = ingredient.measures.metric
-        console.log(
-          `METRIC: ${ingredient.name}:${Math.round(metric.amount * 4) / 4} ${
-            metric.unitShort
-          }`
-        )
-      }) */
       return res.status(200).json({
         success: true,
-        recipes: savedRecipes
+        recipes
       })
     } catch (error) {
       console.error('Error fetching recipe:', error)
