@@ -75,19 +75,21 @@ export class RecipeController {
       for (const recipe of data.recipes) {
         const exists = await RecipeModel.findOne({ spoonacularId: recipe.id })
         /* console.log('Exists', exists) */
-        /*       if (!exists) { */
-        const formattedIngredients = recipe.extendedIngredients.map((ing) => ({
-          name: ing.name,
-          amount: Math.round(ing.measures.metric.amount * 4) / 4,
-          unit: ing.measures.metric.unitShort
-        }))
-        console.log('FETCH', recipe.title)
+        if (!exists) {
+          const formattedIngredients = recipe.extendedIngredients.map(
+            (ing) => ({
+              name: ing.name,
+              amount: Math.round(ing.measures.metric.amount * 4) / 4,
+              unit: ing.measures.metric.unitShort
+            })
+          )
+          console.log('FETCH', recipe.title)
 
-        this.createRecipe(recipe, formattedIngredients, savedRecipes)
+          this.createRecipe(recipe, formattedIngredients, savedRecipes)
+        }
       }
     } catch (error) {
       console.error('Error during getReq:', error)
-      // optionally log or handle error
     }
 
     return savedRecipes
@@ -106,6 +108,12 @@ export class RecipeController {
       const timeToCook = req.body.timeToCook || ''
       const budget = req.body.budget
       const servings = req.body.servings
+      if (req.body.mealLunch) {
+        console.log('Lunch On')
+      }
+      if (req.body.mealDinner) {
+        console.log('Dinner On')
+      }
 
       let recipes = []
 
