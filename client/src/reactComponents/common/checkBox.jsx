@@ -1,12 +1,14 @@
-
 function Checkbox({ label, name, checked, onChange, required }) {
+  const handleChange = (e) => {
+    onChange(e) // Send event
+  }
   return (
     <label>
       <input
         type="checkbox"
         name={name}
         checked={checked}
-        onChange={onChange}
+        onChange={handleChange}
         required={required}
       />
       {label}
