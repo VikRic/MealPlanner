@@ -5,11 +5,12 @@ import RecipeCard from './recipeCard'
 import DropDownMenu from './dropDownMenu'
 import Checkbox from './checkBox'
 import { showFailedAlert } from '../../utils/toastifyAlert'
+import { validateInputs, fetchRecipes } from '../../utils/logic'
 
 function InputForm() {
-  const { getToken } = useAuth()
-  const [isLoading, setIsLoading] = useState(false)
-
+  const { getToken } = useAuth() // Logged in checker
+  const [isLoading, setIsLoading] = useState(false) // Getting data from server
+  const [recipes, setRecipes] = useState([]) // Recipes set on client
   const [inputs, setInputs] = useState({
     recipeAmnt: '',
     allergies: '',
@@ -20,19 +21,6 @@ function InputForm() {
     servings: ''
   })
 
-  const validateInputs = () => {
-    if (!inputs.recipeAmnt || inputs.recipeAmnt <= 0) {
-      showFailedAlert('Please enter at least 1 recipe to continue.')
-      return false
-    }
-    if (!inputs.mealDinner && !inputs.mealLunch) {
-      showFailedAlert('Need to check either of the checkboxes.')
-      return false
-    }
-    return true
-  }
-
-  const [recipes, setRecipes] = useState([])
   const handleInputChange = (e) => {
     const { name, type, checked, value } = e.target
     setInputs((prevState) => ({
@@ -41,54 +29,34 @@ function InputForm() {
     }))
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    if (!validateInputs()) {
-      return
-    }
-    setIsLoading(true)
-
-    try {
-      const token = await getToken()
-      if (!token) {
-        alert('You need to be logged in to get recipes.')
-        return
-      }
-
-      try {
-        const response = await fetch('http://localhost:8090/recipe', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          },
-          body: JSON.stringify(inputs)
-        })
-
-        if (response.ok) {
-          const data = await response.json()
-          console.log('Data sent to server')
-          setRecipes(data.recipes)
-        } else {
-          console.error(response)
-          console.error('Unable to send data')
-        }
-      } catch (error) {
-        console.error('Error while sending data to server:', error)
-      }
-    } finally {
-      setIsLoading(false)
-    }
-
-  }
-
   // Sends allergy value from dropdown to server
   const handleDropdownChange = (value) => {
     setInputs((prevState) => ({
       ...prevState,
       allergies: value
     }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const token = await getToken()
+
+    if (!token) {
+      showFailedAlert('You need to be logged in to get recipes.')
+      return
+    }
+
+    if (!validateInputs(inputs)) {
+      return
+    }
+    setIsLoading(true)
+
+    const data = await fetchRecipes(inputs, token)
+    if (data) {
+      setRecipes(data.recipes)
+    }
+
+    setIsLoading(false)
   }
 
   return (
