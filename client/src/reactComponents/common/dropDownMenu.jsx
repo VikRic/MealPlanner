@@ -15,7 +15,6 @@ function DropDownMenu({onChange}) {
         <option value="vegan">Vegan</option>
         <option value="vegetarian">Vegetarian</option>
       </select>
-      <p>You chose {value}</p>
     </div>
   )
 }

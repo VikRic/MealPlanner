@@ -23,10 +23,9 @@ function Header() {
           <li>
             {/* To hide login button not being loaded in time */}
             {!isLoaded ? (
-              <span style={{color:'#646cff', fontWeight:500}}>Login</span>
+              <span style={{ color: '#646cff', fontWeight: 500 }}>Login</span>
             ) : user ? (
-              <UserButton
-            />
+              <UserButton />
             ) : (
               <Link to="/login">Login</Link>
             )}

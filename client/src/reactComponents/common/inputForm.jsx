@@ -3,30 +3,33 @@ import { useAuth } from '@clerk/clerk-react'
 import InputField from './inputField'
 import RecipeCard from './recipeCard'
 import DropDownMenu from './dropDownMenu'
+import Checkbox from './checkBox'
 
 function InputForm() {
   const { getToken } = useAuth()
   const [inputs, setInputs] = useState({
     recipeAmnt: '',
     allergies: '',
+    mealLunch: false,
+    mealDinner: false,
     cuisine: '',
     timeToCook: '',
-    budget: '',
     servings: ''
   })
 
   const [recipes, setRecipes] = useState([])
-
   const handleInputChange = (e) => {
-    const { name, value } = e.target
+    const { name, type, checked, value } = e.target
     setInputs((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     }))
+    e.target.setCustomValidity('')
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
     const token = await getToken()
     if (!token) {
       alert('Du måste vara inloggad för att skicka formuläret.')
@@ -38,7 +41,7 @@ function InputForm() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(inputs)
       })
@@ -67,6 +70,7 @@ function InputForm() {
   return (
     <div>
       <form onSubmit={handleSubmit} className="form-container">
+        {/* How many days */}
         <InputField
           name="recipeAmnt"
           value={inputs.recipeAmnt}
@@ -74,32 +78,53 @@ function InputForm() {
           placeholder="How many meals"
           required
         />
-        <DropDownMenu onChange={handleDropdownChange} />
-        <InputField
-          name="cuisine"
-          value={inputs.cuisine}
-          onChange={handleInputChange}
-          placeholder="Cuisine"
-        />
-        <InputField
-          name="timeToCook"
-          value={inputs.timeToCook}
-          onChange={handleInputChange}
-          placeholder="Estimated total time"
-        />
-        <InputField
-          name="budget"
-          value={inputs.budget}
-          onChange={handleInputChange}
-          placeholder="Budget"
-        />
+
+        {/* Lunch / Dinner */}
+        <div className="checkbox-group">
+          <Checkbox
+            label="Lunch"
+            name="mealLunch"
+            checked={inputs.mealLunch}
+            onChange={handleInputChange}
+          />
+          <Checkbox
+            label="Dinner"
+            name="mealDinner"
+            checked={inputs.mealDinner}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        {/* How many servings */}
         <InputField
           name="servings"
           value={inputs.servings}
           onChange={handleInputChange}
           placeholder="Servings"
         />
-        <button type="submit">Get recipes</button>
+
+        {/* Allergies */}
+        <DropDownMenu onChange={handleDropdownChange} />
+
+        {/* Cuisine */}
+        <InputField
+          name="cuisine"
+          value={inputs.cuisine}
+          onChange={handleInputChange}
+          placeholder="Cuisine"
+        />
+
+        {/* Time To cook */}
+        <InputField
+          name="timeToCook"
+          value={inputs.timeToCook}
+          onChange={handleInputChange}
+          placeholder="Estimated total time"
+        />
+
+        <button className="submit-button" type="submit">
+          Get recipes
+        </button>
       </form>
 
       <div className="recipe-list">

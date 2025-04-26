@@ -8,9 +8,6 @@ import Test from './reactComponents/pages/Test.jsx'
 import { SignIn } from '@clerk/clerk-react'
 import 'styles/clerkLogin.css'
 
-
-
-
 function App() {
   return (
     <div className="main-content">
@@ -18,15 +15,22 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/recipe" element={<Recipe />} />
         <Route path="/Test" element={<Test />} />
-        <Route path="/login" element={<SignIn appearance={{
-    variables: {
-      colorPrimary: '#4f46e5',
-      fontSize: '1.1rem'
-    },
-    elements: {
-      rootBox: 'cl-rootBox',
-    }
-  }} />} />
+        <Route
+          path="/login"
+          element={
+            <SignIn
+              appearance={{
+                variables: {
+                  colorPrimary: '#4f46e5',
+                  fontSize: '1.1rem'
+                },
+                elements: {
+                  rootBox: 'cl-rootBox'
+                }
+              }}
+            />
+          }
+        />
       </Routes>
     </div>
   )
