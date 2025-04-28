@@ -1,3 +1,4 @@
+import 'styles/checkBox.css'
 function Checkbox({ label, name, checked, onChange, required }) {
   const handleChange = (e) => {
     onChange(e) // Send event

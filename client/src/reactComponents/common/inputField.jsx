@@ -1,3 +1,4 @@
+import 'styles/inputField.css'
 function InputField({ name, value, onChange, placeholder, ...rest }) {
   return (
     <div>

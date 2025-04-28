@@ -4,6 +4,7 @@ import InputField from './inputField'
 import RecipeCard from './recipeCard'
 import DropDownMenu from './dropDownMenu'
 import Checkbox from './checkBox'
+
 import { showFailedAlert } from '../../utils/toastifyAlert'
 import { validateInputs, fetchRecipes } from '../../utils/logic'
 
@@ -72,12 +73,14 @@ function InputForm() {
 
         {/* Lunch / Dinner */}
         <div className="checkbox-group">
+
           <Checkbox
             label="Lunch"
             name="mealLunch"
             checked={inputs.mealLunch}
             onChange={handleInputChange}
           />
+
           <Checkbox
             label="Dinner"
             name="mealDinner"
@@ -96,6 +99,7 @@ function InputForm() {
 
         {/* Allergies */}
         <DropDownMenu onChange={handleDropdownChange} />
+
 
         {/* Cuisine */}
         <InputField

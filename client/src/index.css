@@ -102,10 +102,7 @@ button:focus-visible {
   background-color: #0056b3;
 }
 
-input {
-  padding: 5px;
-  margin: 5px;
-}
+
 
 select {
   padding: 5px;
@@ -121,6 +118,7 @@ img {
   align-items: center;
   justify-content: center;
 }
+
 
 
 
