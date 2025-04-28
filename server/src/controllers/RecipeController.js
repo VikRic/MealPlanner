@@ -74,7 +74,6 @@ export class RecipeController {
 
       for (const recipe of data.recipes) {
         const exists = await RecipeModel.findOne({ spoonacularId: recipe.id })
-        /* console.log('Exists', exists) */
         if (!exists) {
           const formattedIngredients = recipe.extendedIngredients.map(
             (ing) => ({
@@ -122,7 +121,6 @@ export class RecipeController {
       // Use ternery operator to shorten remove if statement
       const query = allergies ? { [allergies]: true } : {}
       const getCuisine = cuisine ? { cuisines: cuisine } : {}
-
       const specific = await RecipeModel.aggregate([
         { $match: query },
         { $match: getCuisine },

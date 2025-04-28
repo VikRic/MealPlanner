@@ -18,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <ClerkProvider publishableKey={publicKey}>
         <div className="page-wrapper">
+          <div className='overlay'></div>
           <Header />
           <App />
           <Footer />

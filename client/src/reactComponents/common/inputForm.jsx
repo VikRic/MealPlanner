@@ -62,7 +62,9 @@ function InputForm() {
 
   return (
     <div>
+
       <form onSubmit={handleSubmit} className="form-container">
+      <h3 style={{textAlign: 'left', margin: '5px', marginLeft: '10px'}}>Find new recipes! </h3>
         {/* How many days */}
         <InputField
           name="recipeAmnt"
@@ -117,7 +119,7 @@ function InputForm() {
           placeholder="Estimated total time"
         />
 
-        <button className="submit-button" type="submit" disabled={isLoading}>
+        <button className="submit-button" type="submit" disabled={isLoading} style={{margin: '10px'}}>
           {isLoading ? 'Getting recipes...' : 'Get recipes'}
         </button>
       </form>
