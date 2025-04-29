@@ -8,8 +8,10 @@ import logger from 'morgan'
 import { clientBuildPath } from './config/pathConfig.js'
 import cors from 'cors'
 import { connectToDatabase } from './config/mongoose.js'
+import dotenv from 'dotenv'
 
 try {
+  dotenv.config()
   // Connect to MongoDB.
   await connectToDatabase(process.env.DB_CONNECTION_STRING)
 
@@ -31,7 +33,7 @@ try {
   app.use(session(sessionOptions))
 
   // Register routes
-  app.use('/', router)
+  app.use('/api', router)
 
   // Catch-all route for React
   app.get('*', (req, res) => {

@@ -1,7 +1,8 @@
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { RecipeModel } from '../models/recipeModel.js'
-
+import { RecipeModel } from '../models/RecipeModel.js'
+import dotenv from 'dotenv'
+dotenv.config()
 /**
  * Encapsulates a controller.
  */

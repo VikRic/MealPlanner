@@ -5,6 +5,8 @@
  * @see {@link https://github.com/expressjs/session}
  */
 
+import dotenv from 'dotenv'
+dotenv.config()
 // Options object for the session middleware.
 export const sessionOptions = {
   name: process.env.SESSION_NAME, // Don't use default session cookie name.

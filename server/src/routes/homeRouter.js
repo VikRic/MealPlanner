@@ -5,7 +5,7 @@
  */
 
 import express from 'express'
-import { HomeController } from '../controllers/HomeController .js'
+import { HomeController } from '../controllers/HomeController.js'
 
 export const router = express.Router()
 
