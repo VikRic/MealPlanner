@@ -13,8 +13,9 @@ export const validateInputs = (inputs) => {
 }
 
 export const fetchRecipes = async (inputs, token) => {
+  const BASE_URL = import.meta.env.VITE_REACT_APP_API_URL || ''
   try {
-    const response = await fetch('http://localhost:8090/recipe', {
+    const response = await fetch(`${BASE_URL}/recipe`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
