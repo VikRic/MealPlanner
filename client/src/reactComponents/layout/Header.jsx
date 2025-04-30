@@ -6,7 +6,7 @@ import { UserButton } from '@clerk/clerk-react'
 
 function Header() {
   const { user, isLoaded } = useUser()
-  
+
   return (
     <header className="header">
       <nav className="nav">
@@ -22,13 +22,8 @@ function Header() {
           </li>
           <li>
             {/* To hide login button not being loaded in time */}
-            {!isLoaded ? (
-              <span style={{ color: '#646cff', fontWeight: 500 }}>Login</span>
-            ) : user ? (
-              <UserButton />
-            ) : (
-              <Link to="/login">Login</Link>
-            )}
+            {isLoaded &&
+              (user ? <UserButton /> : <Link to="/login">Login</Link>)}
           </li>
         </ul>
       </nav>

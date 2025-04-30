@@ -14,7 +14,7 @@ export class RecipeController {
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
    */
-  index (req, res) {
+  index(req, res) {
     const directoryFullName = dirname(fileURLToPath(import.meta.url))
     res.sendFile(
       join(directoryFullName, '..', '..', '..', 'client', 'build', 'index.html')
@@ -22,14 +22,12 @@ export class RecipeController {
   }
 
   /**
-   * Creates a new recipe, saves it to the database, and adds it to the saved recipes array.
    *
-   * @param {object} recipe - The recipe object containing details about the recipe.
-   * @param {Array<{name: string, amount: number, unit: string}>} formattedIngredients - The formatted list of ingredients.
-   * @param {Array<object>} savedRecipes - The array to store saved recipes.
-   * @returns {Array<object>} The updated array of saved recipes.
+   * @param recipe
+   * @param formattedIngredients
+   * @param savedRecipes
    */
-  async createRecipe (recipe, formattedIngredients, savedRecipes) {
+  async createRecipe(recipe, formattedIngredients, savedRecipes) {
     const newRecipe = new RecipeModel({
       spoonacularId: recipe.id,
       title: recipe.title,
@@ -54,13 +52,11 @@ export class RecipeController {
   }
 
   /**
-   * Fetches a specified number of random recipes from the Spoonacular API, checks for duplicates in the database,
-   * and saves new recipes to the database.
    *
-   * @param {number} amnt - The number of recipes to fetch.
-   * @returns {Promise<Array<object>>} A promise that resolves to an array of saved recipes.
+   * @param amnt
+   * @param savedRecipes
    */
-  async getReq (amnt) {
+  async getReq(amnt) {
     const savedRecipes = []
     try {
       const response = await fetch(
@@ -88,8 +84,9 @@ export class RecipeController {
             })
           )
           console.log('FETCH', recipe.title)
-
+          console.time('this.createRecipe')
           this.createRecipe(recipe, formattedIngredients, savedRecipes)
+          console.timeEnd('this.createRecipe')
         }
       }
     } catch (error) {
@@ -100,21 +97,18 @@ export class RecipeController {
   }
 
   /**
-   * Handles a POST request from the frontend, processes recipe data, and sends a response with filtered recipes.
    *
-   * @param {object} req - Express request object containing the request body with recipe filters.
-   * @param {object} res - Express response object used to send the response back to the client.
-   * @returns {Promise<void>} A promise that resolves when the response is sent.
+   * @param req
+   * @param res
    */
-  async frontEndPost (req, res) {
+  async frontEndPost(req, res) {
     try {
       const recipeAmnt = req.body.recipeAmnt
       const allergies = req.body.allergies
       const cuisine = req.body.cuisine
       const timeToCook = req.body.timeToCook || ''
+      const budget = req.body.budget
       const servings = req.body.servings
-      console.log(servings)
-      console.log('cooktime', timeToCook)
       if (req.body.mealLunch) {
         console.log('Lunch On')
       }
@@ -129,11 +123,9 @@ export class RecipeController {
       // Use ternery operator to shorten remove if statement
       const query = allergies ? { [allergies]: true } : {}
       const getCuisine = cuisine ? { cuisines: cuisine } : {}
-      const getCookTime = timeToCook ? { readyInMinutes: { $lte: parseInt(timeToCook) } } : {}
       const specific = await RecipeModel.aggregate([
         { $match: query },
         { $match: getCuisine },
-        { $match: getCookTime },
         { $sample: { size: parseInt(recipeAmnt) } }
       ])
 
