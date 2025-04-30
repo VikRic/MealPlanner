@@ -3,6 +3,7 @@ function DropDownMenu({onChange}) {
   const [value, setValue] = useState('')
 
   const handleChange = (e) => {
+    console.log(e.target)
     setValue(e.target.value)
     onChange(e.target.value)
   }

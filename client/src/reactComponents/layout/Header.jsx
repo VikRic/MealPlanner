@@ -6,7 +6,7 @@ import { UserButton } from '@clerk/clerk-react'
 
 function Header() {
   const { user, isLoaded } = useUser()
-  console.log('user', user)
+  
   return (
     <header className="header">
       <nav className="nav">

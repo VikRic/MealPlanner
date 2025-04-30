@@ -1,6 +1,9 @@
 import "styles/recipeList.css";
 
-const RecipeCard = ({ recipe }) => {
+const RecipeCard = ( {servings, recipe }) => {
+  let amount = 1
+  let rounded = 1
+  let adjustedAmount = 1
   return (
     <div>
       <h3>{recipe.title}</h3>
@@ -10,7 +13,6 @@ const RecipeCard = ({ recipe }) => {
         alt={recipe.title}
         style={{ maxWidth: '200px', borderRadius: '4px' }}
       />
-
       <p>⏱ Ready in: {recipe.readyInMinutes} min</p>
       <p>🍽 Servings: {recipe.servings}</p>
       <p>🌱 Vegan: {recipe.vegan ? 'Yes' : 'No'}</p>
@@ -21,11 +23,20 @@ const RecipeCard = ({ recipe }) => {
         <>
           <h4>🧂 Ingredients:</h4>
           <ul>
-            {recipe.ingredients.map((ing, i) => (
-              <li key={i}>
-                {ing.amount} {ing.unit} {ing.name}
-              </li>
-            ))}
+            {recipe.ingredients.map((ing, i) => {
+              servings = servings || 1
+              amount = ing.amount * (servings / recipe.servings)
+              rounded = Math.round(amount * 4) / 4
+              adjustedAmount = rounded < 0.25 && rounded !== 0 ? 0.25 : rounded;
+
+              return (
+                <li key={i}>
+                  
+                  {adjustedAmount} {ing.unit} {ing.name}
+                </li>
+                
+              );
+            })}
           </ul>
         </>
       )}

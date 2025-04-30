@@ -4,6 +4,8 @@ import InputField from './inputField'
 import RecipeCard from './recipeCard'
 import DropDownMenu from './dropDownMenu'
 import Checkbox from './checkBox'
+import DropTest from './DropTest'
+
 
 import { showFailedAlert } from '../../utils/toastifyAlert'
 import { validateInputs, fetchRecipes } from '../../utils/logic'
@@ -35,6 +37,13 @@ function InputForm() {
     setInputs((prevState) => ({
       ...prevState,
       allergies: value
+    }))
+  }
+
+  const handleTimeChange = (value) => {
+    setInputs((prevState) => ({
+      ...prevState,
+      timeToCook: value
     }))
   }
 
@@ -112,12 +121,14 @@ function InputForm() {
         />
 
         {/* Time To cook */}
-        <InputField
-          name="timeToCook"
-          value={inputs.timeToCook}
-          onChange={handleInputChange}
-          placeholder="Estimated total time"
-        />
+        <DropTest onChange={handleTimeChange}
+          options={[
+            { value: 15, label: 'Less than 15 min' },
+            { value: 30, label: 'Less than 30 min' },
+            { value: 60, label: 'Less than 60 mins' },
+            { value: 61, label: 'More than 60 mins' },
+            ]}
+          />
 
         <button className="submit-button" type="submit" disabled={isLoading} style={{margin: '10px'}}>
           {isLoading ? 'Getting recipes...' : 'Get recipes'}
@@ -125,8 +136,9 @@ function InputForm() {
       </form>
 
       <div className="recipe-list">
+
         {recipes.length > 0 &&
-          recipes.map((recipe, ID) => <RecipeCard key={ID} recipe={recipe} />)}
+          recipes.map((recipe, ID) => <RecipeCard key={ID} recipe={recipe} servings={inputs.servings} />)}
       </div>
     </div>
   )
