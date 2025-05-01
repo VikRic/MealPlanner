@@ -14,12 +14,12 @@ export class RecipeController {
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
    */
-  index(req, res) {
+  /*   index(req, res) {
     const directoryFullName = dirname(fileURLToPath(import.meta.url))
     res.sendFile(
       join(directoryFullName, '..', '..', '..', 'client', 'build', 'index.html')
     )
-  }
+  } */
 
   /**
    *
@@ -107,11 +107,15 @@ export class RecipeController {
       const allergies = req.body.allergies
       const cuisine = req.body.cuisine
       const timeToCook = req.body.timeToCook || ''
-      const budget = req.body.budget
       const servings = req.body.servings
+
+      console.log(servings)
+      console.log('cooktime', timeToCook)
+
       if (req.body.mealLunch) {
         console.log('Lunch On')
       }
+
       if (req.body.mealDinner) {
         console.log('Dinner On')
       }
@@ -123,9 +127,11 @@ export class RecipeController {
       // Use ternery operator to shorten remove if statement
       const query = allergies ? { [allergies]: true } : {}
       const getCuisine = cuisine ? { cuisines: cuisine } : {}
+      const getCookTime = timeToCook ? { readyInMinutes: { $lte: parseInt(timeToCook) } } : {}
       const specific = await RecipeModel.aggregate([
         { $match: query },
         { $match: getCuisine },
+        { $match: getCookTime },
         { $sample: { size: parseInt(recipeAmnt) } }
       ])
 

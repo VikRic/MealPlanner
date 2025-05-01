@@ -9,6 +9,7 @@ import { clientBuildPath } from './config/pathConfig.js'
 import cors from 'cors'
 import { connectToDatabase } from './config/mongoose.js'
 import dotenv from 'dotenv'
+import { clerkMiddleware } from '@clerk/express'
 
 try {
   dotenv.config()
@@ -19,6 +20,7 @@ try {
   const app = express()
   app.use(cors({ origin: 'http://localhost:3000' }))
   app.use(express.json())
+  app.use(clerkMiddleware())
 
   // Set up middleware
   app.use(logger('dev'))
