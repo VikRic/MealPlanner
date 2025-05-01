@@ -1,18 +1,119 @@
 .recipe-list {
-  margin-top: 2rem;
-  margin-left: 50px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  gap: 24px;
+  margin: 2rem 50px 0 50px;
 }
 
 .recipe-card {
-  border: 1px solid #ddd;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border-radius: 8px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
 }
 
+.recipe-img {
+  width: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  height: auto;
+}
 
-img:hover {
-  transform: scale(2);
-  transform-origin: left;
-  z-index: 10; 
+.recipe-header {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.plan-controls {
+  display: flex;
+  flex-direction: column;
+}
+
+.recipe-content {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+  align-items: flex-start;
+}
+
+.recipe-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.recipe-meta {
+  margin-top: auto; /* tryck ner till botten */
+}
+
+.add-btn {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.allergies {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.allergies p {
+  margin: 10px;
+  gap: 30px;
+}
+
+.allergy {
+  background-color: #e7f3eb;
+  color: #256029;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+summary span {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.instructions,
+.ingredients {
+  margin-top: 16px;
+  padding-left: 4px;
+  flex: 1 1 50%;
+  max-width: 50%;
+}
+
+.instructions ul,
+.ingredients ul {
+  max-height: 250px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.recipe-details {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.recipe-data {
+  display: flex;
+  gap: 15px;
+}
+
+@media (max-width: 600px) {
+  .recipe-details {
+    flex-direction: column;
+  }
+
+  .instructions,
+  .ingredients {
+    max-width: 100%;
+  }
 }

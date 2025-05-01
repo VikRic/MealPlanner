@@ -1,45 +1,104 @@
-import "styles/recipeList.css";
+import { useState } from 'react'
+import { addToPlan } from '../../utils/logic'
+import { useAuth } from '@clerk/clerk-react'
+import 'styles/recipeList.css'
 
-const RecipeCard = ( {servings, recipe }) => {
-  let amount = 1
-  let rounded = 1
-  let adjustedAmount = 1
+const RecipeCard = ({ servings, recipe }) => {
+  const [selectedDay, setSelectedDay] = useState('måndag')
+  const [mealType, setMealType] = useState('lunch')
+  const { getToken } = useAuth()
+
+  const handleAdd = async () => {
+    const token = await getToken()
+    /* console.log(recipe) */
+    await addToPlan(selectedDay, mealType, recipe.spoonacularId, token)
+  }
+
   return (
-    <div>
-      <h3>{recipe.title}</h3>
+    <div className="recipe-card">
+      <div className="recipe-header">
+        <h2>{recipe.title}</h2>
+        <div className="plan-controls">
+          <select
+            onChange={(e) => setSelectedDay(e.target.value)}
+            value={selectedDay}
+          >
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+            <option value="Sunday">Sunday</option>
+          </select>
+          <select
+            onChange={(e) => setMealType(e.target.value)}
+            value={mealType}
+          >
+            <option value="lunch">Lunch</option>
+            <option value="dinner">Dinner</option>
+          </select>
+          <button className="add-btn" onClick={handleAdd}>
+            ➕ Add
+          </button>
+        </div>
+      </div>
 
-      <img
-        src={recipe.image}
-        alt={recipe.title}
-        style={{ maxWidth: '200px', borderRadius: '4px' }}
-      />
-      <p>⏱ Ready in: {recipe.readyInMinutes} min</p>
-      <p>🍽 Servings: {recipe.servings}</p>
-      <p>🌱 Vegan: {recipe.vegan ? 'Yes' : 'No'}</p>
-      <p>🌾 Gluten Free: {recipe.glutenFree ? 'Yes' : 'No'}</p>
-      <p>🐄 Dairy Free: {recipe.dairyFree ? 'Yes' : 'No'}</p>
+      <div className="recipe-content">
+        <img src={recipe.image} alt={recipe.title} className="recipe-img" />
+        <div className="recipe-info">
+          <div className="allergies">
+            {recipe.vegan && <p className="allergy">🌱 Vegan</p>}
+            {recipe.glutenFree && <p className="allergy">🌾 Gluten free</p>}
+            {recipe.dairyFree && <p className="allergy">🥛 Dairy free</p>}
+          </div>
+          <div className="recipe-data">
+            <span>
+              <strong>Time:</strong> {recipe.readyInMinutes} min
+            </span>
+            <span>
+              <strong>Servings:</strong> {servings || 1}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="recipe-details">
+        <details className="instructions">
+          <summary>
+            <span>Instructions</span>
+          </summary>
 
-      {recipe.ingredients && (
-        <>
-          <h4>🧂 Ingredients:</h4>
           <ul>
-            {recipe.ingredients.map((ing, i) => {
-              servings = servings || 1
-              amount = ing.amount * (servings / recipe.servings)
-              rounded = Math.round(amount * 4) / 4
-              adjustedAmount = rounded < 0.25 && rounded !== 0 ? 0.25 : rounded;
-
-              return (
-                <li key={i}>
-                  
-                  {adjustedAmount} {ing.unit} {ing.name}
-                </li>
-                
-              );
+            {recipe.instructions.split('.').map((sentence, index) => {
+              const cleanedSentence = sentence
+                .replace(/<[^>]+>/g, '') // Removes all HTML tags
+                .trim()
+              return cleanedSentence ? (
+                <li key={index}>{cleanedSentence}.</li>
+              ) : null
             })}
           </ul>
-        </>
-      )}
+        </details>
+        <details className="ingredients">
+          <summary>
+            <span> Ingredients</span>
+          </summary>
+          <ul>
+            {recipe.ingredients.map((ing, i) => {
+              const factor = servings || 1
+              const amount = ing.amount * (factor / recipe.servings)
+              const rounded = Math.round(amount * 4) / 4
+              const adjustedAmount =
+                rounded < 0.25 && rounded !== 0 ? 0.25 : rounded
+              return (
+                <li key={i}>
+                  {adjustedAmount} {ing.unit} {ing.name}
+                </li>
+              )
+            })}
+          </ul>
+        </details>
+      </div>
     </div>
   )
 }

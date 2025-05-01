@@ -6,7 +6,6 @@ import DropDownMenu from './dropDownMenu'
 import Checkbox from './checkBox'
 import DropTest from './DropTest'
 
-
 import { showFailedAlert } from '../../utils/toastifyAlert'
 import { validateInputs, fetchRecipes } from '../../utils/logic'
 
@@ -71,9 +70,10 @@ function InputForm() {
 
   return (
     <div>
-
       <form onSubmit={handleSubmit} className="form-container">
-      <h3 style={{textAlign: 'left', margin: '5px', marginLeft: '10px'}}>Find new recipes! </h3>
+        <h3 style={{ textAlign: 'left', margin: '5px', marginLeft: '10px' }}>
+          Find new recipes!{' '}
+        </h3>
         {/* How many days */}
         <InputField
           name="recipeAmnt"
@@ -84,7 +84,6 @@ function InputForm() {
 
         {/* Lunch / Dinner */}
         <div className="checkbox-group">
-
           <Checkbox
             label="Lunch"
             name="mealLunch"
@@ -111,7 +110,6 @@ function InputForm() {
         {/* Allergies */}
         <DropDownMenu onChange={handleDropdownChange} />
 
-
         {/* Cuisine */}
         <InputField
           name="cuisine"
@@ -121,24 +119,31 @@ function InputForm() {
         />
 
         {/* Time To cook */}
-        <DropTest onChange={handleTimeChange}
+        <DropTest
+          onChange={handleTimeChange}
           options={[
             { value: 15, label: 'Less than 15 min' },
             { value: 30, label: 'Less than 30 min' },
             { value: 60, label: 'Less than 60 mins' },
-            { value: 61, label: 'More than 60 mins' },
-            ]}
-          />
+            { value: 61, label: 'More than 60 mins' }
+          ]}
+        />
 
-        <button className="submit-button" type="submit" disabled={isLoading} style={{margin: '10px'}}>
+        <button
+          className="submit-button"
+          type="submit"
+          disabled={isLoading}
+          style={{ margin: '10px' }}
+        >
           {isLoading ? 'Getting recipes...' : 'Get recipes'}
         </button>
       </form>
 
       <div className="recipe-list">
-
         {recipes.length > 0 &&
-          recipes.map((recipe, ID) => <RecipeCard key={ID} recipe={recipe} servings={inputs.servings} />)}
+          recipes.map((recipe, ID) => (
+            <RecipeCard key={ID} recipe={recipe} servings={inputs.servings} />
+          ))}
       </div>
     </div>
   )
