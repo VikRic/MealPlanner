@@ -15,7 +15,7 @@ services:
       context: ./server
       dockerfile: Dockerfile
     ports:
-      - "8090:3000"  # Express kör på port 3000
+      - "8080:3000"  # Express kör på port 3000
     networks:
       - recipe_net
     environment:

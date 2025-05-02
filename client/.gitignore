@@ -198,3 +198,5 @@ $RECYCLE.BIN/
 
 # Test Files
 test*.js
+build/
+dist/
