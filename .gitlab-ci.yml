@@ -15,12 +15,12 @@ deploy_to_server:
   script:
     - ssh ubuntu@cscloud8-22.lnu.se '
         if [ ! -d /var/www/html/recipe_planner/.git ]; then
-          git clone git@gitlab.lnu.se:1dv613/student/vr222im/projects/recipe_planner.git /var/www/html/recipe_planner;
+          git clone git@gitlab.lnu.se:1dv613/student/vr222im/projects/recipe_planner.git /var/www/recipe_planner;
 
         else
-          cd /var/www/html/recipe_planner && git pull;
+          cd /var/www/recipe_planner && git pull;
         fi &&
-        cd /var/www/html/recipe_planner &&
+        cd /var/www/recipe_planner &&
         docker-compose down &&
         docker-compose up -d --build
       '
