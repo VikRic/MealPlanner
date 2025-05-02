@@ -4,7 +4,7 @@ stages:
 deploy_to_server:
   stage: deploy
   only:
-    - main  # Kör bara om man pushar till main-branchen
+    - main  # Only runs if you push to main
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)

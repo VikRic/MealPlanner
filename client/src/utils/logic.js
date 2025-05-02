@@ -1,6 +1,8 @@
 import { showFailedAlert } from './toastifyAlert'
 
-const BASE_URL = import.meta.env.VITE_REACT_APP_API_URL || 'http://localhost:8080/api'
+const BASE_URL =
+  import.meta.env.VITE_REACT_APP_API_URL || 'http://localhost:8080/api'
+
 export const validateInputs = (inputs) => {
   if (!inputs.recipeAmnt || inputs.recipeAmnt <= 0) {
     showFailedAlert('Please enter at least 1 recipe to continue.')
@@ -40,7 +42,6 @@ export const fetchRecipes = async (inputs, token) => {
 
 export const addToPlan = async (day, mealType, recipeId, token) => {
   try {
-
     const response = await fetch(`${BASE_URL}/meal-plan`, {
       method: 'POST',
       headers: {
