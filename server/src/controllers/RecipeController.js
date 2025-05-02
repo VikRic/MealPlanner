@@ -22,10 +22,12 @@ export class RecipeController {
   } */
 
   /**
+   * Creates a new recipe document and saves it to the database.
    *
-   * @param recipe
-   * @param formattedIngredients
-   * @param savedRecipes
+   * @param {object} recipe - The recipe object containing details like title, image, and instructions.
+   * @param {Array<object>} formattedIngredients - An array of ingredient objects with name, amount, and unit.
+   * @param {Array<object>} savedRecipes - An array to store the saved recipes.
+   * @returns {Promise<Array<object>>} A promise that resolves to the updated array of saved recipes.
    */
   async createRecipe (recipe, formattedIngredients, savedRecipes) {
     const newRecipe = new RecipeModel({
@@ -52,9 +54,10 @@ export class RecipeController {
   }
 
   /**
+   * Fetches a specified number of random recipes from the Spoonacular API and saves them if they do not already exist in the database.
    *
-   * @param amnt
-   * @param savedRecipes
+   * @param {number} amnt - The number of recipes to fetch.
+   * @returns {Promise<Array>} A promise that resolves to an array of saved recipes.
    */
   async getReq (amnt) {
     const savedRecipes = []
@@ -97,9 +100,11 @@ export class RecipeController {
   }
 
   /**
+   * Handles a POST request from the frontend to fetch recipes based on user preferences.
    *
-   * @param req
-   * @param res
+   * @param {object} req - Express request object containing user preferences in the body.
+   * @param {object} res - Express response object used to send back the response.
+   * @returns {Promise<void>} A promise that resolves when the response is sent.
    */
   async frontEndPost (req, res) {
     try {

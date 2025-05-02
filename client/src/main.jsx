@@ -9,6 +9,8 @@ import { ClerkProvider } from '@clerk/clerk-react'
 import { ToastContainer } from 'react-toastify'
 
 const publicKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+/* const proxyUrl = import.meta.env.VITE_CLERK_PROXY_URL
+const frontendAPI = import.meta.env.VITE_FRONTEND_API_URL */
 
 if (!publicKey) {
   throw new Error('Missing publishable key')
@@ -16,9 +18,11 @@ if (!publicKey) {
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
-      <ClerkProvider publishableKey={publicKey}>
+      <ClerkProvider
+        publishableKey={publicKey}
+      >
         <div className="page-wrapper">
-          <div className='overlay'></div>
+          <div className="overlay"></div>
           <Header />
           <App />
           <Footer />
