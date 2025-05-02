@@ -17,7 +17,9 @@ deploy_to_server:
         if [ ! -d /var/www/recipe_planner/.git ]; then
           git clone git@gitlab.lnu.se:1dv613/student/vr222im/projects/recipe_planner.git /var/www/recipe_planner;
         else
-          cd /var/www/recipe_planner && git pull;
+          cd /var/www/recipe_planner && 
+	git stash && 
+	git pull;
         fi &&
         cd /var/www/recipe_planner &&
         docker-compose down &&
