@@ -18,7 +18,8 @@ deploy_to_server:
           git clone git@gitlab.lnu.se:1dv613/student/vr222im/projects/recipe_planner.git /var/www/recipe_planner;
         else
           cd /var/www/recipe_planner && 
-	git stash && 
+	git stash &&
+        git clean -fd &&
 	git pull;
         fi &&
         cd /var/www/recipe_planner &&
