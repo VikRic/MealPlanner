@@ -1,0 +1,26 @@
+stages:
+  - deploy
+
+deploy_to_server:
+  stage: deploy
+  only:
+    - main  # Kör bara om man pushar till main-branchen
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -H cscloud8-22.lnu.se >> ~/.ssh/known_hosts
+  script:
+    - ssh ubuntu@cscloud8-22.lnu.se '
+        if [ ! -d /var/www/html/recipe_planner/.git ]; then
+          git clone git@gitlab.lnu.se:1dv613/student/vr222im/projects/recipe_planner.git /var/www/html/recipe_planner;
+
+        else
+          cd /var/www/html/recipe_planner && git pull;
+        fi &&
+        cd /var/www/html/recipe_planner &&
+        docker-compose down &&
+        docker-compose up -d --build
+      '

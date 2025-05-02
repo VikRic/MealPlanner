@@ -1,0 +1,26 @@
+services:
+  client:
+    container_name: recipe_planner_client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"  # Värd:Container (React + Nginx exponerar port 80)
+    networks:
+      - recipe_net
+
+  backend:
+    container_name: recipe_planner_backend
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "8090:3000"  # Express kör på port 3000
+    networks:
+      - recipe_net
+    environment:
+      - PORT=3000
+
+networks:
+  recipe_net:
+    driver: bridge
