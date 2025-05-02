@@ -1,6 +1,6 @@
+
 stages:
   - deploy
-
 deploy_to_server:
   stage: deploy
   only:
@@ -14,9 +14,8 @@ deploy_to_server:
     - ssh-keyscan -H cscloud8-22.lnu.se >> ~/.ssh/known_hosts
   script:
     - ssh ubuntu@cscloud8-22.lnu.se '
-        if [ ! -d /var/www/html/recipe_planner/.git ]; then
+        if [ ! -d /var/www/recipe_planner/.git ]; then
           git clone git@gitlab.lnu.se:1dv613/student/vr222im/projects/recipe_planner.git /var/www/recipe_planner;
-
         else
           cd /var/www/recipe_planner && git pull;
         fi &&
