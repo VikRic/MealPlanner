@@ -27,7 +27,7 @@ export class RecipeController {
    * @param formattedIngredients
    * @param savedRecipes
    */
-  async createRecipe(recipe, formattedIngredients, savedRecipes) {
+  async createRecipe (recipe, formattedIngredients, savedRecipes) {
     const newRecipe = new RecipeModel({
       spoonacularId: recipe.id,
       title: recipe.title,
@@ -56,7 +56,7 @@ export class RecipeController {
    * @param amnt
    * @param savedRecipes
    */
-  async getReq(amnt) {
+  async getReq (amnt) {
     const savedRecipes = []
     try {
       const response = await fetch(
@@ -101,7 +101,7 @@ export class RecipeController {
    * @param req
    * @param res
    */
-  async frontEndPost(req, res) {
+  async frontEndPost (req, res) {
     try {
       const recipeAmnt = req.body.recipeAmnt
       const allergies = req.body.allergies
