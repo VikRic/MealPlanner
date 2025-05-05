@@ -10,6 +10,7 @@ import cors from 'cors'
 import { connectToDatabase } from './config/mongoose.js'
 import dotenv from 'dotenv'
 import { clerkMiddleware } from '@clerk/express'
+import { securityHeaders, limiter } from './middleWare/security.js'
 
 try {
   dotenv.config()
@@ -19,6 +20,8 @@ try {
   // Create Express application.
   const app = express()
   app.use(cors({ origin: 'http://localhost:3000' }))
+  app.use(securityHeaders)
+  app.use(limiter)
   app.use(express.json())
   app.use(clerkMiddleware())
 

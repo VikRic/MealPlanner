@@ -11,16 +11,16 @@ deploy_to_server:
     - echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add -
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-    - ssh-keyscan -H cscloud8-22.lnu.se >> ~/.ssh/known_hosts
+    - ssh-keyscan -H "${PRODUCTION_HOST}" >> ~/.ssh/known_hosts
   script:
-    - ssh ubuntu@cscloud8-22.lnu.se '
-        if [ ! -d /var/www/recipe_planner/.git ]; then
-          git clone git@gitlab.lnu.se:1dv613/student/vr222im/projects/recipe_planner.git /var/www/recipe_planner;
+    - ssh "${USER}@${PRODUCTION_HOST}" '
+        if [ ! -d "$DEPLOY_PATH/.git ]; then
+          git clone "${REPO_URL}" "${DEPLOY_PATH}";
         else
-          cd /var/www/recipe_planner && git stash && git clean -fd && git pull;
+          cd "$DEPLOY_PATH" && git stash && git clean -fd && git pull;
 
         fi &&
-        cd /var/www/recipe_planner &&
+        cd "$DEPLOY_PATH" &&
         docker-compose down &&
         docker-compose up -d --build
       '

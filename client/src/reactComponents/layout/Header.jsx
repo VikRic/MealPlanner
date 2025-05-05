@@ -18,9 +18,6 @@ function Header() {
             <Link to="/Recipe">Recipe</Link>
           </li>
           <li>
-            <Link to="/Test">Test</Link>
-          </li>
-          <li>
             {/* To hide login button not being loaded in time */}
             {isLoaded &&
               (user ? <UserButton /> : <Link to="/login">Login</Link>)}
