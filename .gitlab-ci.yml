@@ -1,10 +1,9 @@
-
 stages:
   - deploy
 deploy_to_server:
   stage: deploy
   only:
-    - main  # Only runs if you push to main
+    - main # Only runs if you push to main
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
@@ -14,13 +13,13 @@ deploy_to_server:
     - ssh-keyscan -H "${PRODUCTION_HOST}" >> ~/.ssh/known_hosts
   script:
     - ssh "${USER}@${PRODUCTION_HOST}" '
-        if [ ! -d "$DEPLOY_PATH/.git ]; then
-          git clone "${REPO_URL}" "${DEPLOY_PATH}";
-        else
-          cd "$DEPLOY_PATH" && git stash && git clean -fd && git pull;
+      if [ ! -d "$DEPLOY_PATH"/.git ]; then
+      git clone "${REPO_URL}" "${DEPLOY_PATH}";
+      else
+      cd "$DEPLOY_PATH" && git stash && git clean -fd && git pull;
 
-        fi &&
-        cd "$DEPLOY_PATH" &&
-        docker-compose down &&
-        docker-compose up -d --build
+      fi &&
+      cd "$DEPLOY_PATH" &&
+      docker-compose down &&
+      docker-compose up -d --build
       '
