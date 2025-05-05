@@ -12,14 +12,14 @@ deploy_to_server:
     - chmod 700 ~/.ssh
     - ssh-keyscan -H "${PRODUCTION_HOST}" >> ~/.ssh/known_hosts
   script:
-    - ssh "${USER}@${PRODUCTION_HOST}" '
-      if [ ! -d "$DEPLOY_PATH"/.git ]; then
-      git clone "${REPO_URL}" "${DEPLOY_PATH}";
+    - ssh "${USER}@${PRODUCTION_HOST}" "
+      if [ ! -d '$DEPLOY_PATH'/.git ]; then
+        git clone '$REPO_URL' '$DEPLOY_PATH';
       else
-      cd "$DEPLOY_PATH" && git stash && git clean -fd && git pull;
+        cd '$DEPLOY_PATH' && git stash && git clean -fd && git pull;
 
       fi &&
-      cd "$DEPLOY_PATH" &&
+      cd '$DEPLOY_PATH' &&
       docker-compose down &&
       docker-compose up -d --build
-      '
+      "
