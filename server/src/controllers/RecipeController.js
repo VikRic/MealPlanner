@@ -20,7 +20,6 @@ export class RecipeController {
       join(directoryFullName, '..', '..', '..', 'client', 'build', 'index.html')
     )
   } */
-
   /**
    * Creates a new recipe document and saves it to the database.
    *
@@ -30,6 +29,7 @@ export class RecipeController {
    * @returns {Promise<Array<object>>} A promise that resolves to the updated array of saved recipes.
    */
   async createRecipe (recipe, formattedIngredients, savedRecipes) {
+    console.time('Recipe Creater')
     const newRecipe = new RecipeModel({
       spoonacularId: recipe.id,
       title: recipe.title,
@@ -47,9 +47,9 @@ export class RecipeController {
       instructions: recipe.instructions,
       source: 'spoonacular'
     })
-
     await newRecipe.save()
     savedRecipes.push(newRecipe)
+    console.timeEnd('Recipe Creater')
     return savedRecipes
   }
 
@@ -62,20 +62,18 @@ export class RecipeController {
   async getReq (amnt) {
     const savedRecipes = []
     try {
+      console.time('Fetch & searching for ID')
       const response = await fetch(
         `${process.env.SPOONACULAR_BASE_API}/random?type=main%20course&apiKey=${process.env.SPOONACULAR_APIKEY}&number=${amnt}`,
         {
           method: 'GET'
         }
       )
-
       if (!response.ok) {
         console.log('Fetch failed', response.statusText)
         return savedRecipes
       }
-
       const data = await response.json()
-
       for (const recipe of data.recipes) {
         const exists = await RecipeModel.findOne({ spoonacularId: recipe.id })
         if (!exists) {
@@ -86,10 +84,10 @@ export class RecipeController {
               unit: ing.measures.metric.unitShort
             })
           )
+          console.timeEnd('Fetch & searching for ID')
           console.log('FETCH', recipe.title)
-          console.time('this.createRecipe')
+          /* console.log('TYPE', recipe.dishTypes) */
           this.createRecipe(recipe, formattedIngredients, savedRecipes)
-          console.timeEnd('this.createRecipe')
         }
       }
     } catch (error) {
@@ -113,39 +111,36 @@ export class RecipeController {
       const cuisine = req.body.cuisine
       const timeToCook = req.body.timeToCook || ''
       const servings = req.body.servings
-
-      console.log(servings)
+      /*      console.log(servings)
       console.log('cooktime', timeToCook)
-
       if (req.body.mealLunch) {
         console.log('Lunch On')
       }
-
       if (req.body.mealDinner) {
         console.log('Dinner On')
-      }
-
+      } */
       let recipes = []
-
       await this.getReq(recipeAmnt)
-
+      console.log(req.body)
+      /*      const nisse = await RecipeModel.find({ dishTypes: 'dinner' })
+      console.log('Find dinner recipe', nisse) */
       // Use ternery operator to shorten remove if statement
       const query = allergies ? { [allergies]: true } : {}
       const getCuisine = cuisine ? { cuisines: cuisine } : {}
-      const getCookTime = timeToCook ? { readyInMinutes: { $lte: parseInt(timeToCook) } } : {}
+      const getCookTime = timeToCook
+        ? { readyInMinutes: { $lte: parseInt(timeToCook) } }
+        : {}
       const specific = await RecipeModel.aggregate([
         { $match: query },
         { $match: getCuisine },
         { $match: getCookTime },
         { $sample: { size: parseInt(recipeAmnt) } }
       ])
-
       console.log(
         '----------------------------------------- SPECIFIC',
         specific[0].title
       )
       recipes = specific
-
       return res.status(200).json({
         success: true,
         recipes
