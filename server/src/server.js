@@ -16,7 +16,7 @@ try {
   dotenv.config()
   console.log(process.env.DB_CONNECTION_STRING)
   // Connect to MongoDB.
-  await connectToDatabase('mongodb+srv://admin:YidDgNWmeV3H79Zb@crudcluster.ltvjy.mongodb.net/RecipePlanner?retryWrites=true&w=majority&appName=CrudCluster')
+  await connectToDatabase(process.env.DB_CONNECTION_STRING)
 
   // Create Express application.
   const app = express()
