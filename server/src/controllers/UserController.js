@@ -11,7 +11,7 @@ export class UserController {
    * @param req
    * @param res
    */
-  async adder(req, res) {
+  async adder (req, res) {
     const { userId } = getAuth(req)
     if (!userId) {
       return res.status(401).json({ error: 'Ej inloggad' })
