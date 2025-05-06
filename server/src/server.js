@@ -14,12 +14,13 @@ import { securityHeaders, limiter } from './middleWare/security.js'
 
 try {
   dotenv.config()
+  console.log(process.env.DB_CONNECTION_STRING)
   // Connect to MongoDB.
-  await connectToDatabase(process.env.DB_CONNECTION_STRING)
+  await connectToDatabase('mongodb+srv://admin:YidDgNWmeV3H79Zb@crudcluster.ltvjy.mongodb.net/RecipePlanner?retryWrites=true&w=majority&appName=CrudCluster')
 
   // Create Express application.
   const app = express()
-  app.use(cors({ origin: 'cscloud8-22.lnu.se' || 'http://localhost:3000' }))
+  app.use(cors({ origin: 'https://localhost:3000' }))
   app.use(securityHeaders)
   app.use(limiter)
   app.use(express.json())
