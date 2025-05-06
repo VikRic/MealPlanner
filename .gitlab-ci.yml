@@ -1,25 +1,26 @@
 stages:
   - deploy
-deploy_to_server:
-  stage: deploy
-  only:
-    - main # Only runs if you push to main
-  before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-    - eval $(ssh-agent -s)
-    - echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - ssh-keyscan -H "${PRODUCTION_HOST}" >> ~/.ssh/known_hosts
-  script:
-    - ssh "${USER}@${PRODUCTION_HOST}" "
-      if [ ! -d '$DEPLOY_PATH'/.git ]; then
-        git clone '$REPO_URL' '$DEPLOY_PATH';
-      else
-        cd '$DEPLOY_PATH' && git stash && git clean -fd && git pull;
 
-      fi &&
-      cd '$DEPLOY_PATH' &&
-      docker-compose down &&
-      docker-compose up -d --build
-      "
+# Återanvändbar SSH-setup (startar agent, lägger till nyckel, kollar known_hosts)
+.before_script_ssh_setup: &ssh_setup
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  - eval $(ssh-agent -s)
+  - echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add -
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - ssh-keyscan -H "${REMOTE_HOST}" >> ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+
+deploy_to_production:
+  stage: deploy
+  image: docker:27-cli # Eller senaste CLI-stödda versionen
+  only:
+    - main
+  variables:
+    REMOTE_HOST: $PRODUCTION_HOST
+    DOCKER_HOST: "ssh://$USER@$REMOTE_HOST"  # Docker körs på fjärrservern via SSH
+  before_script: *ssh_setup
+  script:
+    - echo "Deploying to production..."
+    - docker compose down
+    - docker compose up -d --build
