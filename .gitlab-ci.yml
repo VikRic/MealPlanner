@@ -67,10 +67,12 @@ deploy_production_job:
     - echo "👉 Skapar .env fil på servern från CI/CD-variabler"
     - echo "VITE_REACT_APP_API_URL=$API_URL" > server/.env
     - echo "VITE_CLERK_PUBLISHABLE_KEY=$CLERK_KEY" >> server/.env
+
     - echo "SPOONACULAR_API=$SPOONACULAR_API" >> server/.env
     - echo "SPOONACULAR_APIKEY=$SPOONACULAR_APIKEY" >> server/.env
     - echo "DB_CONNECTION_STRING=$DB_CONNECTION_STRING" >> server/.env
-    - echo "CLERK_SECRET_KEY=$CLERK_KEY" >> server/.env
+    - echo "CLERK_SECRET_KEY=$CLERK_SECRET" >> server/.env
+    - echo "CLERK_PUBLISHABLE_KEY=$CLERK_KEY" >> server/.env
     - echo "SESSION_NAME=$SESSION_NAME" >> server/.env
     - echo "SESSION_SECRET=$SESSION_SECRET" >> server/.env
 
