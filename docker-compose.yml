@@ -33,7 +33,7 @@ services:
     networks:
       - recipe_net
     environment:
-      PORT:3000
+      PORT: 3000
       SPOONACULAR_BASE_API: $SPOONACULAR_API
       SPOONACULAR_APIKEY: $SPOONACULAR_APIKEY
       DB_CONNECTION_STRING: $MONGODB_STRING
