@@ -5,12 +5,11 @@ services:
       context: ./client
       dockerfile: Dockerfile
     ports:
-      - "3000:80"  # Värd:Container (React + Nginx exponerar port 80)
+      - "3000:3000"  # Värd:Container (React + Nginx exponerar port 80)
     networks:
       - recipe_net
     env_file:
       - ./client/.env
-    restart: always
 
   backend:
     container_name: recipe_planner_backend
@@ -18,14 +17,12 @@ services:
       context: ./server
       dockerfile: Dockerfile
     ports:
-      - "8080:3000"  # Express kör på port 3000
+      - "8080:8080"  # Express kör på port 3000
     networks:
       - recipe_net
-    environment:
-      - PORT=3000
     env_file:
       - ./server/.env
-    restart: always
+
 
 networks:
   recipe_net:

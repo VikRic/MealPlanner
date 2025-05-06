@@ -64,7 +64,10 @@ deploy_production_job:
     DOCKER_HOST: ssh://$USER@$PRODUCTION_HOST # Docker connection via SSH.
   before_script: *before_script_ssh_setup # Reuse SSH setup steps.
   script:
-    - echo "Deploying to production..."
+    - echo "Removing old containers..."
+    - docker compose -f docker-compose.yml down
+
+    - echo "Building new containers..."
     - docker compose -f docker-compose.yml up --build -d
   only:
     - main # Only run this job on the main branch.
