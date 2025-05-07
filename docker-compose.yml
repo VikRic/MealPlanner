@@ -1,6 +1,6 @@
 services:
   client:
-    container_name: recipe_planner_client
+    container_name: test_client
     build:
       context: ./client
       dockerfile: Dockerfile
@@ -10,14 +10,14 @@ services:
     ports:
       - "3000:80"  # Värd:Container (React + Nginx exponerar port 80)
     networks:
-      - recipe_net
+      - test_net
     restart: always
     environment:
       VITE_REACT_APP_API_URL: $API_URL
       VITE_CLERK_PUBLISHABLE_KEY: $CLERK_KEY
 
   backend:
-    container_name: recipe_planner_backend
+    container_name: test_client_backend
     build:
       context: ./server
       dockerfile: Dockerfile
@@ -30,9 +30,9 @@ services:
         SESSION_NAME: $SESSION_NAME
         SESSION_SECRET: $SESSION_SECRET
     ports:
-      - "8080:3000"  # Express kör på port 3000
+      - "8080:5000"  # Express kör på port 3000
     networks:
-      - recipe_net
+      - test_net
     environment:
       SPOONACULAR_BASE_API: $SPOONACULAR_API
       SPOONACULAR_APIKEY: $SPOONACULAR_APIKEY
@@ -44,5 +44,5 @@ services:
     restart: always
 
 networks:
-  recipe_net:
+  test_net:
     driver: bridge
