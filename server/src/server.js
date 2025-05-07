@@ -19,7 +19,7 @@ try {
 
   // Create Express application.
   const app = express()
-  app.use(cors({ origin: 'https://localhost:3000' }))
+  app.use(cors({ origin: 'http://localhost:3000' }))
   app.use(securityHeaders)
   app.use(limiter)
   app.use(express.json())

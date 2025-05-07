@@ -1,14 +1,15 @@
 import { showFailedAlert } from './toastifyAlert'
 
 const BASE_URL =
-  import.meta.env.VITE_REACT_APP_API_URL || 'http://localhost:8080/api'
+  import.meta.env.VITE_REACT_APP_API_URL || 'http:///localhost:8080/api'
+  /* import.meta.env.VITE_REACT_APP_API_URL || 'http:///localhost:5000/api' */
 
 export const validateInputs = (inputs) => {
   if (!inputs.recipeAmnt || inputs.recipeAmnt <= 0) {
     showFailedAlert('Please enter at least 1 recipe to continue.')
     return false
   }
-  if (!inputs.mealDinner && !inputs.mealLunch) {
+  if (!inputs.dishTypes.length > 0) {
     showFailedAlert('Need to check either of the checkboxes.')
     return false
   }

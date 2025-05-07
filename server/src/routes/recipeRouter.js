@@ -14,5 +14,5 @@ const controller = new RecipeController()
 router.get('/', (req, res) => {
   res.json({ message: 'Recipe route is alive!' })
 })
-/* router.get('/', (req, res, next) => controller.index(req, res, next)) */
+
 router.post('/', (req, res, next) => controller.frontEndPost(req, res, next))

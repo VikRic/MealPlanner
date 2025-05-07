@@ -8,19 +8,6 @@ dotenv.config()
  */
 export class RecipeController {
   /**
-   * Renders a view and sends the rendered HTML string as an HTTP response.
-   * index GET.
-   *
-   * @param {object} req - Express request object.
-   * @param {object} res - Express response object.
-   */
-  /*   index(req, res) {
-    const directoryFullName = dirname(fileURLToPath(import.meta.url))
-    res.sendFile(
-      join(directoryFullName, '..', '..', '..', 'client', 'build', 'index.html')
-    )
-  } */
-  /**
    * Creates a new recipe document and saves it to the database.
    *
    * @param {object} recipe - The recipe object containing details like title, image, and instructions.
@@ -28,8 +15,9 @@ export class RecipeController {
    * @param {Array<object>} savedRecipes - An array to store the saved recipes.
    * @returns {Promise<Array<object>>} A promise that resolves to the updated array of saved recipes.
    */
-  async createRecipe (recipe, formattedIngredients, savedRecipes) {
+  async createRecipe(recipe, formattedIngredients, savedRecipes) {
     console.time('Recipe Creater')
+
     const newRecipe = new RecipeModel({
       spoonacularId: recipe.id,
       title: recipe.title,
@@ -59,7 +47,7 @@ export class RecipeController {
    * @param {number} amnt - The number of recipes to fetch.
    * @returns {Promise<Array>} A promise that resolves to an array of saved recipes.
    */
-  async getReq (amnt) {
+  async getReq(amnt) {
     const savedRecipes = []
     try {
       console.time('Fetch & searching for ID')
@@ -104,25 +92,29 @@ export class RecipeController {
    * @param {object} res - Express response object used to send back the response.
    * @returns {Promise<void>} A promise that resolves when the response is sent.
    */
-  async frontEndPost (req, res) {
+  async frontEndPost(req, res) {
     try {
       const recipeAmnt = req.body.recipeAmnt
       const allergies = req.body.allergies
+      const mealLunch = req.body.mealLunch
       const cuisine = req.body.cuisine
       const timeToCook = req.body.timeToCook || ''
       const servings = req.body.servings
-      /*      console.log(servings)
-      console.log('cooktime', timeToCook)
-      if (req.body.mealLunch) {
-        console.log('Lunch On')
+      const dishTypes = new Set()
+      console.log(req.body)
+      /*       console.log('cooktime', timeToCook)
+      if (mealLunch) {
+        console.log('TEST')
+        dishTypes.add('Lunch')
+        console.log(dishTypes)
       }
       if (req.body.mealDinner) {
-        console.log('Dinner On')
+        dishTypes.add('Dinner')
+        console.log(dishTypes)
       } */
       let recipes = []
       await this.getReq(recipeAmnt)
-      console.log(req.body)
-      /*      const nisse = await RecipeModel.find({ dishTypes: 'dinner' })
+      /*       const nisse = await RecipeModel.find({ dishTypes: 'dinner' })
       console.log('Find dinner recipe', nisse) */
       // Use ternery operator to shorten remove if statement
       const query = allergies ? { [allergies]: true } : {}

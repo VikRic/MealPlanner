@@ -2,9 +2,14 @@ import { useState } from 'react'
 import { useAuth } from '@clerk/clerk-react'
 import InputField from './inputField'
 import RecipeCard from './recipeCard'
-import DropDownMenu from './dropDownMenu'
+import DropDownMenu2 from './dropDownMenu2'
 import Checkbox from './checkBox'
-import DropTest from './DropTest'
+import DropDownMenu from './dropDownMenu'
+import {
+  handleInputChange as createInputfields,
+  handleDropdownChange as createDropdown,
+  handleCheckboxChange as createCheckbox
+} from '../../utils/handleInputs'
 
 import { showFailedAlert } from '../../utils/toastifyAlert'
 import { validateInputs, fetchRecipes } from '../../utils/logic'
@@ -16,35 +21,15 @@ function InputForm() {
   const [inputs, setInputs] = useState({
     recipeAmnt: '',
     allergies: '',
-    mealLunch: false,
-    mealDinner: false,
+    dishTypes: [],
     cuisine: '',
     timeToCook: '',
     servings: ''
   })
 
-  const handleInputChange = (e) => {
-    const { name, type, checked, value } = e.target
-    setInputs((prevState) => ({
-      ...prevState,
-      [name]: type === 'checkbox' ? checked : value
-    }))
-  }
-
-  // Sends allergy value from dropdown to server
-  const handleDropdownChange = (value) => {
-    setInputs((prevState) => ({
-      ...prevState,
-      allergies: value
-    }))
-  }
-
-  const handleTimeChange = (value) => {
-    setInputs((prevState) => ({
-      ...prevState,
-      timeToCook: value
-    }))
-  }
+  const handleInputChange = createInputfields(setInputs)
+  const handleDropdownChange = createDropdown(setInputs)
+  const handleCheckboxChange = createCheckbox(setInputs)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -82,20 +67,30 @@ function InputForm() {
           placeholder="How many meals"
         />
 
-        {/* Lunch / Dinner */}
+        {/* Checkboxes */}
         <div className="checkbox-group">
+          <Checkbox
+            label="Breakfast"
+            name="mealBreakfast"
+            value="breakfast"
+            checked={inputs.dishTypes.includes('breakfast')}
+            onChange={handleCheckboxChange}
+          />
+
           <Checkbox
             label="Lunch"
             name="mealLunch"
-            checked={inputs.mealLunch}
-            onChange={handleInputChange}
+            value="lunch"
+            checked={inputs.dishTypes.includes('lunch')}
+            onChange={handleCheckboxChange}
           />
 
           <Checkbox
             label="Dinner"
             name="mealDinner"
-            checked={inputs.mealDinner}
-            onChange={handleInputChange}
+            value="dinner"
+            checked={inputs.dishTypes.includes('dinner')}
+            onChange={handleCheckboxChange}
           />
         </div>
 
@@ -108,7 +103,15 @@ function InputForm() {
         />
 
         {/* Allergies */}
-        <DropDownMenu onChange={handleDropdownChange} />
+        <DropDownMenu
+          onChange={handleDropdownChange('allergies')}
+          options={[
+            { value: '', label: 'Choose restriction' },
+            { value: 'dairyFree', label: 'Dairy free' },
+            { value: 'glutenFree', label: 'Gluten free' },
+            { value: 'vegan', label: 'Vegan' }
+          ]}
+        />
 
         {/* Cuisine */}
         <InputField
@@ -119,9 +122,10 @@ function InputForm() {
         />
 
         {/* Time To cook */}
-        <DropTest
-          onChange={handleTimeChange}
+        <DropDownMenu
+          onChange={handleDropdownChange('timeToCook')}
           options={[
+            { value: '', label: 'Timer' },
             { value: 15, label: 'Less than 15 min' },
             { value: 30, label: 'Less than 30 min' },
             { value: 60, label: 'Less than 60 mins' },
