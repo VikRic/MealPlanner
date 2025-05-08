@@ -1,6 +1,6 @@
 import { UserModel } from '../models/UserModel.js'
 import dotenv from 'dotenv'
-import { clerkClient, requireAuth, getAuth } from '@clerk/express'
+import { getAuth } from '@clerk/express'
 dotenv.config()
 /**
  * Encapsulates a controller.

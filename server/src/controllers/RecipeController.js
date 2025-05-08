@@ -15,7 +15,7 @@ export class RecipeController {
    * @param {Array<object>} savedRecipes - An array to store the saved recipes.
    * @returns {Promise<Array<object>>} A promise that resolves to the updated array of saved recipes.
    */
-  async createRecipe(recipe, formattedIngredients, savedRecipes) {
+  async createRecipe (recipe, formattedIngredients, savedRecipes) {
     console.time('Recipe Creater')
 
     const newRecipe = new RecipeModel({
@@ -47,7 +47,7 @@ export class RecipeController {
    * @param {number} amnt - The number of recipes to fetch.
    * @returns {Promise<Array>} A promise that resolves to an array of saved recipes.
    */
-  async getReq(amnt) {
+  async getReq (amnt) {
     const savedRecipes = []
     try {
       console.time('Fetch & searching for ID')
@@ -92,7 +92,7 @@ export class RecipeController {
    * @param {object} res - Express response object used to send back the response.
    * @returns {Promise<void>} A promise that resolves when the response is sent.
    */
-  async frontEndPost(req, res) {
+  async frontEndPost (req, res) {
     try {
       const recipeAmnt = req.body.recipeAmnt
       const allergies = req.body.allergies
@@ -100,8 +100,9 @@ export class RecipeController {
       const cuisine = req.body.cuisine
       const timeToCook = req.body.timeToCook || ''
       const servings = req.body.servings
-      const dishTypes = new Set()
+      const foodChoice = req.body.dishTypes
       console.log(req.body)
+      console.log('choice', foodChoice)
       /*       console.log('cooktime', timeToCook)
       if (mealLunch) {
         console.log('TEST')
@@ -117,15 +118,18 @@ export class RecipeController {
       /*       const nisse = await RecipeModel.find({ dishTypes: 'dinner' })
       console.log('Find dinner recipe', nisse) */
       // Use ternery operator to shorten remove if statement
+
       const query = allergies ? { [allergies]: true } : {}
       const getCuisine = cuisine ? { cuisines: cuisine } : {}
-      const getCookTime = timeToCook
-        ? { readyInMinutes: { $lte: parseInt(timeToCook) } }
-        : {}
+      const getCookTime = timeToCook ? { readyInMinutes: { $lte: parseInt(timeToCook) } } : {}
+      const food = foodChoice?.length ? { dishTypes: { $in: foodChoice } } : {}
+      console.log('food', food)
+      console.log('query', query)
       const specific = await RecipeModel.aggregate([
         { $match: query },
         { $match: getCuisine },
         { $match: getCookTime },
+        { $match: food },
         { $sample: { size: parseInt(recipeAmnt) } }
       ])
       console.log(

@@ -11,30 +11,37 @@ const schema = new mongoose.Schema({
   },
   mealPlan: {
     Monday: {
+      breakfast: [{ recipeId: String }],
       lunch: [{ recipeId: String }],
       dinner: [{ recipeId: String }]
     },
     Tuesday: {
+      breakfast: [{ recipeId: String }],
       lunch: [{ recipeId: String }],
       dinner: [{ recipeId: String }]
     },
     Wednesday: {
+      breakfast: [{ recipeId: String }],
       lunch: [{ recipeId: String }],
       dinner: [{ recipeId: String }]
     },
     Thursday: {
+      breakfast: [{ recipeId: String }],
       lunch: [{ recipeId: String }],
       dinner: [{ recipeId: String }]
     },
     Friday: {
+      breakfast: [{ recipeId: String }],
       lunch: [{ recipeId: String }],
       dinner: [{ recipeId: String }]
     },
     Saturday: {
+      breakfast: [{ recipeId: String }],
       lunch: [{ recipeId: String }],
       dinner: [{ recipeId: String }]
     },
     Sunday: {
+      breakfast: [{ recipeId: String }],
       lunch: [{ recipeId: String }],
       dinner: [{ recipeId: String }]
     }
