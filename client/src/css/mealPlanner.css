@@ -1,0 +1,118 @@
+
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.calendar-container {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: #ebedf3;
+  padding: 10px;
+  border-bottom: 1px solid #e5e7eb;
+  font-weight: bold;
+  font-size: 22px;
+  
+}
+
+.calendar-header .week-display {
+  font-weight: bold;
+  font-size: 25px;
+  margin: 5px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+
+.calendar-header button {
+  font-size: 20px;
+  background: none;
+  border: none;
+  color: #4b5563;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.calendar-header button:hover {
+  color: #1f2937;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-top: 1px solid #e5e7eb;
+  border-left: 1px solid #e5e7eb;
+}
+
+.calendar-day {
+  min-height: 200px;
+  padding: 12px;
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: white;
+}
+
+.calendar-day-header {
+  font-weight: bold;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.meal {
+  margin-bottom: 8px;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 16px;
+  background-color: #fff7ed;
+  border-left: 4px solid #f59e0b;
+}
+
+.meal.lunch {
+  background-color: #ecfdf5;
+  border-left-color: #10b981;
+}
+
+.meal.dinner {
+  background-color: #fee2e2;
+  border-left-color: #ef4444;
+}
+
+.meal .label {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  color: #9ca3af;
+}
+
+.recipe-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+}
+
+
+.recipe-layout > *:first-child {
+
+flex: 1;
+max-width: 400px;
+width: 100%;
+}
+
+.recipe-layout > *:last-child {
+  flex: 2;  /* MealPlannerApp */
+  
+
+}
+
+

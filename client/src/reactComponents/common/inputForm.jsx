@@ -54,7 +54,7 @@ function InputForm() {
   }
 
   return (
-    <div>
+    <div style={{  marginTop: '25px'}}>
       <form onSubmit={handleSubmit} className="form-container">
         <h3 style={{ textAlign: 'left', margin: '5px', marginLeft: '10px' }}>
           Find new recipes!{' '}

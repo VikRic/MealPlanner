@@ -4,8 +4,8 @@ import { useAuth } from '@clerk/clerk-react'
 import 'styles/recipeList.css'
 
 const RecipeCard = ({ servings, recipe }) => {
-  const [selectedDay, setSelectedDay] = useState('måndag')
-  const [mealType, setMealType] = useState('lunch')
+  const [selectedDay, setSelectedDay] = useState('monday')
+  const [mealType, setMealType] = useState('breakfast')
   const { getToken } = useAuth()
 
   const handleAdd = async () => {
@@ -35,6 +35,7 @@ const RecipeCard = ({ servings, recipe }) => {
             onChange={(e) => setMealType(e.target.value)}
             value={mealType}
           >
+            <option value="breakfast">Breakfast</option>
             <option value="lunch">Lunch</option>
             <option value="dinner">Dinner</option>
           </select>
