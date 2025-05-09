@@ -4,11 +4,15 @@
   "description": "1DV613 - RecipeFinder",
   "type": "module",
   "main": "src/server.js",
+  "jest": {
+    "transform": {}
+  },
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon --inspect --env-file=.env src/server.js",
     "lint": "npx eslint ./src || exit 0",
-    "lint:fix": "npx eslint ./src --fix || exit 0"
+    "lint:fix": "npx eslint ./src --fix || exit 0",
+    "test": "npx --node-options=--experimental-vm-modules jest || exit 0"
   },
   "contributors": [
     "Viktor Rickardssson <vr222im@student.lnu.se>"
@@ -25,6 +29,7 @@
     "express-rate-limit": "^7.5.0",
     "express-session": "^1.17.3",
     "helmet": "^8.1.0",
+    "jest": "^29.7.0",
     "mongoose": "^8.13.2",
     "morgan": "^1.10.0",
     "xss": "^1.0.15"

@@ -16,8 +16,6 @@ export class RecipeController {
    * @returns {Promise<Array<object>>} A promise that resolves to the updated array of saved recipes.
    */
   async createRecipe (recipe, formattedIngredients, savedRecipes) {
-    console.time('Recipe Creater')
-
     const newRecipe = new RecipeModel({
       spoonacularId: recipe.id,
       title: recipe.title,
@@ -37,7 +35,7 @@ export class RecipeController {
     })
     await newRecipe.save()
     savedRecipes.push(newRecipe)
-    console.timeEnd('Recipe Creater')
+
     return savedRecipes
   }
 
@@ -121,7 +119,9 @@ export class RecipeController {
 
       const query = allergies ? { [allergies]: true } : {}
       const getCuisine = cuisine ? { cuisines: cuisine } : {}
-      const getCookTime = timeToCook ? { readyInMinutes: { $lte: parseInt(timeToCook) } } : {}
+      const getCookTime = timeToCook
+        ? { readyInMinutes: { $lte: parseInt(timeToCook) } }
+        : {}
       const food = foodChoice?.length ? { dishTypes: { $in: foodChoice } } : {}
       console.log('food', food)
       console.log('query', query)
