@@ -36,7 +36,7 @@ build-job:
     DOCKER_HOST: ssh://$USER@$PRODUCTION_HOST # Docker connection via SSH.
   script:
     - echo "👉 Building Docker images remotely"
-    - docker compose -f docker-compose.yml buil
+    - docker compose -f docker-compose.yml build
   only:
     - main
 # Job to run unit tests in the test stage.
