@@ -12,6 +12,7 @@ const publicKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 /* const proxyUrl = import.meta.env.VITE_CLERK_PROXY_URL
 const frontendAPI = import.meta.env.VITE_FRONTEND_API_URL */
 
+
 if (!publicKey) {
   throw new Error('Missing publishable key')
 }
