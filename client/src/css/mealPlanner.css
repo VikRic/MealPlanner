@@ -1,5 +1,8 @@
 
 .app-container {
+  position:absolute;
+  top:100px;
+  left: 450px;
   max-width: 1200px;
   margin: 0 auto;
   padding: 24px;

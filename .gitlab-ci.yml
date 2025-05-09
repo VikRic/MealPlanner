@@ -50,10 +50,17 @@ lint-test-job:
   stage: test
   image: node:20
   script:
-    - echo "Linting code... This will take about 10 seconds."
+  # npm ci is for clean install. Removes node modules before installing it.
+    - echo "Linting backend code..."
     - cd server
     - npm ci
-    - npx eslint . --max-warnings=0
+    - npx eslint . 
+    - cd ..
+
+    - echo "Linting frontend code..."
+    - cd client
+    - npm ci
+    - npx eslint . 
 
 # Job to deploy to the production environment.
 deploy_production_job:

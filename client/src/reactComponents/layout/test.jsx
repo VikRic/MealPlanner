@@ -43,7 +43,7 @@ export default function MealPlannerApp() {
   const formatWeekDisplay = () => {
     const startDay = currentWeek.start.getDate();
     const endDay = currentWeek.end.getDate();
-    const month = currentWeek.start.toLocaleString('sv-SE', { month: 'long' });
+    const month = currentWeek.start.toLocaleString('En', { month: 'long' });
     return `${startDay}-${endDay} ${month}, ${currentWeek.start.getFullYear()}`;
   };
   
