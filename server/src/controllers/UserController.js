@@ -7,9 +7,15 @@ dotenv.config()
  */
 export class UserController {
   /**
+   * Adds a recipe to the user's meal plan for a specific day and meal type.
    *
-   * @param req
-   * @param res
+   * @param {object} req - The request object containing user authentication and body data.
+   * @param {object} req.body - The body of the request.
+   * @param {string} req.body.day - The day to add the recipe to.
+   * @param {string} req.body.mealType - The meal type (e.g., breakfast, lunch, dinner).
+   * @param {string} req.body.recipeId - The ID of the recipe to add.
+   * @param {object} res - The response object used to send the HTTP response.
+   * @returns {Promise<void>} A promise that resolves when the operation is complete.
    */
   async adder (req, res) {
     const { userId } = getAuth(req)

@@ -96,10 +96,10 @@ export class RecipeController {
     try {
       const recipeAmnt = req.body.recipeAmnt
       const allergies = req.body.allergies
-      const mealLunch = req.body.mealLunch
+      /* const mealLunch = req.body.mealLunch */
       const cuisine = req.body.cuisine
       const timeToCook = req.body.timeToCook || ''
-      const servings = req.body.servings
+      /* const servings = req.body.servings */
       const foodChoice = req.body.dishTypes
       console.log(req.body)
       console.log('choice', foodChoice)

@@ -12,4 +12,3 @@ const controller = new UserController()
 
 router.get('/', (req, res, next) => controller.index(req, res, next))
 router.post('/', (req, res, next) => controller.adder(req, res, next))
-

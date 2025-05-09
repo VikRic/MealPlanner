@@ -11,7 +11,7 @@ export default function MealPlannerApp() {
   });
   
   // Sample meal data
-  const [meals, setMeals] = useState([
+  const [meals] = useState([
     { id: 1, name: "Overnight Oats", day: "Monday", mealType: "breakfast", tags: ["gluten-free"] },
     { id: 2, name: "Tangy & Savory Mexican Soup", day: "Monday", mealType: "lunch", tags: ["gluten-free"] },
     { id: 3, name: "Baked Ratatouille", day: "Monday", mealType: "dinner", tags: ["gluten-free"] },
