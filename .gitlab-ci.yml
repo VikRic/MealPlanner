@@ -32,11 +32,13 @@ stages:
 # Job to compile the code in the build stage.
 build-job:
   stage: build
+  variables:
+    DOCKER_HOST: ssh://$USER@$PRODUCTION_HOST # Docker connection via SSH.
   script:
-    - echo "Compiling the code..."
-    - sleep 2 # Simulate compilation time.
-    - echo "Compile complete."
-
+    - echo "👉 Building Docker images remotely"
+    - docker compose -f docker-compose.yml buil
+  only:
+    - main
 # Job to run unit tests in the test stage.
 unit-test-job:
   stage: test # Runs after the build stage is successful.
@@ -73,14 +75,11 @@ deploy_production_job:
     DOCKER_HOST: ssh://$USER@$PRODUCTION_HOST # Docker connection via SSH.
   before_script: *before_script_ssh_setup # Reuse SSH setup steps.
   script:
-    - echo "👉 Creates an .env file on the server with CI/CD variables"
-
-
     - echo "Removing old containers..."
     - docker compose -f docker-compose.yml down
 
     - echo "Building new containers..."
-    - docker compose -f docker-compose.yml up --build -d
+    - docker compose -f docker-compose.yml up -d
 
     - echo "Removing unused images..."
     - docker image prune -f
