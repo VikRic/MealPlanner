@@ -32,6 +32,7 @@ stages:
 # Job to compile the code in the build stage.
 build-job:
   stage: build
+  before_script: *before_script_ssh_setup # Reuse SSH setup steps.
   variables:
     DOCKER_HOST: ssh://$USER@$PRODUCTION_HOST # Docker connection via SSH.
   script:
