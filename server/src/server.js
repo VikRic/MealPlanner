@@ -32,6 +32,7 @@ try {
   app.use(express.static(clientBuildPath))
 
   // Set up sessions
+  console.log(process.env.NODE_ENV)
   if (process.env.NODE_ENV === 'production') {
     app.set('trust proxy', 1)
   }
