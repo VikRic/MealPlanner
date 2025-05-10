@@ -57,6 +57,7 @@ export class RecipeController {
       return null
     }
     const data = await response.json()
+    console.log('test', data)
     return data.recipes
   }
 
@@ -131,6 +132,7 @@ export class RecipeController {
 
     query.push({ $sample: { size: parseInt(recipeAmnt) } })
 
+    console.log(query)
     return query
   }
 
@@ -149,11 +151,10 @@ export class RecipeController {
       console.log('choice', foodChoice)
 
       await this.getReq(recipeAmnt)
-      console.log(1)
+
       const query = this.buildQuery(recipeAmnt, allergies, cuisine, timeToCook, foodChoice)
-      console.log(2)
+
       const recipes = await RecipeModel.aggregate([query])
-      console.log(3)
       if (recipes.length > 0) {
         console.log(
           '----------------------------------------- SPECIFIC', recipes[0].title

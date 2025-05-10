@@ -7,16 +7,29 @@ jest.unstable_mockModule('../models/RecipeModel.js', () => ({
 
 // Mock fetch globally
 global.fetch = jest.fn()
+// Remove method console logs
+console.log = jest.fn()
 
 const { RecipeController } = await import('../controllers/RecipeController.js')
 const { RecipeModel } = await import('../models/RecipeModel.js')
 
+let controller
+
+beforeEach(() => {
+  controller = new RecipeController()
+})
+
+afterEach(() => {
+  fetch.mockClear()
+})
+
+// ───────────────────────────────────────────────────────────
+// 🧪 TESTS FOR createRecipe
+// ────
+
 // CreateRecipe method
 describe('RecipeController.createRecipe', () => {
   it('should create and save a new recipe and return updated savedRecipes array', async () => {
-    const controller = new RecipeController()
-
-    // Fake data
     const dummyRecipe = {
       spoonacularId: 123,
       title: 'Test Recipe',
@@ -60,5 +73,88 @@ describe('RecipeController.createRecipe', () => {
     expect(mockSave).toHaveBeenCalled()
     expect(result.length).toBe(1)
     expect(result[0].title).toBe('Test Recipe')
+  })
+})
+
+// ───────────────────────────────────────────────────────────
+// 🧪 TESTS FOR fetchRecipesFromAPI
+// ─
+
+describe('RecipeController.fetchRecipesFromAPI', () => {
+  it('returns recipes when fetch is successful', async () => {
+    const mockRecipes = [{ id: 1, title: 'Spaghetti' }]
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      /**
+       * Mock implementation of the JSON response from the fetch API.
+       *
+       * @returns {Promise<{recipes: Array<{id: number, title: string}>}>} A promise resolving to an object containing an array of recipes.
+       */
+      json: async () => ({ recipes: mockRecipes })
+    })
+
+    const result = await controller.fetchRecipesFromAPI(1)
+
+    expect(fetch).toHaveBeenCalledTimes(1)
+    expect(result).toEqual(mockRecipes)
+  })
+
+  it('returns null when fetch fails', async () => {
+    fetch.mockResolvedValueOnce({
+      ok: false,
+      statusText: 'Not Found'
+    })
+
+    const result = await controller.fetchRecipesFromAPI(1)
+
+    expect(result).toBeNull()
+  })
+})
+
+// ───────────────────────────────────────────────────────────
+// 🧪 TESTS FOR buildQuery
+// ───────────────────────────────────────────────────────────
+
+describe('RecipeController.buildQuery', () => {
+  it('returns a query for using in mongoDB', () => {
+    const result = controller.buildQuery(1, 'dairyFree', 'Asian', 30, [])
+
+    const expectedQuery = [
+      { $match: { dairyFree: true } },
+      { $match: { cuisines: 'Asian' } },
+      { $match: { readyInMinutes: { $lte: 30 } } },
+      { $match: {} },
+      { $sample: { size: 1 } }
+    ]
+
+    expect(result).toEqual(expectedQuery)
+  })
+
+  it('returns a query with some parameters', () => {
+    const result = controller.buildQuery(1, '', 'Chinese', '', ['Breakfast'])
+
+    const expectedQuery = [
+      { $match: { } },
+      { $match: { cuisines: 'Chinese' } },
+      { $match: { } },
+      { $match: { dishTypes: { $in: ['Breakfast'] } } },
+      { $sample: { size: 1 } }
+    ]
+
+    expect(result).toEqual(expectedQuery)
+  })
+
+  it('returns a query with empty parameters', () => {
+    const result = controller.buildQuery(1, '', '', '', [])
+
+    const expectedQuery = [
+      { $match: { } },
+      { $match: { } },
+      { $match: { } },
+      { $match: {} },
+      { $sample: { size: 1 } }
+    ]
+
+    expect(result).toEqual(expectedQuery)
   })
 })
