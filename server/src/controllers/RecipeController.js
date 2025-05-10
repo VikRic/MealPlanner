@@ -40,47 +40,98 @@ export class RecipeController {
   }
 
   /**
-   * Fetches a specified number of random recipes from the Spoonacular API and saves them if they do not already exist in the database.
+   * Fetches a specified number of random recipes from the Spoonacular API.
    *
-   * @param {number} amnt - The number of recipes to fetch.
-   * @returns {Promise<Array>} A promise that resolves to an array of saved recipes.
+   * @param {number} amount - The number of recipes to fetch.
+   * @returns {Promise<Array<object>>} A promise that resolves to an array of recipe objects.
    */
-  async getReq (amnt) {
-    const savedRecipes = []
-    try {
-      console.time('Fetch & searching for ID')
-      const response = await fetch(
-        `${process.env.SPOONACULAR_BASE_API}/random?type=main%20course&apiKey=${process.env.SPOONACULAR_APIKEY}&number=${amnt}`,
+  async fetchRecipesFromAPI (amount) {
+    const response = await fetch(
+        `${process.env.SPOONACULAR_BASE_API}/random?type=main%20course&apiKey=${process.env.SPOONACULAR_APIKEY}&number=${amount}`,
         {
           method: 'GET'
         }
-      )
-      if (!response.ok) {
-        console.log('Fetch failed', response.statusText)
-        return savedRecipes
-      }
-      const data = await response.json()
-      for (const recipe of data.recipes) {
-        const exists = await RecipeModel.findOne({ spoonacularId: recipe.id })
-        if (!exists) {
-          const formattedIngredients = recipe.extendedIngredients.map(
-            (ing) => ({
-              name: ing.name,
-              amount: Math.round(ing.measures.metric.amount * 4) / 4,
-              unit: ing.measures.metric.unitShort
-            })
-          )
-          console.timeEnd('Fetch & searching for ID')
-          console.log('FETCH', recipe.title)
-          /* console.log('TYPE', recipe.dishTypes) */
-          this.createRecipe(recipe, formattedIngredients, savedRecipes)
-        }
+    )
+    if (!response.ok) {
+      console.log('Fetch failed', response.statusText)
+      return null
+    }
+    const data = await response.json()
+    return data.recipes
+  }
+
+  /**
+   * Formats the ingredients by rounding their amounts and extracting relevant details.
+   *
+   * @param {Array<object>} ingredients - An array of ingredient objects containing name, measures, and other details.
+   * @returns {Array<object>} An array of formatted ingredient objects with name, amount, and unit.
+   */
+  formatIngredients (ingredients) {
+    return ingredients.map(
+      (ing) => ({
+        name: ing.name,
+        amount: Math.round(ing.measures.metric.amount * 4) / 4,
+        unit: ing.measures.metric.unitShort
+      })
+    )
+  }
+
+  /**
+   * Processes a recipe by checking if it exists in the database and saves it if it does not.
+   *
+   * @param {object} recipe - The recipe object containing details like title, ingredients, and instructions.
+   * @param {Array<object>} savedRecipes - An array to store the saved recipes.
+   */
+  async processAndSaveRecipes (recipe, savedRecipes) {
+    const exists = await RecipeModel.findOne({ spoonacularId: recipe.id })
+    if (!exists) {
+      const formattedIngredients = this.formatIngredients(recipe.extendedIngredients)
+      console.log('FETCH', recipe.title)
+      await this.createRecipe(recipe, formattedIngredients, savedRecipes)
+    }
+  }
+
+  /**
+   * Fetches a specified number of random recipes from the Spoonacular API and saves them if they do not already exist in the database.
+   *
+   * @param {number} amount - The number of recipes to fetch.
+   * @returns {Promise<Array>} A promise that resolves to an array of saved recipes.
+   */
+  async getReq (amount) {
+    const savedRecipes = []
+    try {
+      const data = await this.fetchRecipesFromAPI(amount)
+      for (const recipe of data) {
+        await this.processAndSaveRecipes(recipe, savedRecipes)
       }
     } catch (error) {
       console.error('Error during getReq:', error)
     }
 
     return savedRecipes
+  }
+
+  /**
+   * Builds a MongoDB aggregation query based on user preferences for recipes.
+   *
+   * @param {number} recipeAmnt - The number of recipes to fetch.
+   * @param {string} [allergies] - The allergy filter (e.g., "glutenFree", "dairyFree").
+   * @param {string} [cuisine] - The preferred cuisine type (e.g., "Italian", "Mexican").
+   * @param {number} [timeToCook] - The maximum cooking time in minutes.
+   * @param {Array<string>} [dishTypes] - An array of dish types (e.g., ["main course", "dessert"]).
+   * @returns {Array<object>} The MongoDB aggregation query array.
+   */
+  buildQuery (recipeAmnt, allergies, cuisine, timeToCook, dishTypes) {
+    const query = []
+
+    query.push({ $match: allergies ? { [allergies]: true } : {} })
+    query.push({ $match: cuisine ? { cuisines: cuisine } : {} })
+    query.push({ $match: timeToCook ? { readyInMinutes: { $lte: parseInt(timeToCook) } } : {} })
+    query.push({ $match: dishTypes?.length ? { dishTypes: { $in: dishTypes } } : {} })
+
+    query.push({ $sample: { size: parseInt(recipeAmnt) } })
+
+    return query
   }
 
   /**
@@ -92,51 +143,25 @@ export class RecipeController {
    */
   async frontEndPost (req, res) {
     try {
-      const recipeAmnt = req.body.recipeAmnt
-      const allergies = req.body.allergies
-      /* const mealLunch = req.body.mealLunch */
-      const cuisine = req.body.cuisine
-      const timeToCook = req.body.timeToCook || ''
-      /* const servings = req.body.servings */
-      const foodChoice = req.body.dishTypes
+      const { recipeAmnt, allergies, cuisine, timeToCook, servings, foodChoice } = req.body
+      console.log(servings)
       console.log(req.body)
       console.log('choice', foodChoice)
-      /*       console.log('cooktime', timeToCook)
-      if (mealLunch) {
-        console.log('TEST')
-        dishTypes.add('Lunch')
-        console.log(dishTypes)
-      }
-      if (req.body.mealDinner) {
-        dishTypes.add('Dinner')
-        console.log(dishTypes)
-      } */
-      let recipes = []
-      await this.getReq(recipeAmnt)
-      /*       const nisse = await RecipeModel.find({ dishTypes: 'dinner' })
-      console.log('Find dinner recipe', nisse) */
-      // Use ternery operator to shorten remove if statement
 
-      const query = allergies ? { [allergies]: true } : {}
-      const getCuisine = cuisine ? { cuisines: cuisine } : {}
-      const getCookTime = timeToCook
-        ? { readyInMinutes: { $lte: parseInt(timeToCook) } }
-        : {}
-      const food = foodChoice?.length ? { dishTypes: { $in: foodChoice } } : {}
-      console.log('food', food)
-      console.log('query', query)
-      const specific = await RecipeModel.aggregate([
-        { $match: query },
-        { $match: getCuisine },
-        { $match: getCookTime },
-        { $match: food },
-        { $sample: { size: parseInt(recipeAmnt) } }
-      ])
-      console.log(
-        '----------------------------------------- SPECIFIC',
-        specific[0].title
-      )
-      recipes = specific
+      await this.getReq(recipeAmnt)
+      console.log(1)
+      const query = this.buildQuery(recipeAmnt, allergies, cuisine, timeToCook, foodChoice)
+      console.log(2)
+      const recipes = await RecipeModel.aggregate([query])
+      console.log(3)
+      if (recipes.length > 0) {
+        console.log(
+          '----------------------------------------- SPECIFIC', recipes[0].title
+        )
+      } else {
+        console.log('TOMT')
+      }
+
       return res.status(200).json({
         success: true,
         recipes

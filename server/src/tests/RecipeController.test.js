@@ -5,9 +5,13 @@ jest.unstable_mockModule('../models/RecipeModel.js', () => ({
   RecipeModel: jest.fn()
 }))
 
+// Mock fetch globally
+global.fetch = jest.fn()
+
 const { RecipeController } = await import('../controllers/RecipeController.js')
 const { RecipeModel } = await import('../models/RecipeModel.js')
 
+// CreateRecipe method
 describe('RecipeController.createRecipe', () => {
   it('should create and save a new recipe and return updated savedRecipes array', async () => {
     const controller = new RecipeController()

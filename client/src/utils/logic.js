@@ -28,7 +28,14 @@ export const fetchRecipes = async (inputs, token) => {
     })
 
     if (response.ok) {
-      return await response.json()
+      const data = await response.json()
+
+      if (data.recipes.length < 1) {
+        showFailedAlert('Did not find any recipes with your search data')
+      }
+
+      return data
+
     } else {
       console.error('Unable to send data', response)
       showFailedAlert('Server error')
