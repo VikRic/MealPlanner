@@ -57,7 +57,7 @@ export class RecipeController {
       return null
     }
     const data = await response.json()
-    console.log('test', data)
+    /*     console.log('test', data) */
     return data.recipes
   }
 

@@ -114,8 +114,51 @@ width: 100%;
 
 .recipe-layout > *:last-child {
   flex: 2;  /* MealPlannerApp */
-  
-
 }
 
+
+.recipe-modal-overlay .plan-controls {
+  display: none;
+}
+
+.recipe-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+
+.recipe-modal-content {
+  border-radius: 8px;
+  max-width: 50%;
+  position: relative;
+}
+
+.close-modal-btn {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* Stilar för att göra maträtterna klickbara */
+.meal {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.meal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 

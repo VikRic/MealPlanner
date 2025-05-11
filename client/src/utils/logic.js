@@ -48,7 +48,7 @@ export const fetchRecipes = async (inputs, token) => {
   }
 }
 
-export const addToPlan = async (day, mealType, recipeId, token) => {
+export const addToPlan = async (date, mealType, recipeId, token) => {
   try {
     const response = await fetch(`${BASE_URL}/meal-plan`, {
       method: 'POST',
@@ -56,15 +56,15 @@ export const addToPlan = async (day, mealType, recipeId, token) => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({ day, mealType, recipeId })
+      body: JSON.stringify({ date, mealType, recipeId })
     })
 
     if (!response.ok) {
-      showFailedAlert('Kunde inte lägga till recept.')
+      showFailedAlert('Could not add recipe')
       console.error(await response.text())
     }
   } catch (err) {
-    showFailedAlert('Något gick fel.')
+    showFailedAlert('Error occured')
     console.error('Error in addToPlan:', err)
   }
 }

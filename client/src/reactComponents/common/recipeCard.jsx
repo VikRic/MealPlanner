@@ -1,36 +1,71 @@
 import { useState } from 'react'
 import { addToPlan } from '../../utils/logic'
 import { useAuth } from '@clerk/clerk-react'
+import { getWeekBoundaries, getDaysInWeek } from '../../utils/dateUtils';
 import 'styles/recipeList.css'
 
 const RecipeCard = ({ servings, recipe }) => {
-  const [selectedDay, setSelectedDay] = useState('monday')
+  // Get actual day as default
+  const [currentWeek, setCurrentWeek] = useState(getWeekBoundaries(new Date()));
+  const [selectedDay, setSelectedDay] = useState(null)
   const [mealType, setMealType] = useState('breakfast')
   const { getToken } = useAuth()
-
+  
+  // Array for actual week
+  const days = getDaysInWeek(currentWeek.start);
+  
+  if (!selectedDay && days.length > 0) {
+    setSelectedDay(days[0].dateString);
+  }
+  
+  // Week navigator
+  const navigateWeek = (direction) => {
+    const referenceDate = new Date(currentWeek.start);
+    const offset = direction === 'next' ? 7 : -7;
+    referenceDate.setDate(referenceDate.getDate() + offset);
+    
+    const newWeek = getWeekBoundaries(referenceDate);
+    setCurrentWeek(newWeek);
+    
+    // Update day to Monday of new week
+    const newDays = getDaysInWeek(newWeek.start);
+    if (newDays.length > 0) {
+      setSelectedDay(newDays[0].dateString);
+    }
+  };
+  
   const handleAdd = async () => {
     const token = await getToken()
-    /* console.log(recipe) */
+    
+    if (!selectedDay) {
+      console.error('No day chosen')
+      return
+    }
+    
     await addToPlan(selectedDay, mealType, recipe.spoonacularId, token)
   }
-
+  
   return (
     <div className="recipe-card">
       <div className="recipe-header">
         <h2>{recipe.title}</h2>
         <div className="plan-controls">
+          <div className="week-selector">
+            <button onClick={() => navigateWeek('prev')} className="week-nav-btn">←</button>
+            <button onClick={() => navigateWeek('next')} className="week-nav-btn">→</button>
+          </div>
+          
           <select
             onChange={(e) => setSelectedDay(e.target.value)}
-            value={selectedDay}
+            value={selectedDay || ''}
           >
-            <option value="Monday">Monday</option>
-            <option value="Tuesday">Tuesday</option>
-            <option value="Wednesday">Wednesday</option>
-            <option value="Thursday">Thursday</option>
-            <option value="Friday">Friday</option>
-            <option value="Saturday">Saturday</option>
-            <option value="Sunday">Sunday</option>
+            {days.map(day => (
+              <option key={day.dateString} value={day.dateString}>
+                {day.weekday} ({day.dateString})
+              </option>
+            ))}
           </select>
+          
           <select
             onChange={(e) => setMealType(e.target.value)}
             value={mealType}
@@ -39,12 +74,12 @@ const RecipeCard = ({ servings, recipe }) => {
             <option value="lunch">Lunch</option>
             <option value="dinner">Dinner</option>
           </select>
+          
           <button className="add-btn" onClick={handleAdd}>
             ➕ Add
           </button>
         </div>
       </div>
-
       <div className="recipe-content">
         <img src={recipe.image} alt={recipe.title} className="recipe-img" />
         <div className="recipe-info">
@@ -68,7 +103,6 @@ const RecipeCard = ({ servings, recipe }) => {
           <summary>
             <span>Instructions</span>
           </summary>
-
           <ul>
             {recipe.instructions.split('.').map((sentence, index) => {
               const cleanedSentence = sentence
