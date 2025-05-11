@@ -36,7 +36,8 @@ const baseSchema = new mongoose.Schema({}, {
   // Enable optimistic concurrency control. This is a strategy to ensure the
   // document you're updating didn't change between when you loaded it, and
   // when you update it.
-  optimisticConcurrency: false
+  optimisticConcurrency: false,
+  __v: false
 })
 
 export const BASE_SCHEMA = Object.freeze(baseSchema)

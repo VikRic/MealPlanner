@@ -19,6 +19,7 @@ export class UserController {
    */
   async adder (req, res) {
     const { userId } = getAuth(req)
+    console.log(userId)
     if (!userId) {
       return res.status(401).json({ error: 'Ej inloggad' })
     }
@@ -51,5 +52,24 @@ export class UserController {
     }
 
     res.status(200).send('Added to plan')
+  }
+
+  /**
+   * Retrieves the recipes associated with the user's meal plan.
+   *
+   * @param {object} req - The request object containing user authentication data.
+   * @param {object} res - The response object used to send the HTTP response.
+   */
+  async getRecipes (req, res) {
+    const { userId } = getAuth(req)
+    console.log(userId)
+    const existing = await UserModel.findOne({ userId })
+    console.log(existing)
+    if (!existing) {
+      res.json({ message: 'User not found' })
+    }
+    res.status(200).send({
+      existing
+    })
   }
 }
