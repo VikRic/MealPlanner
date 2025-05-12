@@ -68,13 +68,23 @@ export class RecipeController {
    * @returns {Array<object>} An array of formatted ingredient objects with name, amount, and unit.
    */
   formatIngredients (ingredients) {
-    return ingredients.map(
-      (ing) => ({
-        name: ing.name,
-        amount: Math.round(ing.measures.metric.amount * 4) / 4,
-        unit: ing.measures.metric.unitShort
+    return ingredients
+      .map(ing => {
+        if (
+          ing?.name &&
+          ing?.measures?.metric?.amount != null &&
+          ing?.measures?.metric?.unitShort
+        ) {
+          return {
+            name: ing.name,
+            amount: Math.round(ing.measures.metric.amount * 4) / 4,
+            unit: ing.measures.metric.unitShort
+          }
+        } else {
+          return null
+        }
       })
-    )
+      .filter(Boolean) // Removes null values
   }
 
   /**

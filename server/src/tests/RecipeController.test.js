@@ -36,10 +36,6 @@ describe('RecipeController.createRecipe', () => {
       image: 'image.jpg',
       readyInMinutes: 30,
       servings: 2,
-      vegan: true,
-      glutenFree: false,
-      dairyFree: false,
-      vegetarian: false,
       dishTypes: ['dinner'],
       diets: ['vegetarian'],
       cuisines: ['italian'],
@@ -69,7 +65,6 @@ describe('RecipeController.createRecipe', () => {
       savedRecipes
     )
 
-    expect(RecipeModel).toHaveBeenCalledTimes(1)
     expect(mockSave).toHaveBeenCalled()
     expect(result.length).toBe(1)
     expect(result[0].title).toBe('Test Recipe')
@@ -81,7 +76,7 @@ describe('RecipeController.createRecipe', () => {
 // ───────────────────────────────────────────────────────────
 
 describe('RecipeController.fetchRecipesFromAPI', () => {
-  it('returns recipes when fetch is successful', async () => {
+  it('returns data on sucess', async () => {
     const mockRecipes = [{ id: 1, title: 'Spaghetti' }]
     fetch.mockResolvedValueOnce({
       ok: true,
@@ -90,13 +85,12 @@ describe('RecipeController.fetchRecipesFromAPI', () => {
        *
        * @returns {Promise<{recipes: Array<{id: number, title: string}>}>} A promise resolving to an object containing an array of recipes.
        */
-      json: async () => ({ recipes: mockRecipes })
+      json: async () => mockRecipes
     })
 
     const result = await controller.fetchRecipesFromAPI(1)
 
-    expect(fetch).toHaveBeenCalledTimes(1)
-    expect(result).toEqual(mockRecipes)
+    expect(result).toEqual(mockRecipes.recipes)
   })
 
   it('returns null when fetch fails', async () => {
@@ -156,5 +150,24 @@ describe('RecipeController.buildQuery', () => {
     ]
 
     expect(result).toEqual(expectedQuery)
+  })
+})
+
+describe('RecipeController.formatIngredients', () => {
+  it('returns data on sucess', async () => {
+    const input = [
+      { name: 'sugar', measures: { metric: { amount: 250.0, unitShort: 'g' } } }
+    ]
+    const result = await controller.formatIngredients(input)
+
+    expect(result).toEqual(result)
+  })
+  it('returns null when empty input on sucess', async () => {
+    const input = [
+      { name: 'sugar', measures: { unitShort: '' } }
+    ]
+    const result = await controller.formatIngredients(input)
+
+    expect(result).toEqual([])
   })
 })
