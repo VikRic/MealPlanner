@@ -13,7 +13,7 @@ import {
 import { showFailedAlert } from '../../utils/toastifyAlert'
 import { validateInputs, fetchRecipes } from '../../utils/logic'
 
-function InputForm({ inputs, setInputs, /* recipes, */ setRecipes, isLoading, setIsLoading }) {
+function InputForm({ inputs, setInputs, setRecipes, isLoading, setIsLoading }) {
   const { getToken } = useAuth()
 
   const handleInputChange = createInputfields(setInputs)
