@@ -3,9 +3,11 @@ import 'styles/mealPlanner.css';
 import { useAuth } from '@clerk/clerk-react';
 import { getWeekBoundaries, formatWeekDisplay, getDaysInWeek } from '../../utils/dateUtils';
 import RecipeCard from '../common/recipeCard';
-
+ const BASE_URL =
+  import.meta.env.VITE_REACT_APP_API_URL || 'http:///localhost:8080/api'
 export default function MealPlannerApp() {
   const { getToken } = useAuth();
+ 
   
   const [currentWeek, setCurrentWeek] = useState(getWeekBoundaries(new Date()));
   const [mealPlan, setMealPlan] = useState({});
@@ -16,7 +18,7 @@ export default function MealPlannerApp() {
     const fetchMeals = async () => {
       try {
         const token = await getToken();
-        const res = await fetch('http:///localhost:8080/api/meal-plan', {
+        const res = await fetch(`${BASE_URL}/meal-plan`, {
           method: "GET", 
           headers: {
             'Content-Type': 'application/json',
