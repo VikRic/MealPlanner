@@ -117,13 +117,13 @@ describe('RecipeController.fetchRecipesFromAPI', () => {
 
 describe('RecipeController.buildQuery', () => {
   it('returns a query for using in mongoDB', () => {
-    const result = controller.buildQuery(1, 'dairyFree', 'Asian', 30, [])
+    const result = controller.buildQuery(1, 'dairyFree', 'Asian', 30, ['breakfast'])
 
     const expectedQuery = [
       { $match: { dairyFree: true } },
       { $match: { cuisines: 'Asian' } },
       { $match: { readyInMinutes: { $lte: 30 } } },
-      { $match: {} },
+      { $match: { dishTypes: { $in: ['breakfast'] } } },
       { $sample: { size: 1 } }
     ]
 

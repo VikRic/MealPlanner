@@ -99,7 +99,7 @@ export default function MealPlannerApp() {
                         >
                           <div className="label">{type.charAt(0).toUpperCase() + type.slice(1)}</div>
 
-                          <div>{meal.title}</div>
+                          {/* <div>{meal.title}</div> */}
                           <img src={meal.image} alt="Food" style={{width:100}} />
                         </div>
                       ))

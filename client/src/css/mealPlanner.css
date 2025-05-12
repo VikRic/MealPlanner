@@ -1,19 +1,11 @@
 
 .app-container {
-  position:absolute;
-  top:100px;
-  left: 450px;
+  position:relative;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px;
+  margin: 0 20px;
+  padding-top: 20px;
 }
 
-.calendar-container {
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  margin-bottom: 2rem;
-}
 
 .calendar-header {
   display: flex;
@@ -24,7 +16,6 @@
   border-bottom: 1px solid #e5e7eb;
   font-weight: bold;
   font-size: 22px;
-  
 }
 
 .calendar-header .week-display {
@@ -95,25 +86,6 @@
   text-transform: uppercase;
   margin-bottom: 4px;
   color: #9ca3af;
-}
-
-.recipe-layout {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-}
-
-
-.recipe-layout > *:first-child {
-
-flex: 1;
-max-width: 400px;
-width: 100%;
-}
-
-.recipe-layout > *:last-child {
-  flex: 2;  /* MealPlannerApp */
 }
 
 

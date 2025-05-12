@@ -1,10 +1,9 @@
-import { useState } from 'react'
 import { useAuth } from '@clerk/clerk-react'
 import InputField from './inputField'
-import RecipeCard from './recipeCard'
 import DropDownMenu2 from './dropDownMenu2'
 import Checkbox from './checkBox'
 import DropDownMenu from './dropDownMenu'
+
 import {
   handleInputChange as createInputfields,
   handleDropdownChange as createDropdown,
@@ -14,18 +13,8 @@ import {
 import { showFailedAlert } from '../../utils/toastifyAlert'
 import { validateInputs, fetchRecipes } from '../../utils/logic'
 
-function InputForm() {
-  const { getToken } = useAuth() // Logged in checker
-  const [isLoading, setIsLoading] = useState(false) // Getting data from server
-  const [recipes, setRecipes] = useState([]) // Recipes set on client
-  const [inputs, setInputs] = useState({
-    recipeAmnt: '',
-    allergies: '',
-    dishTypes: [],
-    cuisine: '',
-    timeToCook: '',
-    servings: ''
-  })
+function InputForm({ inputs, setInputs, /* recipes, */ setRecipes, isLoading, setIsLoading }) {
+  const { getToken } = useAuth()
 
   const handleInputChange = createInputfields(setInputs)
   const handleDropdownChange = createDropdown(setInputs)
@@ -40,26 +29,24 @@ function InputForm() {
       return
     }
 
-    if (!validateInputs(inputs)) {
-      return
-    }
-    setIsLoading(true)
+    if (!validateInputs(inputs)) return
 
+    setIsLoading(true)
     const data = await fetchRecipes(inputs, token)
     if (data) {
       setRecipes(data.recipes)
     }
-
     setIsLoading(false)
   }
 
   return (
-    <div style={{  marginTop: '25px'}}>
+    <div style={{ marginTop: '25px', paddingRight: '20px'/* , width: '100%' */ }}>
       <form onSubmit={handleSubmit} className="form-container">
         <h3 style={{ textAlign: 'left', margin: '5px', marginLeft: '10px' }}>
-          Find new recipes!{' '}
+          Find new recipes!
         </h3>
-        {/* How many days */}
+
+        {/* How many meals */}
         <InputField
           name="recipeAmnt"
           value={inputs.recipeAmnt}
@@ -67,7 +54,7 @@ function InputForm() {
           placeholder="How many meals"
         />
 
-        {/* Checkboxes */}
+        {/* Dish type checkboxes */}
         <div className="checkbox-group">
           <Checkbox
             label="Breakfast"
@@ -76,7 +63,6 @@ function InputForm() {
             checked={inputs.dishTypes.includes('breakfast')}
             onChange={handleCheckboxChange}
           />
-
           <Checkbox
             label="Lunch"
             name="mealLunch"
@@ -84,7 +70,6 @@ function InputForm() {
             checked={inputs.dishTypes.includes('lunch')}
             onChange={handleCheckboxChange}
           />
-
           <Checkbox
             label="Dinner"
             name="mealDinner"
@@ -94,7 +79,7 @@ function InputForm() {
           />
         </div>
 
-        {/* How many servings */}
+        {/* Servings */}
         <InputField
           name="servings"
           value={inputs.servings}
@@ -102,7 +87,7 @@ function InputForm() {
           placeholder="Servings"
         />
 
-        {/* Allergies */}
+        {/* Allergies dropdown */}
         <DropDownMenu
           onChange={handleDropdownChange('allergies')}
           options={[
@@ -113,7 +98,7 @@ function InputForm() {
           ]}
         />
 
-        {/* Cuisine */}
+        {/* Cuisine input */}
         <InputField
           name="cuisine"
           value={inputs.cuisine}
@@ -121,7 +106,7 @@ function InputForm() {
           placeholder="Cuisine"
         />
 
-        {/* Time To cook */}
+        {/* Time to cook dropdown */}
         <DropDownMenu
           onChange={handleDropdownChange('timeToCook')}
           options={[
@@ -142,13 +127,6 @@ function InputForm() {
           {isLoading ? 'Getting recipes...' : 'Get recipes'}
         </button>
       </form>
-
-      <div className="recipe-list">
-        {recipes.length > 0 &&
-          recipes.map((recipe, ID) => (
-            <RecipeCard key={ID} recipe={recipe} servings={inputs.servings} />
-          ))}
-      </div>
     </div>
   )
 }

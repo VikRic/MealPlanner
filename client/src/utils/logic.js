@@ -68,3 +68,35 @@ export const addToPlan = async (date, mealType, recipeId, token) => {
     console.error('Error in addToPlan:', err)
   }
 }
+
+export const fetchMeals = async (token) => {
+  try {
+    const response = await fetch(`${BASE_URL}/meal-plan`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    if (response.ok) {
+      const data = await response.json()
+
+      if (data.recipes.length < 1) {
+        showFailedAlert('Did not find any recipes with your search data')
+      }
+
+      return data
+
+    } else {
+      console.error('Unable to send data', response)
+      showFailedAlert('Server error')
+      return null
+    }
+  } catch (error) {
+    console.error('Error while sending data to server:', error)
+    showFailedAlert('Please try again later.')
+    return null
+  }
+}
+

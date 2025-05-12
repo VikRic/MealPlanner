@@ -2,16 +2,8 @@
   display: grid;
   gap: 24px;
   margin: 2rem 50px 0 50px;
-  grid-template-columns: repeat(3, minmax(500px, 1fr))
-}
-
-.recipe-card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  
 }
 
 .recipe-img {
@@ -26,12 +18,10 @@
   display: flex;
   justify-content: space-between;
   margin-top: 12px;
+  margin-bottom: 12px;
 }
 
-.plan-controls {
-  display: flex;
-  flex-direction: column;
-}
+
 
 .recipe-content {
   display: flex;
@@ -40,14 +30,8 @@
   align-items: flex-start;
 }
 
-.recipe-info {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
 .recipe-meta {
-  margin-top: auto; /* tryck ner till botten */
+  margin-top: auto; 
 }
 
 .add-btn {
@@ -57,23 +41,6 @@
   padding: 6px 10px;
   border-radius: 6px;
   cursor: pointer;
-}
-
-.allergies {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.allergies p {
-  margin: 10px;
-  gap: 30px;
-}
-
-.allergy {
-  background-color: #e7f3eb;
-  color: #256029;
-  padding: 4px 8px;
-  border-radius: 6px;
 }
 
 summary span {
@@ -102,14 +69,75 @@ summary span {
   margin-top: 12px;
 }
 
+.week-selector {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+}
+
+.recipe-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+}
+
+.recipe-header h2 {
+  margin: 0;
+  padding: 0;
+}
+
+.recipe-image-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recipe-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-grow: 1;
+}
+
+.plan-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.plan-controls select,
+.plan-controls button {
+  margin-bottom: 5px;
+}
+
+.allergies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.allergy {
+  background-color: #e7f3eb;
+  color: #256029;
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin: 0;
+}
+
+.allergies p {
+  margin: 10px;
+  gap: 30px;
+}
+
 .recipe-data {
   display: flex;
   gap: 15px;
-}
-
-.week-selector {
-  display: flex;
-  justify-content: space-between;
+  margin-top: auto;
 }
 
 @media (max-width: 600px) {
@@ -122,3 +150,21 @@ summary span {
     max-width: 100%;
   }
 }
+
+
+.recipe-layout {
+  display: flex;
+  flex-direction: row;
+}
+
+
+/* .recipe-layout > *:first-child {
+flex: 1;
+max-width: 400px;
+}
+
+.recipe-layout > *:last-child {
+  flex: 2; 
+} */
+
+

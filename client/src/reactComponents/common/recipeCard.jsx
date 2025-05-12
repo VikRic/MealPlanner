@@ -49,45 +49,50 @@ const RecipeCard = ({ servings, recipe }) => {
     <div className="recipe-card">
       <div className="recipe-header">
         <h2>{recipe.title}</h2>
-        <div className="plan-controls">
-          <div className="week-selector">
-            <button onClick={() => navigateWeek('prev')} className="week-nav-btn">←</button>
-            <button onClick={() => navigateWeek('next')} className="week-nav-btn">→</button>
-          </div>
-          
-          <select
-            onChange={(e) => setSelectedDay(e.target.value)}
-            value={selectedDay || ''}
-          >
-            {days.map(day => (
-              <option key={day.dateString} value={day.dateString}>
-                {day.weekday} ({day.dateString})
-              </option>
-            ))}
-          </select>
-          
-          <select
-            onChange={(e) => setMealType(e.target.value)}
-            value={mealType}
-          >
-            <option value="breakfast">Breakfast</option>
-            <option value="lunch">Lunch</option>
-            <option value="dinner">Dinner</option>
-          </select>
-          
-          <button className="add-btn" onClick={handleAdd}>
-            ➕ Add
-          </button>
-        </div>
       </div>
+      
       <div className="recipe-content">
-        <img src={recipe.image} alt={recipe.title} className="recipe-img" />
-        <div className="recipe-info">
+        <div className="recipe-image-container">
+          <img src={recipe.image} alt={recipe.title} className="recipe-img" />
           <div className="allergies">
             {recipe.vegan && <p className="allergy">🌱 Vegan</p>}
             {recipe.glutenFree && <p className="allergy">🌾 Gluten free</p>}
             {recipe.dairyFree && <p className="allergy">🥛 Dairy free</p>}
           </div>
+        </div>
+        
+        <div className="recipe-info">
+          <div className="plan-controls">
+            <div className="week-selector">
+              <button onClick={() => navigateWeek('prev')} className="week-nav-btn">←</button>
+              <button onClick={() => navigateWeek('next')} className="week-nav-btn">→</button>
+            </div>
+            
+            <select
+              onChange={(e) => setSelectedDay(e.target.value)}
+              value={selectedDay || ''}
+            >
+              {days.map(day => (
+                <option key={day.dateString} value={day.dateString}>
+                  {day.weekday} ({day.dateString})
+                </option>
+              ))}
+            </select>
+            
+            <select
+              onChange={(e) => setMealType(e.target.value)}
+              value={mealType}
+            >
+              <option value="breakfast">Breakfast</option>
+              <option value="lunch">Lunch</option>
+              <option value="dinner">Dinner</option>
+            </select>
+            
+            <button className="add-btn" onClick={handleAdd}>
+              ➕ Add
+            </button>
+          </div>
+          
           <div className="recipe-data">
             <span>
               <strong>Time:</strong> {recipe.readyInMinutes} min
@@ -98,12 +103,14 @@ const RecipeCard = ({ servings, recipe }) => {
           </div>
         </div>
       </div>
+      
       <div className="recipe-details">
         <details className="instructions">
           <summary>
             <span>Instructions</span>
           </summary>
           <ul>
+            {/* Instructions content */}
             {recipe.instructions.split('.').map((sentence, index) => {
               const cleanedSentence = sentence
                 .replace(/<[^>]+>/g, '') // Removes all HTML tags
@@ -116,9 +123,10 @@ const RecipeCard = ({ servings, recipe }) => {
         </details>
         <details className="ingredients">
           <summary>
-            <span> Ingredients</span>
+            <span>Ingredients</span>
           </summary>
           <ul>
+            {/* Ingredients content */}
             {recipe.ingredients.map((ing, i) => {
               const factor = servings || 1
               const amount = ing.amount * (factor / recipe.servings)
