@@ -134,7 +134,7 @@ export class RecipeController {
    */
   buildQuery (recipeAmnt, allergies, cuisine, timeToCook, dishTypes) {
     const query = []
-
+    console.log(dishTypes)
     query.push({ $match: allergies ? { [allergies]: true } : {} })
     query.push({ $match: cuisine ? { cuisines: cuisine } : {} })
     query.push({ $match: timeToCook ? { readyInMinutes: { $lte: parseInt(timeToCook) } } : {} })
@@ -155,15 +155,11 @@ export class RecipeController {
    */
   async frontEndPost (req, res) {
     try {
-      const { recipeAmnt, allergies, cuisine, timeToCook, servings, foodChoice } = req.body
-      console.log(servings)
-      console.log(req.body)
-      console.log('choice', foodChoice)
+      const { recipeAmnt, allergies, cuisine, timeToCook, dishTypes } = req.body
 
       await this.getReq(recipeAmnt)
-
-      const query = this.buildQuery(recipeAmnt, allergies, cuisine, timeToCook, foodChoice)
-
+      console.log(recipeAmnt, allergies, cuisine, timeToCook, dishTypes)
+      const query = this.buildQuery(recipeAmnt, allergies, cuisine, timeToCook, dishTypes)
       const recipes = await RecipeModel.aggregate([query])
       if (recipes.length > 0) {
         console.log(
