@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import  { useState } from 'react'
 
 function DropDownMenu({ options = [], onChange, defaultValue = '' }) {
   const [value, setValue] = useState(defaultValue)
@@ -11,7 +11,6 @@ function DropDownMenu({ options = [], onChange, defaultValue = '' }) {
   return (
     <div>
       <select id="dropdown01" value={value} onChange={handleChange}>
-        {/* <option>-- Välj ett alternativ --</option> */}
         {options.map((opt, index) => (
           <option key={index} value={opt.value}>
             {opt.label}

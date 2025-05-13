@@ -3,7 +3,6 @@
   gap: 24px;
   margin: 2rem 50px 0 50px;
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-  
 }
 
 .recipe-img {
@@ -20,7 +19,6 @@
   margin-top: 12px;
   margin-bottom: 12px;
 }
-
 
 
 .recipe-content {
@@ -151,20 +149,11 @@ summary span {
   }
 }
 
-
 .recipe-layout {
   display: flex;
   flex-direction: row;
 }
 
 
-/* .recipe-layout > *:first-child {
-flex: 1;
-max-width: 400px;
-}
-
-.recipe-layout > *:last-child {
-  flex: 2; 
-} */
 
 

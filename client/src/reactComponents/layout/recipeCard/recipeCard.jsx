@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { addToPlan } from '../../utils/logic'
+import { addToPlan } from '../../../utils/logic'
 import { useAuth } from '@clerk/clerk-react'
-import { getWeekBoundaries, getDaysInWeek } from '../../utils/dateUtils'
-import 'styles/recipeList.css'
-import { useMealPlan } from '../../contexts/MealPlanContext'
+import { getWeekBoundaries, getDaysInWeek } from '../../../utils/dateUtils'
+import './recipeList.css'
+import { useMealPlan } from '../../../contexts/MealPlanContext'
 
 
 const RecipeCard = ({ servings, recipe }) => {

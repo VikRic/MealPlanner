@@ -1,7 +1,6 @@
-// App.jsx
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
-import './App.css'
+import 'styles/App.css'
 import Home from './reactComponents/pages/Home.jsx'
 import Recipe from './reactComponents/pages/Recipe.jsx'
 import { SignIn } from '@clerk/clerk-react'

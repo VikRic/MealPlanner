@@ -1,17 +1,17 @@
 import { useAuth } from '@clerk/clerk-react'
-import InputField from './inputField'
-import DropDownMenu2 from './dropDownMenu2'
-import Checkbox from './checkBox'
-import DropDownMenu from './dropDownMenu'
+import InputField from '../../common/inpputField/inputField'
+import Checkbox from '../../common/checkbox/checkBox'
+import DropDownMenu from '../../common/dropdown/dropDownMenu'
+import './form.css'
 
 import {
   handleInputChange as createInputfields,
   handleDropdownChange as createDropdown,
   handleCheckboxChange as createCheckbox
-} from '../../utils/handleInputs'
+} from '../../../utils/handleInputs'
 
-import { showFailedAlert } from '../../utils/toastifyAlert'
-import { validateInputs, fetchRecipes } from '../../utils/logic'
+import { showFailedAlert } from '../../../utils/toastifyAlert'
+import { validateInputs, fetchRecipes } from '../../../utils/logic'
 
 function InputForm({ inputs, setInputs, setRecipes, isLoading, setIsLoading }) {
   const { getToken } = useAuth()

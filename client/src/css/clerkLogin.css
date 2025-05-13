@@ -1,5 +1,3 @@
-/* styles/clerkLogin.css */
-
 .cl-signIn-root {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   border-radius: 16px;
@@ -26,7 +24,6 @@
   font-weight: 500;
   border: none;
 }
-
 
 .cl-headerSubtitle, .cl-identityPreview {
   display: none;

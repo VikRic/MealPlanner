@@ -1,14 +1,13 @@
 import { useState } from 'react'
-import 'styles/mealPlanner.css'
-import { getWeekBoundaries, formatWeekDisplay, getDaysInWeek } from '../../utils/dateUtils'
-import RecipeCard from '../common/recipeCard'
+import './mealPlanner.css'
+import { getWeekBoundaries, formatWeekDisplay, getDaysInWeek } from '../../../utils/dateUtils'
+import RecipeCard from '../recipeCard/recipeCard'
 
-import { useMealPlan } from '../../contexts/MealPlanContext'
+import { useMealPlan } from '../../../contexts/MealPlanContext'
 
 export default function MealPlannerApp() {
   
   const [currentWeek, setCurrentWeek] = useState(getWeekBoundaries(new Date()))
-
   const [selectedRecipe, setSelectedRecipe] = useState(null)
   const [showModal, setShowModal] = useState(false)
   const { mealPlan } = useMealPlan()
