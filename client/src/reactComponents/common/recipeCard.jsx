@@ -3,8 +3,11 @@ import { addToPlan } from '../../utils/logic'
 import { useAuth } from '@clerk/clerk-react'
 import { getWeekBoundaries, getDaysInWeek } from '../../utils/dateUtils';
 import 'styles/recipeList.css'
+import { useMealPlan } from '../../contexts/MealPlanContext';
+
 
 const RecipeCard = ({ servings, recipe }) => {
+  const { fetchAndSetMeals } = useMealPlan();
   // Get actual day as default
   const [currentWeek, setCurrentWeek] = useState(getWeekBoundaries(new Date()));
   const [selectedDay, setSelectedDay] = useState(null)
@@ -35,15 +38,12 @@ const RecipeCard = ({ servings, recipe }) => {
   };
   
   const handleAdd = async () => {
-    const token = await getToken()
-    
-    if (!selectedDay) {
-      console.error('No day chosen')
-      return
-    }
-    
-    await addToPlan(selectedDay, mealType, recipe.spoonacularId, token)
-  }
+    const token = await getToken();
+    if (!selectedDay) return;
+    await addToPlan(selectedDay, mealType, recipe.spoonacularId, token);
+    await fetchAndSetMeals(); // update global state
+  };
+
   
   return (
     <div className="recipe-card">

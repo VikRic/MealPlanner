@@ -1,8 +1,7 @@
-import { showFailedAlert } from './toastifyAlert'
+import { showFailedAlert, showSuccessAlert } from './toastifyAlert'
 
 const BASE_URL =
   import.meta.env.VITE_REACT_APP_API_URL || 'http:///localhost:8080/api'
-  /* import.meta.env.VITE_REACT_APP_API_URL || 'http:///localhost:5000/api' */
 
 export const validateInputs = (inputs) => {
   if (!inputs.recipeAmnt || inputs.recipeAmnt <= 0) {
@@ -62,7 +61,11 @@ export const addToPlan = async (date, mealType, recipeId, token) => {
     if (!response.ok) {
       showFailedAlert('Could not add recipe')
       console.error(await response.text())
+      return false
     }
+    showSuccessAlert('Recipe added')
+    return true
+
   } catch (err) {
     showFailedAlert('Error occured')
     console.error('Error in addToPlan:', err)
@@ -71,32 +74,33 @@ export const addToPlan = async (date, mealType, recipeId, token) => {
 
 export const fetchMeals = async (token) => {
   try {
-    const response = await fetch(`${BASE_URL}/meal-plan`, {
-      method: 'GET',
+    if (token) {
+    const res = await fetch(`${BASE_URL}/meal-plan`, {
+      method: "GET", 
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
+      },
+    }); 
+    
+    if (!res.ok) {
+      throw new Error('Failed to fetch meal plan');
+    }
+    
+    const data = await res.json();
+          
+    if (data.existing?.mealPlan) {
+      return data.existing.mealPlan;
       }
-    })
-
-    if (response.ok) {
-      const data = await response.json()
-
-      if (data.recipes.length < 1) {
-        showFailedAlert('Did not find any recipes with your search data')
-      }
-
-      return data
-
     } else {
-      console.error('Unable to send data', response)
-      showFailedAlert('Server error')
-      return null
+      console.log('No meal plan data found');
     }
   } catch (error) {
-    console.error('Error while sending data to server:', error)
-    showFailedAlert('Please try again later.')
-    return null
+    console.error('Error fetching meal plan:', error);
   }
-}
+};
+
+
+
+   
 

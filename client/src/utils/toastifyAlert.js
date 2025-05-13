@@ -9,3 +9,13 @@ export const showFailedAlert = (message) => {
     theme: 'light',
   })
 }
+
+export const showSuccessAlert = (message) => {
+  toast.success(message, {
+    position: 'top-center',
+    autoClose: 5000,
+    closeOnClick: true,
+    draggable: true,
+    theme: 'light',
+  })
+}

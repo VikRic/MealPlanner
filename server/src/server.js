@@ -21,7 +21,7 @@ try {
   const app = express()
   app.use(cors({ origin: 'http://localhost:3000' }))
   app.use(securityHeaders)
-  app.use(limiter)
+  /* app.use(limiter) */
   app.use(express.json())
   app.use(clerkMiddleware())
 

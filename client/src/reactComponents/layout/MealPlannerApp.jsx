@@ -1,49 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import 'styles/mealPlanner.css';
-import { useAuth } from '@clerk/clerk-react';
 import { getWeekBoundaries, formatWeekDisplay, getDaysInWeek } from '../../utils/dateUtils';
 import RecipeCard from '../common/recipeCard';
- const BASE_URL =
-  import.meta.env.VITE_REACT_APP_API_URL || 'http:///localhost:8080/api'
+
+import { useMealPlan } from '../../contexts/MealPlanContext';
+
 export default function MealPlannerApp() {
-  const { getToken } = useAuth();
- 
   
   const [currentWeek, setCurrentWeek] = useState(getWeekBoundaries(new Date()));
-  const [mealPlan, setMealPlan] = useState({});
+
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const { mealPlan } = useMealPlan();
 
-  useEffect(() => {
-    const fetchMeals = async () => {
-      try {
-        const token = await getToken();
-        const res = await fetch(`${BASE_URL}/meal-plan`, {
-          method: "GET", 
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          },
-        }); 
-        
-        if (!res.ok) {
-          throw new Error('Failed to fetch meal plan');
-        }
-        
-        const data = await res.json();
-        
-        if (data.existing?.mealPlan) {
-          setMealPlan(data.existing.mealPlan);
-        } else {
-          console.log('No meal plan data found');
-        }
-      } catch (error) {
-        console.error('Error fetching meal plan:', error);
-      }
-    };
-
-    fetchMeals();
-  }, [getToken]);
 
   const navigateWeek = (direction) => {
     const referenceDate = new Date(currentWeek.start);
@@ -98,32 +67,32 @@ export default function MealPlannerApp() {
                           style={{ cursor: 'pointer' }}
                         >
                           <div className="label">{type.charAt(0).toUpperCase() + type.slice(1)}</div>
-
-                          {/* <div>{meal.title}</div> */}
                           <img src={meal.image} alt="Food" style={{width:100}} />
                         </div>
                       ))
                     ) : (
-                      <div className={`meal-slot ${type}`}>
-                      </div>
+                      <div className={`meal-slot ${type}`}></div>
                     )}
                   </div>
-                )
+                );
               })}
             </div>
           ))}
         </div>
       </div>
-      
+
       {/* Recipe Modal */}
       {showModal && selectedRecipe && (
         <div className="recipe-modal-overlay" onClick={closeModal}>
           <div className="recipe-modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="close-modal-btn" onClick={closeModal}>✕</button>
-            <RecipeCard recipe={selectedRecipe} servings={selectedRecipe.servings} />
+            <RecipeCard 
+              recipe={selectedRecipe} 
+              servings={selectedRecipe.servings}
+            />
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }

@@ -6,10 +6,13 @@ import Home from './reactComponents/pages/Home.jsx'
 import Recipe from './reactComponents/pages/Recipe.jsx'
 import { SignIn } from '@clerk/clerk-react'
 import 'styles/clerkLogin.css'
+import { MealPlanProvider } from './contexts/MealPlanContext.jsx'
 
 function App() {
   return (
+     
     <div className="main-content">
+      <MealPlanProvider>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/recipe" element={<Recipe />} />
@@ -30,6 +33,7 @@ function App() {
           }
         />
       </Routes>
+      </MealPlanProvider>
     </div>
   )
 }
