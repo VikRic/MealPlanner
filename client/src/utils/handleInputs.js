@@ -11,8 +11,8 @@ export const handleDropdownChange = (setInputs) => (fieldName) => (value) => {
   setInputs((prevState) => ({
     ...prevState,
     [fieldName]: value
-  }));
-};
+  }))
+}
 
 export const handleCheckboxChange = (setInputs) => (name, checked, value) => {
   setInputs((prevState) => {

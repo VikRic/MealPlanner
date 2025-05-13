@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import InputForm from '../common/inputForm'
 import MealPlannerApp from "../layout/MealPlannerApp"
 import RecipeCard from '../common/recipeCard'
-import 'styles/recipeList.css';
-import { MealPlanProvider } from '../../contexts/MealPlanContext';
+import 'styles/recipeList.css'
+import { MealPlanProvider } from '../../contexts/MealPlanProvider'
 
 function Recipe() {
   const [recipes, setRecipes] = useState([])

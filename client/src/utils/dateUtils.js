@@ -4,17 +4,17 @@
  * @returns {Object} Object with start (Monday) and end (Sunday) dates
  */
 export const getWeekBoundaries = (date = new Date()) => {
-  const dayOfWeek = date.getDay(); // 0 = Sunday, 6 = Saturday
+  const dayOfWeek = date.getDay() // 0 = Sunday, 6 = Saturday
   
   // Calculate days to go back to reach Monday
   const daysFromMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1
   
   // Calculate the start of the week (Monday)
   const startOfWeek = new Date(date)
-  startOfWeek.setDate(date.getDate() - daysFromMonday);
+  startOfWeek.setDate(date.getDate() - daysFromMonday)
   
   // Calculate the end of the week (Sunday)
-  const endOfWeek = new Date(startOfWeek);
+  const endOfWeek = new Date(startOfWeek)
   endOfWeek.setDate(startOfWeek.getDate() + 6)
   
   return { start: startOfWeek, end: endOfWeek }
@@ -34,12 +34,12 @@ export const getDateOfWeekday = (weekday, referenceDate = new Date()) => {
   const { start: startOfWeek } = getWeekBoundaries(referenceDate)
   
   // Find the target day index (0-6, Monday-Sunday)
-  const targetDayIndex = weekdays.indexOf(weekday);
+  const targetDayIndex = weekdays.indexOf(weekday)
   if (targetDayIndex === -1) return null // Invalid weekday name
   
   // Calculate the target date
-  const targetDate = new Date(startOfWeek);
-  targetDate.setDate(startOfWeek.getDate() + targetDayIndex);
+  const targetDate = new Date(startOfWeek)
+  targetDate.setDate(startOfWeek.getDate() + targetDayIndex)
   
   return targetDate.toISOString().split('T')[0] // Format: 'YYYY-MM-DD'
 }
@@ -63,7 +63,7 @@ export const getDaysInWeek = (startOfWeek) => {
     date.setDate(date.getDate() + 1)
   }
   return days
-};
+}
 
 /**
  * Format the week display string
@@ -72,7 +72,7 @@ export const getDaysInWeek = (startOfWeek) => {
  * @returns {string} Formatted date range string
  */
 export const formatWeekDisplay = (startDate, endDate) => {
-  const startDay = startDate.getDate();
+  const startDay = startDate.getDate()
   const startMonth = startDate.toLocaleString('en', { month: 'long' })
   
   const endDay = endDate.getDate()
@@ -82,10 +82,10 @@ export const formatWeekDisplay = (startDate, endDate) => {
   const endYear = endDate.getFullYear()
   
   if (startMonth === endMonth && startYear === endYear) {
-    return `${startDay}-${endDay} ${startMonth}, ${startYear}`;
+    return `${startDay}-${endDay} ${startMonth}, ${startYear}`
   } else if (startYear === endYear) {
-    return `${startDay} ${startMonth} - ${endDay} ${endMonth}, ${startYear}`;
+    return `${startDay} ${startMonth} - ${endDay} ${endMonth}, ${startYear}`
   } else {
-    return `${startDay} ${startMonth}, ${startYear} - ${endDay} ${endMonth}, ${endYear}`;
+    return `${startDay} ${startMonth}, ${startYear} - ${endDay} ${endMonth}, ${endYear}`
   }
 }

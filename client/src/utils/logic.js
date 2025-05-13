@@ -81,24 +81,24 @@ export const fetchMeals = async (token) => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
-    }); 
+    }) 
     
     if (!res.ok) {
-      throw new Error('Failed to fetch meal plan');
+      throw new Error('Failed to fetch meal plan')
     }
     
-    const data = await res.json();
+    const data = await res.json()
           
     if (data.existing?.mealPlan) {
-      return data.existing.mealPlan;
+      return data.existing.mealPlan
       }
     } else {
-      console.log('No meal plan data found');
+      console.log('No meal plan data found')
     }
   } catch (error) {
-    console.error('Error fetching meal plan:', error);
+    console.error('Error fetching meal plan:', error)
   }
-};
+}
 
 
 

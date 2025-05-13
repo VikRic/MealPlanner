@@ -1,48 +1,48 @@
 import { useState } from 'react'
 import { addToPlan } from '../../utils/logic'
 import { useAuth } from '@clerk/clerk-react'
-import { getWeekBoundaries, getDaysInWeek } from '../../utils/dateUtils';
+import { getWeekBoundaries, getDaysInWeek } from '../../utils/dateUtils'
 import 'styles/recipeList.css'
-import { useMealPlan } from '../../contexts/MealPlanContext';
+import { useMealPlan } from '../../contexts/MealPlanContext'
 
 
 const RecipeCard = ({ servings, recipe }) => {
-  const { fetchAndSetMeals } = useMealPlan();
+  const { fetchAndSetMeals } = useMealPlan()
   // Get actual day as default
-  const [currentWeek, setCurrentWeek] = useState(getWeekBoundaries(new Date()));
+  const [currentWeek, setCurrentWeek] = useState(getWeekBoundaries(new Date()))
   const [selectedDay, setSelectedDay] = useState(null)
   const [mealType, setMealType] = useState('breakfast')
   const { getToken } = useAuth()
   
   // Array for actual week
-  const days = getDaysInWeek(currentWeek.start);
+  const days = getDaysInWeek(currentWeek.start)
   
   if (!selectedDay && days.length > 0) {
-    setSelectedDay(days[0].dateString);
+    setSelectedDay(days[0].dateString)
   }
   
   // Week navigator
   const navigateWeek = (direction) => {
-    const referenceDate = new Date(currentWeek.start);
-    const offset = direction === 'next' ? 7 : -7;
-    referenceDate.setDate(referenceDate.getDate() + offset);
+    const referenceDate = new Date(currentWeek.start)
+    const offset = direction === 'next' ? 7 : -7
+    referenceDate.setDate(referenceDate.getDate() + offset)
     
-    const newWeek = getWeekBoundaries(referenceDate);
-    setCurrentWeek(newWeek);
+    const newWeek = getWeekBoundaries(referenceDate)
+    setCurrentWeek(newWeek)
     
     // Update day to Monday of new week
-    const newDays = getDaysInWeek(newWeek.start);
+    const newDays = getDaysInWeek(newWeek.start)
     if (newDays.length > 0) {
-      setSelectedDay(newDays[0].dateString);
+      setSelectedDay(newDays[0].dateString)
     }
-  };
+  }
   
   const handleAdd = async () => {
-    const token = await getToken();
-    if (!selectedDay) return;
-    await addToPlan(selectedDay, mealType, recipe.spoonacularId, token);
-    await fetchAndSetMeals(); // update global state
-  };
+    const token = await getToken()
+    if (!selectedDay) return
+    await addToPlan(selectedDay, mealType, recipe.spoonacularId, token)
+    await fetchAndSetMeals() // update global state
+  }
 
   
   return (

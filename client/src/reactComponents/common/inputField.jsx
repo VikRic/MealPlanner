@@ -11,7 +11,7 @@ function InputField({ name, value, onChange, placeholder, ...rest }) {
         {...rest}
       />
     </div>
-  );
+  )
 }
 
-export default InputField;
+export default InputField

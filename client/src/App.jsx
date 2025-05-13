@@ -6,7 +6,7 @@ import Home from './reactComponents/pages/Home.jsx'
 import Recipe from './reactComponents/pages/Recipe.jsx'
 import { SignIn } from '@clerk/clerk-react'
 import 'styles/clerkLogin.css'
-import { MealPlanProvider } from './contexts/MealPlanContext.jsx'
+import { MealPlanProvider } from './contexts/MealPlanProvider.jsx'
 
 function App() {
   return (

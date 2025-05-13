@@ -1,8 +1,8 @@
-import { useUser, useClerk } from "@clerk/clerk-react";
+import { useUser, useClerk } from "@clerk/clerk-react"
 
 export default function CustomUserMenu() {
-  const { user } = useUser();
-  const { signOut } = useClerk();
+  const { user } = useUser()
+  const { signOut } = useClerk()
 
   return (
     <div className="menu">
@@ -10,5 +10,5 @@ export default function CustomUserMenu() {
       <a href="/account">Konto</a>
       <button onClick={() => signOut()}>Logga ut</button>
     </div>
-  );
+  )
 }

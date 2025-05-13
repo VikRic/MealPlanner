@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 function DropDownMenu({ options = [], onChange, defaultValue = '' }) {
-  const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState(defaultValue)
 
   const handleChange = (e) => {
-    setValue(e.target.value);
-    onChange(e.target.value);
-  };
+    setValue(e.target.value)
+    onChange(e.target.value)
+  }
 
   return (
     <div>
@@ -19,7 +19,7 @@ function DropDownMenu({ options = [], onChange, defaultValue = '' }) {
         ))}
       </select>
     </div>
-  );
+  )
 }
 
-export default DropDownMenu;
+export default DropDownMenu

@@ -1,44 +1,44 @@
-import { useState } from 'react';
-import 'styles/mealPlanner.css';
-import { getWeekBoundaries, formatWeekDisplay, getDaysInWeek } from '../../utils/dateUtils';
-import RecipeCard from '../common/recipeCard';
+import { useState } from 'react'
+import 'styles/mealPlanner.css'
+import { getWeekBoundaries, formatWeekDisplay, getDaysInWeek } from '../../utils/dateUtils'
+import RecipeCard from '../common/recipeCard'
 
-import { useMealPlan } from '../../contexts/MealPlanContext';
+import { useMealPlan } from '../../contexts/MealPlanContext'
 
 export default function MealPlannerApp() {
   
-  const [currentWeek, setCurrentWeek] = useState(getWeekBoundaries(new Date()));
+  const [currentWeek, setCurrentWeek] = useState(getWeekBoundaries(new Date()))
 
-  const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const { mealPlan } = useMealPlan();
+  const [selectedRecipe, setSelectedRecipe] = useState(null)
+  const [showModal, setShowModal] = useState(false)
+  const { mealPlan } = useMealPlan()
 
 
   const navigateWeek = (direction) => {
-    const referenceDate = new Date(currentWeek.start);
-    const offset = direction === 'next' ? 7 : -7;
-    referenceDate.setDate(referenceDate.getDate() + offset);
+    const referenceDate = new Date(currentWeek.start)
+    const offset = direction === 'next' ? 7 : -7
+    referenceDate.setDate(referenceDate.getDate() + offset)
     
-    setCurrentWeek(getWeekBoundaries(referenceDate));
-  };
+    setCurrentWeek(getWeekBoundaries(referenceDate))
+  }
 
   const getMealsForDate = (dateString, mealType) => {
     // Check if there are meals for this date and meal type
     if (mealPlan[dateString] && mealPlan[dateString][mealType]) {
-      return [mealPlan[dateString][mealType]];
+      return [mealPlan[dateString][mealType]]
     }
-    return [];
-  };
+    return []
+  }
 
   const handleRecipeClick = (recipe) => {
-    setSelectedRecipe(recipe);
-    setShowModal(true);
-  };
+    setSelectedRecipe(recipe)
+    setShowModal(true)
+  }
 
   const closeModal = () => {
-    setShowModal(false);
-    setSelectedRecipe(null);
-  };
+    setShowModal(false)
+    setSelectedRecipe(null)
+  }
 
   return (
     <div className="app-container">
@@ -55,7 +55,7 @@ export default function MealPlannerApp() {
               <div className="calendar-day-header">{day.weekday}</div>
 
               {['breakfast', 'lunch', 'dinner'].map((type) => {
-                const meals = getMealsForDate(day.dateString, type);
+                const meals = getMealsForDate(day.dateString, type)
                 return (
                   <div key={type}>
                     {meals.length > 0 ? (
@@ -74,7 +74,7 @@ export default function MealPlannerApp() {
                       <div className={`meal-slot ${type}`}></div>
                     )}
                   </div>
-                );
+                )
               })}
             </div>
           ))}
@@ -94,5 +94,5 @@ export default function MealPlannerApp() {
         </div>
       )}
     </div>
-  );
+  )
 }
