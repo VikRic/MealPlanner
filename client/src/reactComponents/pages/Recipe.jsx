@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import InputForm from '../layout/form/inputForm'
 
 import MealPlannerApp from "../layout/calender/MealPlannerApp"
 import RecipeCard from '../layout/recipeCard/recipeCard'
-/* import 'styles/recipeList.css' */
+import AllIngredients from '../layout/ingredientList/AllIngredients'
 
 function Recipe() {
   const [recipes, setRecipes] = useState([])
@@ -36,6 +36,10 @@ function Recipe() {
           <RecipeCard key={ID} recipe={recipe} servings={inputs.servings} />
         ))}
       </div>
+      <div className='ingredientList'>
+        <AllIngredients />
+      </div>
+      
     </>
   )
 }

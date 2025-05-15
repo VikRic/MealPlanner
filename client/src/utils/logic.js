@@ -100,6 +100,18 @@ export const fetchMeals = async (token) => {
   }
 }
 
+export function normalizeUnit(unit) {
+  if (!unit) return '' // Empty unit
+
+  const u = unit.toLowerCase()
+  if (['tsp', 'tsps'].includes(u)) return 'tea spoon'
+  if (['tbsp', 'tbsps', 'tbs'].includes(u)) return 'table soon'
+  if (['g', 'gram', 'grams'].includes(u)) return 'g'
+  if (['kg', 'kgs', 'kilo'].includes(u)) return 'kg'
+
+  return u 
+}
+
 
 
    

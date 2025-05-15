@@ -160,7 +160,7 @@ describe('RecipeController.formatIngredients', () => {
     ]
     const result = await controller.formatIngredients(input)
 
-    expect(result).toEqual(result)
+    expect(result).toEqual([{ amount: 250, name: 'sugar', unit: 'g' }])
   })
   it('returns null when empty input on sucess', async () => {
     const input = [
