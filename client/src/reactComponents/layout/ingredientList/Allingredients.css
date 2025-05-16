@@ -1,0 +1,15 @@
+.ingredientList{
+  flex: 1;
+  margin-top: 16px;
+  padding-left: 4px;
+  max-width: 15%;
+  
+}
+
+.ingredientList ul {
+  max-height: 355px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+

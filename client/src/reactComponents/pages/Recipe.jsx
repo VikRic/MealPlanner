@@ -29,6 +29,9 @@ function Recipe() {
           setIsLoading={setIsLoading}
         />
         <MealPlannerApp />
+              <div className='ingredientList'>
+        <AllIngredients />
+      </div>
       </div>
 
       <div className="recipe-list">
@@ -36,9 +39,7 @@ function Recipe() {
           <RecipeCard key={ID} recipe={recipe} servings={inputs.servings} />
         ))}
       </div>
-      <div className='ingredientList'>
-        <AllIngredients />
-      </div>
+
       
     </>
   )

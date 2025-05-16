@@ -1,6 +1,7 @@
 import { useMealPlan } from '../../../contexts/MealPlanContext'
 import { normalizeUnit } from '../../../utils/logic'
 import { getWeekBoundaries, getDaysInWeek } from '../../../utils/dateUtils'
+import './AllIngredients.css'
 
 const AllIngredients = () => {
   const { mealPlan } = useMealPlan()

@@ -89,6 +89,7 @@ function InputForm({ inputs, setInputs, setRecipes, isLoading, setIsLoading }) {
 
         {/* Allergies dropdown */}
         <DropDownMenu
+        id={'allergies'}
           onChange={handleDropdownChange('allergies')}
           options={[
             { value: '', label: 'Choose restriction' },
@@ -108,6 +109,7 @@ function InputForm({ inputs, setInputs, setRecipes, isLoading, setIsLoading }) {
 
         {/* Time to cook dropdown */}
         <DropDownMenu
+          id={'cooktime'}
           onChange={handleDropdownChange('timeToCook')}
           options={[
             { value: '', label: 'Timer' },

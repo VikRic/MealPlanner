@@ -3,6 +3,7 @@
   max-width: 1200px;
   margin: 0 20px;
   padding-top: 20px;
+  overflow-x: hidden;
 }
 
 
@@ -38,6 +39,7 @@
 .calendar-header button:hover {
   color: #1f2937;
 }
+
 
 .calendar-grid {
   display: grid;
@@ -123,7 +125,6 @@
   z-index: 10;
 }
 
-/* Stilar för att göra maträtterna klickbara */
 .meal {
   transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -132,4 +133,23 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+@media (max-width: 768px) {
+  .calendar-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding: 10px 0;
+  }
+
+  .calendar-day {
+    flex-shrink: 0;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+  }
+
+
+}
+
+
 

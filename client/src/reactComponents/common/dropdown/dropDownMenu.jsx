@@ -1,6 +1,6 @@
 import  { useState } from 'react'
 
-function DropDownMenu({ options = [], onChange, defaultValue = '' }) {
+function DropDownMenu({id, options = [], onChange, defaultValue = '' }) {
   const [value, setValue] = useState(defaultValue)
 
   const handleChange = (e) => {
@@ -10,7 +10,7 @@ function DropDownMenu({ options = [], onChange, defaultValue = '' }) {
 
   return (
     <div>
-      <select id="dropdown01" value={value} onChange={handleChange}>
+      <select id={id} value={value} onChange={handleChange}>
         {options.map((opt, index) => (
           <option key={index} value={opt.value}>
             {opt.label}

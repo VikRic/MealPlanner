@@ -149,9 +149,18 @@ summary span {
   }
 }
 
+
 .recipe-layout {
   display: flex;
-  flex-direction: row;
+  gap: 20px;
+  align-items: flex-start;
+  margin: 0 20px;
+}
+@media (max-width: 768px) {
+  .recipe-layout {
+    flex-direction: column;
+  }
+
 }
 
 
