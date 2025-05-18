@@ -13,6 +13,7 @@ function App() {
     <div className="main-content">
       <MealPlanProvider>
       <Routes>
+
         <Route path="/" element={<Home />} />
         <Route path="/recipe" element={<Recipe />} />
         <Route
