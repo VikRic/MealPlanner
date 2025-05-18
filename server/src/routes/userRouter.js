@@ -17,4 +17,5 @@ const controller = new UserController()
 }) */
 /* router.get('/', (req, res, next) => controller.index(req, res, next)) */
 router.get('/', (req, res, next) => controller.getRecipes(req, res, next))
-router.post('/', (req, res, next) => controller.adder(req, res, next))
+router.post('/', (req, res, next) => controller.createRecipe(req, res, next))
+router.post('/delete', (req, res, next) => controller.deleteRecipe(req, res, next))

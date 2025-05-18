@@ -1,17 +1,18 @@
 import { useState } from 'react'
-import { addToPlan } from '../../../utils/logic'
+import { addToPlan, deleteFromPlan } from '../../../utils/logic'
 import { useAuth } from '@clerk/clerk-react'
 import { getWeekBoundaries, getDaysInWeek } from '../../../utils/dateUtils'
 import './recipeList.css'
 import { useMealPlan } from '../../../contexts/MealPlanContext'
 
 
-const RecipeCard = ({ servings, recipe }) => {
+const RecipeCard = ({ servings, recipe, buttonText }) => {
   const { fetchAndSetMeals } = useMealPlan()
   // Get actual day as default
   const [currentWeek, setCurrentWeek] = useState(getWeekBoundaries(new Date()))
-  const [selectedDay, setSelectedDay] = useState(null)
-  const [mealType, setMealType] = useState('breakfast')
+  // 
+  const [selectedDay, setSelectedDay] = useState(recipe.selectedDay || null)
+  const [mealType, setMealType] = useState(recipe.selectedMealType || 'breakfast')
   const { getToken } = useAuth()
   
   // Array for actual week
@@ -40,7 +41,12 @@ const RecipeCard = ({ servings, recipe }) => {
   const handleAdd = async () => {
     const token = await getToken()
     if (!selectedDay) return
-    await addToPlan(selectedDay, mealType, recipe.spoonacularId, token)
+
+    if (!buttonText) {
+      await addToPlan(selectedDay, mealType, recipe.spoonacularId, token)
+    } else {
+      await deleteFromPlan(selectedDay, mealType, recipe.spoonacularId, token)
+    }
     await fetchAndSetMeals() // update global state
   }
 
@@ -88,10 +94,11 @@ const RecipeCard = ({ servings, recipe }) => {
               <option value="dinner">Dinner</option>
             </select>
             
-            <button className="add-btn" onClick={handleAdd}>
-              ➕ Add
-            </button>
+
           </div>
+          <button className="add-btn" onClick={handleAdd}>
+            <span>{buttonText || '➕ Add' }</span>
+          </button>
           
           <div className="recipe-data">
             <span>

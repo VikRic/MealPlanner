@@ -94,6 +94,10 @@
   display: none;
 }
 
+.recipe-modal-overlay .add-btn {
+  display: block;
+}
+
 .recipe-modal-overlay {
   position: fixed;
   top: 0;

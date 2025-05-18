@@ -19,7 +19,7 @@ export class UserController {
    * @param {object} res - The response object used to send the HTTP response.
    * @returns {Promise<void>} A promise that resolves when the operation is complete.
    */
-  async adder (req, res) {
+  async createRecipe (req, res) {
     try {
       const { userId } = getAuth(req)
 
@@ -123,6 +123,61 @@ export class UserController {
     } catch (error) {
       console.error('Error fetching meal plan:', error)
       res.status(500).json({ error: 'Server error while fetching meal plan' })
+    }
+  }
+
+  /**
+   * Deletes a recipe from the user's meal plan for a specific day and meal type.
+   *
+   * @param {object} req - The request object containing user authentication and body data.
+   * @param {object} res - The response object used to send the HTTP response.
+   * @returns {Promise<void>} A promise that resolves when the operation is complete.
+   */
+  async deleteRecipe (req, res) {
+    try {
+      const { userId } = getAuth(req)
+
+      if (!userId) {
+        return res.status(401).json({ error: 'Not logged in' })
+      }
+
+      const { date, mealType, recipeId } = req.body
+
+      // Validate inputs
+      if (!date || !mealType || !recipeId) {
+        return res.status(400).json({ error: 'Missing required fields: date, mealType, or recipeId' })
+      }
+
+      // Ensure date is properly formatted
+      const dateObj = new Date(date)
+      if (isNaN(dateObj.getTime())) {
+        return res.status(400).json({ error: 'Invalid date format. Use YYYY-MM-DD' })
+      }
+
+      // Find user or create if doesn't exist
+
+      const meal = { date: dateObj, mealType, recipeId }
+      const recipe = await UserModel.findOne({ userId, mealPlan: meal })
+      if (recipe) {
+        await UserModel.updateOne(
+          { userId },
+          {
+            $pull: {
+              mealPlan: {
+                date: dateObj,
+                mealType,
+                recipeId
+              }
+            }
+          }
+        )
+        console.log('Deleted')
+      }
+
+      res.status(200).json({ message: 'Recipe deleted from meal plan' })
+    } catch (error) {
+      console.error('Error deleting meal plan:', error)
+      res.status(500).json({ error: 'Server error while deleting meal plan' })
     }
   }
 }

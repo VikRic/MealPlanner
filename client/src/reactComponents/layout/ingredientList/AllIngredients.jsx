@@ -43,7 +43,7 @@ const allMergedIngredients = Object.values(mergedIngredients)
 
 return (
   <div>
-    <h2>All ingredients</h2>
+    <h2>Weekly ingredients</h2>
     <ul>
       {Object.entries(allMergedIngredients).map(([key, value]) => (
         <li key={key}>

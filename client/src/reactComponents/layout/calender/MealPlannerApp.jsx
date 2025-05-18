@@ -11,6 +11,7 @@ export default function MealPlannerApp() {
   const [showModal, setShowModal] = useState(false)
   const { mealPlan } = useMealPlan()
 
+  // Next and previous week
   const navigateWeek = (direction) => {
     const referenceDate = new Date(currentWeek.start)
     const offset = direction === 'next' ? 7 : -7
@@ -27,8 +28,8 @@ export default function MealPlannerApp() {
     return []
   }
 
-  const handleRecipeClick = (recipe) => {
-    setSelectedRecipe(recipe)
+  const handleRecipeClick = (recipe, type, day) => {
+    setSelectedRecipe({ ...recipe, selectedMealType: type, selectedDay: day })
     setShowModal(true)
   }
 
@@ -60,7 +61,7 @@ export default function MealPlannerApp() {
                         <div 
                           className={`meal ${type}`} 
                           key={`${type}-${idx}`}
-                          onClick={() => handleRecipeClick(meal)}
+                          onClick={() => handleRecipeClick(meal,type, day.dateString)}
                           style={{ cursor: 'pointer' }}
                         >
                           <div className="label">{type.charAt(0).toUpperCase() + type.slice(1)}</div>
@@ -86,6 +87,7 @@ export default function MealPlannerApp() {
             <RecipeCard 
               recipe={selectedRecipe} 
               servings={selectedRecipe.servings}
+              buttonText='Remove'
             />
           </div>
         </div>

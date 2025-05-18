@@ -72,6 +72,34 @@ export const addToPlan = async (date, mealType, recipeId, token) => {
   }
 }
 
+export const deleteFromPlan = async (date, mealType, recipeId, token) => {
+  try {
+    console.log('date', date, 'type', mealType, 'id', recipeId)
+    const response = await fetch(`${BASE_URL}/meal-plan/delete`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ date, mealType, recipeId })
+    })
+
+    if (!response.ok) {
+      showFailedAlert('Could not add recipe')
+      console.error(await response.text())
+      return false
+    }
+    const data = await response.json()
+    console.log(data)
+    /* showSuccessAlert('Recipe Removed') */
+    return true
+
+  } catch (err) {
+    showFailedAlert('Error occured')
+    console.error('Error in removeFromPlan:', err)
+  }
+}
+
 export const fetchMeals = async (token) => {
   try {
     if (token) {
