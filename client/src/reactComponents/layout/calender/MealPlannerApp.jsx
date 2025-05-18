@@ -1,17 +1,15 @@
 import { useState } from 'react'
-import './mealPlanner.css'
 import { getWeekBoundaries, formatWeekDisplay, getDaysInWeek } from '../../../utils/dateUtils'
 import RecipeCard from '../recipeCard/recipeCard'
-
 import { useMealPlan } from '../../../contexts/MealPlanContext'
+import './mealPlanner.css'
 
 export default function MealPlannerApp() {
-  
-  const [currentWeek, setCurrentWeek] = useState(getWeekBoundaries(new Date()))
+  // Get calendar week
+  const { currentWeek, setCurrentWeek } = useMealPlan()
   const [selectedRecipe, setSelectedRecipe] = useState(null)
   const [showModal, setShowModal] = useState(false)
   const { mealPlan } = useMealPlan()
-
 
   const navigateWeek = (direction) => {
     const referenceDate = new Date(currentWeek.start)

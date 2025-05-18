@@ -1,24 +1,23 @@
 import { useMealPlan } from '../../../contexts/MealPlanContext'
 import { normalizeUnit } from '../../../utils/logic'
-import { getWeekBoundaries, getDaysInWeek } from '../../../utils/dateUtils'
+import { getDaysInWeek } from '../../../utils/dateUtils'
 import './ingredients.css'
 
 const AllIngredients = () => {
-  const { mealPlan } = useMealPlan()
+  const { mealPlan, currentWeek } = useMealPlan()
 
 const mergedIngredients = {}
-const { start } = getWeekBoundaries(new Date())
-const currentWeekDays = getDaysInWeek(start).map(day => day.dateString)
+const currentWeekDays = getDaysInWeek(currentWeek.start).map(day => day.dateString)
 
 for (const date in mealPlan) {
   if (!currentWeekDays.includes(date)) continue
 
   for (const mealType in mealPlan[date]) {
     const recipe = mealPlan[date][mealType]
-    if (recipe && Array.isArray(recipe.ingredients)) {
-      for (const ingredient of recipe.ingredients) {
-        const name = ingredient.name
-        if (!name) continue
+      if (recipe?.ingredients?.length) {
+        for (const ingredient of recipe.ingredients) {
+          const name = ingredient.name
+          if (!name) continue
 
         const normalizedUnit = normalizeUnit(ingredient.unit)
         const key = `${name.toLowerCase()}__${normalizedUnit}`
