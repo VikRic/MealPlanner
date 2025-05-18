@@ -1,7 +1,7 @@
 .recipe-list {
   display: grid;
   gap: 24px;
-  margin: 2rem 50px 0 50px;
+  margin: 2rem 50px 0 25px;
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
 }
 
@@ -153,9 +153,9 @@ summary span {
 .recipe-layout {
   display: flex;
   gap: 20px;
-  align-items: flex-start;
   margin: 0 20px;
 }
+
 @media (max-width: 768px) {
   .recipe-layout {
     flex-direction: column;

@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import InputForm from '../layout/form/inputForm'
-
 import MealPlannerApp from "../layout/calender/MealPlannerApp"
 import RecipeCard from '../layout/recipeCard/recipeCard'
 import AllIngredients from '../layout/ingredientList/AllIngredients'
@@ -16,6 +15,8 @@ function Recipe() {
     servings: ''
   })
   const [isLoading, setIsLoading] = useState(false)
+  const [showCalendar, setShowCalendar] = useState(false)
+  const [showIngredients, setShowIngredients] = useState(false)
 
   return (
     <>
@@ -28,10 +29,40 @@ function Recipe() {
           isLoading={isLoading}
           setIsLoading={setIsLoading}
         />
-        <MealPlannerApp />
-              <div className='ingredientList'>
-        <AllIngredients />
-      </div>
+
+        {/* Desktop view */}
+        <div className="calendar-ingredients-wrapper">
+          <div className="calendar-desktop">
+            <MealPlannerApp />
+          </div>
+          <div className='ingredientList-desktop'>
+            <AllIngredients />
+          </div>
+        </div>
+
+        {/* Mobile buttons */}
+        <div className="mobile-controls">
+          <button onClick={() => setShowCalendar(true)}>Visa kalender</button>
+          <button onClick={() => setShowIngredients(true)}>Visa ingredienser</button>
+        </div>
+
+        {/* Modals */}
+        {showCalendar && (
+          <div className="modal-overlay" onClick={() => setShowCalendar(false)}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <button className="close-btn" onClick={() => setShowCalendar(false)}>✕</button>
+              <MealPlannerApp />
+            </div>
+          </div>
+        )}
+        {showIngredients && (
+          <div className="modal-overlay" onClick={() => setShowIngredients(false)}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <button className="close-btn" onClick={() => setShowIngredients(false)}>✕</button>
+              <AllIngredients />
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="recipe-list">
@@ -39,8 +70,6 @@ function Recipe() {
           <RecipeCard key={ID} recipe={recipe} servings={inputs.servings} />
         ))}
       </div>
-
-      
     </>
   )
 }

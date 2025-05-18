@@ -40,9 +40,9 @@ function InputForm({ inputs, setInputs, setRecipes, isLoading, setIsLoading }) {
   }
 
   return (
-    <div style={{ marginTop: '25px', paddingRight: '20px'/* , width: '100%' */ }}>
+    <div style={{ marginTop: '25px'}}>
       <form onSubmit={handleSubmit} className="form-container">
-        <h3 style={{ textAlign: 'left', margin: '5px', marginLeft: '10px' }}>
+        <h3 >
           Find new recipes!
         </h3>
 
