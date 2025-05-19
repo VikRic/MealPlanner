@@ -23,7 +23,7 @@ for (const date in mealPlan) {
         const key = `${name.toLowerCase()}__${normalizedUnit}`
 
         if (mergedIngredients[key]) {
-          // Check for unit difference (Might need to add more)
+          // Check for unit difference
           if (normalizeUnit(mergedIngredients[key].unit) !== normalizedUnit) {
             console.warn(
               `Unit difference for ${name}: "${mergedIngredients[key].unit}" vs "${ingredient.unit}"`
@@ -42,7 +42,7 @@ for (const date in mealPlan) {
 const allMergedIngredients = Object.values(mergedIngredients)
 
 return (
-  <div>
+  <div className='ing-container'>
     <h2>Weekly ingredients</h2>
     <ul>
       {Object.entries(allMergedIngredients).map(([key, value]) => (

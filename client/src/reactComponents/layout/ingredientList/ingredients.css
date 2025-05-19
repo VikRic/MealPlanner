@@ -1,3 +1,28 @@
+.ing-container{
+  margin-top: 20px;
+  background-color: rgb(237, 230, 216);
+}
+.calendar-ingredients-wrapper {
+  display: flex;
+  gap: 20px;
+}
 
+.ingredientList-desktop ul {
+  max-height: 415px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
 
+.ingredientList-desktop h2 {
+margin-left: 20px;
+}
 
+@media (max-width: 1650px) {
+  .calendar-ingredients-wrapper {
+    display: none;
+  }
+
+  .mobile-controls {
+    display: flex;
+  }
+}

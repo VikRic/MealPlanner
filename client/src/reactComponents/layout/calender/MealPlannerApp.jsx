@@ -58,18 +58,24 @@ export default function MealPlannerApp() {
                   <div key={type}>
                     {meals.length > 0 ? (
                       meals.map((meal, idx) => (
+                        
                         <div 
+                        
                           className={`meal ${type}`} 
                           key={`${type}-${idx}`}
                           onClick={() => handleRecipeClick(meal,type, day.dateString)}
                           style={{ cursor: 'pointer' }}
                         >
                           <div className="label">{type.charAt(0).toUpperCase() + type.slice(1)}</div>
-                          <img src={meal.image} alt="Food" style={{width:100}} />
+                          <img src={meal.image} alt="Food"/>
                         </div>
                       ))
                     ) : (
-                      <div className={`meal-slot ${type}`}></div>
+                        <div className={`meal ${type}`}>
+                          <div className="label">
+                            {type.charAt(0).toUpperCase() + type.slice(1)}
+                          </div>
+                        </div>
                     )}
                   </div>
                 )

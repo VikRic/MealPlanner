@@ -42,8 +42,8 @@ function Recipe() {
 
         {/* Mobile buttons */}
         <div className="mobile-controls">
-          <button onClick={() => setShowCalendar(true)}>Visa kalender</button>
-          <button onClick={() => setShowIngredients(true)}>Visa ingredienser</button>
+          <button onClick={() => setShowCalendar(true)}>Show calendar kalender</button>
+          <button onClick={() => setShowIngredients(true)}>Show ingredients</button>
         </div>
 
         {/* Modals */}

@@ -9,17 +9,6 @@
   flex: 1;
 }
 
-.calendar-ingredients-wrapper {
-  display: flex;
-  gap: 20px;
-}
-
-.ingredientList-desktop ul {
-  max-height: 355px;
-  overflow-y: auto;
-  padding-right: 8px;
-}
-
 .mobile-controls {
   display: none;
   margin-top: 20px;
@@ -27,15 +16,7 @@
   flex-direction: column;
 }
 
-@media (max-width: 1650px) {
-  .calendar-ingredients-wrapper {
-    display: none;
-  }
 
-  .mobile-controls {
-    display: flex;
-  }
-}
 
 .modal-overlay {
   position: fixed;
@@ -65,4 +46,3 @@
   font-size: 24px;
   cursor: pointer;
 }
-

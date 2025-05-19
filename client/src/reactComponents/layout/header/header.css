@@ -1,5 +1,6 @@
 .header {
-  background: linear-gradient(90deg, #5c5b5a, #db9936);
+/*   background: linear-gradient(90deg, #5c5b5a, #db9936); */
+  background-color: #beb07d;
   text-align: left;
   padding: 10px;
   position: relative;
