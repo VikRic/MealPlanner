@@ -97,7 +97,7 @@ export class RecipeController {
     const exists = await RecipeModel.findOne({ spoonacularId: recipe.id })
     if (!exists) {
       const formattedIngredients = this.formatIngredients(recipe.extendedIngredients)
-      console.log('FETCH', recipe.title)
+      console.log('new recipe', recipe.title)
       await this.createRecipe(recipe, formattedIngredients, savedRecipes)
     }
   }
@@ -157,17 +157,9 @@ export class RecipeController {
     try {
       const { recipeAmnt, allergies, cuisine, timeToCook, dishTypes } = req.body
 
-      await this.getReq(recipeAmnt)
       console.log(recipeAmnt, allergies, cuisine, timeToCook, dishTypes)
       const query = this.buildQuery(recipeAmnt, allergies, cuisine, timeToCook, dishTypes)
       const recipes = await RecipeModel.aggregate([query])
-      if (recipes.length > 0) {
-        console.log(
-          '----------------------------------------- SPECIFIC', recipes[0].title
-        )
-      } else {
-        console.log('TOMT')
-      }
 
       return res.status(200).json({
         success: true,

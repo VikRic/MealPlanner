@@ -1,7 +1,7 @@
 import { UserModel } from '../models/UserModel.js'
 import { RecipeModel } from '../models/RecipeModel.js'
+import { validateRecipeRequest } from '../util/helpfunctions.js'
 import dotenv from 'dotenv'
-import { getAuth } from '@clerk/express'
 dotenv.config()
 
 /**
@@ -21,24 +21,13 @@ export class UserController {
    */
   async createRecipe (req, res) {
     try {
-      const { userId } = getAuth(req)
+      const userId = req.userId
 
-      if (!userId) {
-        return res.status(401).json({ error: 'Not logged in' })
+      const validation = validateRecipeRequest(req.body)
+      if (!validation.valid) {
+        return res.status(400).json({ error: validation.error })
       }
-
-      const { date, mealType, recipeId } = req.body
-
-      // Validate inputs
-      if (!date || !mealType || !recipeId) {
-        return res.status(400).json({ error: 'Missing required fields: date, mealType, or recipeId' })
-      }
-
-      // Ensure date is properly formatted
-      const dateObj = new Date(date)
-      if (isNaN(dateObj.getTime())) {
-        return res.status(400).json({ error: 'Invalid date format. Use YYYY-MM-DD' })
-      }
+      const { dateObj, mealType, recipeId, date } = validation
 
       // Check if the recipe exists
       const recipeExists = await RecipeModel.exists({ spoonacularId: Number(recipeId) })
@@ -91,11 +80,7 @@ export class UserController {
    */
   async getRecipes (req, res) {
     try {
-      const { userId } = getAuth(req)
-
-      if (!userId) {
-        return res.status(401).json({ error: 'Not logged in' })
-      }
+      const userId = req.userId
 
       const user = await UserModel.findOne({ userId })
 
@@ -135,27 +120,14 @@ export class UserController {
    */
   async deleteRecipe (req, res) {
     try {
-      const { userId } = getAuth(req)
-
-      if (!userId) {
-        return res.status(401).json({ error: 'Not logged in' })
+      const userId = req.userId
+      const validation = validateRecipeRequest(req.body)
+      if (!validation.valid) {
+        return res.status(400).json({ error: validation.error })
       }
-
-      const { date, mealType, recipeId } = req.body
-
-      // Validate inputs
-      if (!date || !mealType || !recipeId) {
-        return res.status(400).json({ error: 'Missing required fields: date, mealType, or recipeId' })
-      }
-
-      // Ensure date is properly formatted
-      const dateObj = new Date(date)
-      if (isNaN(dateObj.getTime())) {
-        return res.status(400).json({ error: 'Invalid date format. Use YYYY-MM-DD' })
-      }
+      const { dateObj, mealType, recipeId } = validation
 
       // Find user or create if doesn't exist
-
       const meal = { date: dateObj, mealType, recipeId }
       const recipe = await UserModel.findOne({ userId, mealPlan: meal })
       if (recipe) {
