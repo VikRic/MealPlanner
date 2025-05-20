@@ -29,7 +29,7 @@
 }
 
 .modal-content {
-  background: white;
+  background-color: rgb(237, 230, 216);
   max-width: 95%;
   max-height: 95%;
   overflow-y: auto;

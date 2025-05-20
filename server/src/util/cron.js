@@ -8,7 +8,7 @@ cron.schedule('0 * * * *', async () => {
   console.log('Fetching recipes')
 })
 
-cron.schedule('*/10 * * * *', async () => {
+cron.schedule('*/5 * * * *', async () => {
   try {
     await RecipeModel.findOne()
 
