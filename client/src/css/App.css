@@ -26,13 +26,15 @@
   justify-content: center;
   align-items: center;
   z-index: 999;
+
 }
 
 .modal-content {
-  background: white;
+  background-color: rgb(237, 230, 216);
   max-width: 95%;
   max-height: 95%;
   overflow-y: auto;
+  overflow-x: hidden;
   border-radius: 10px;
   padding: 20px;
   position: relative;

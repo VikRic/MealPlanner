@@ -9,6 +9,8 @@ import { useMealPlan } from '../../../contexts/MealPlanContext'
 const RecipeCard = ({ servings, recipe, buttonText }) => {
   const { fetchAndSetMeals } = useMealPlan()
   // Get actual day as default
+  const [showModal, setShowModal] = useState(false)
+  const [modalType, setModalType] = useState(null) // 'instructions' or 'ingredients'
   const [currentWeek, setCurrentWeek] = useState(getWeekBoundaries(new Date()))
   // 
   const [selectedDay, setSelectedDay] = useState(recipe.selectedDay || null)
@@ -21,6 +23,16 @@ const RecipeCard = ({ servings, recipe, buttonText }) => {
   if (!selectedDay && days.length > 0) {
     setSelectedDay(days[0].dateString)
   }
+
+  const openModal = (type) => {
+  setModalType(type)
+  setShowModal(true)
+}
+
+const closeModal = () => {
+  setShowModal(false)
+  setModalType(null)
+}
   
   // Week navigator
   const navigateWeek = (direction) => {
@@ -112,43 +124,42 @@ const RecipeCard = ({ servings, recipe, buttonText }) => {
       </div>
       
       <div className="recipe-details">
-        <details className="instructions">
-          <summary>
-            <span>Instructions</span>
-          </summary>
-          <ul>
-            {/* Instructions content */}
-            {recipe.instructions.split('.').map((sentence, index) => {
-              const cleanedSentence = sentence
-                .replace(/<[^>]+>/g, '') // Removes all HTML tags
-                .trim()
-              return cleanedSentence ? (
-                <li key={index}>{cleanedSentence}.</li>
-              ) : null
-            })}
-          </ul>
-        </details>
-        <details className="ingredients">
-          <summary>
-            <span>Ingredients</span>
-          </summary>
-          <ul>
-            {/* Ingredients content */}
-            {recipe.ingredients.map((ing, i) => {
-              const factor = servings || 1
-              const amount = ing.amount * (factor / recipe.servings)
-              const rounded = Math.round(amount * 4) / 4
-              const adjustedAmount =
-                rounded < 0.25 && rounded !== 0 ? 0.25 : rounded
-              return (
-                <li key={i}>
-                  {adjustedAmount} {ing.unit} {ing.name}
-                </li>
-              )
-            })}
-          </ul>
-        </details>
+        <div className="modal-buttons">
+          <button onClick={() => openModal('instructions')}>Instructions</button>
+          <button onClick={() => openModal('ingredients')}>Ingredients</button>
+        </div>
       </div>
+      {showModal && (
+  <div className="recipe-modal-overlay" onClick={closeModal}>
+    <div className="recipeList-modal-content" onClick={(e) => e.stopPropagation()}>
+      <button className="close-modal-btn" onClick={closeModal}>✕</button>
+      <h3>{modalType === 'instructions' ? 'Instructions' : 'Ingredients'}</h3>
+
+      {modalType === 'instructions' ? (
+        <ul>
+          {recipe.instructions.split('.').map((sentence, index) => {
+            const cleaned = sentence.replace(/<[^>]+>/g, '').trim()
+            return cleaned ? <li key={index}>{cleaned}.</li> : null
+          })}
+        </ul>
+      ) : (
+        <ul>
+          {recipe.ingredients.map((ing, i) => {
+            const factor = servings || 1
+            const amount = ing.amount * (factor / recipe.servings)
+            const rounded = Math.round(amount * 4) / 4
+            const adjusted = rounded < 0.25 && rounded !== 0 ? 0.25 : rounded
+            return (
+              <li key={i}>
+                {adjusted} {ing.unit} {ing.name}
+              </li>
+            )
+          })}
+        </ul>
+      )}
+    </div>
+  </div>
+)}
     </div>
   )
 }

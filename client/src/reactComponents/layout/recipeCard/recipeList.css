@@ -61,11 +61,7 @@ summary span {
   padding-right: 8px;
 }
 
-.recipe-details {
-  display: flex;
-  gap: 16px;
-  margin-top: 12px;
-}
+
 
 .week-selector {
   display: flex;
@@ -138,16 +134,6 @@ summary span {
   margin-top: auto;
 }
 
-@media (max-width: 600px) {
-  .recipe-details {
-    flex-direction: column;
-  }
-
-  .instructions,
-  .ingredients {
-    max-width: 100%;
-  }
-}
 
 
 .recipe-layout {
@@ -156,11 +142,49 @@ summary span {
   margin: 0 20px;
 }
 
+
+.recipe-details {
+  margin-top: 12px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.recipeList-modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 500px;
+  max-height: 80%;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+
+@media (max-width: 600px) {
+  .recipe-details {
+    flex-direction: column;
+  }
+
+}
+
 @media (max-width: 768px) {
+
+  .recipe-content{
+    flex-direction: column;
+  }
+
   .recipe-layout {
     flex-direction: column;
   }
 
+  .modal-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
 
 
