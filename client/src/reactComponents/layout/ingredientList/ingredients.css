@@ -24,5 +24,6 @@ margin-left: 20px;
 
   .mobile-controls {
     display: flex;
+    max-width: 400px;
   }
 }

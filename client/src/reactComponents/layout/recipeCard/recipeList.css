@@ -33,13 +33,18 @@
 }
 
 .add-btn {
-  background-color: #007bff;
+  background-color: #95a584;
   border: none;
   color: white;
   padding: 6px 10px;
   border-radius: 6px;
   cursor: pointer;
 }
+
+.add-btn:hover{
+  background-color: #7d8f6a;
+}
+
 
 summary span {
   font-weight: bold;
@@ -70,7 +75,7 @@ summary span {
 }
 
 .recipe-card {
-  background: #beb07d;
+  background: #d4a373;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 16px;
@@ -113,6 +118,7 @@ summary span {
   flex-wrap: wrap;
   gap: 5px;
   margin-top: 8px;
+  max-width: 200px;
 }
 
 .allergy {
@@ -168,6 +174,7 @@ summary span {
   .recipe-details {
     flex-direction: column;
   }
+  
 
 }
 
