@@ -41,6 +41,11 @@
   cursor: pointer;
 }
 
+.add-btn:hover{
+  background-color: #7d8f6a;
+}
+
+
 summary span {
   font-weight: bold;
   cursor: pointer;
