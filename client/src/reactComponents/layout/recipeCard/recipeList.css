@@ -181,6 +181,7 @@ summary span {
 @media (max-width: 768px) {
   .recipe-content{
     flex-direction: column;
+    align-items: center;
   }
 
   .recipe-layout {

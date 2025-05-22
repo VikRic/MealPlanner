@@ -124,15 +124,17 @@
 }
 
 .close-modal-btn {
-  position: absolute;
-  top: -5px;
-  right: -5px;
+  position:absolute;
+  top: -3%;
+  right: -3%;
+
   background: none;
   border: none;
   font-size: 22px;
   cursor: pointer;
   z-index: 10;
 }
+
 
 .meal {
   transition: transform 0.2s, box-shadow 0.2s;
@@ -156,9 +158,5 @@
     border: 1px solid #e5e7eb;
     border-radius: 8px;
   }
-
-
 }
-
-
 
