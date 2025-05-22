@@ -82,6 +82,7 @@ summary span {
   display: flex;
   flex-direction: column;
   max-width: 500px;
+  min-width: 250px;
 }
 
 .recipe-header h2 {
@@ -175,11 +176,9 @@ summary span {
     flex-direction: column;
   }
   
-
 }
 
 @media (max-width: 768px) {
-
   .recipe-content{
     flex-direction: column;
   }
