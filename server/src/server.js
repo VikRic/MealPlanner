@@ -10,11 +10,12 @@ import { connectToDatabase } from './config/mongoose.js'
 import dotenv from 'dotenv'
 import { clerkMiddleware } from '@clerk/express'
 import { securityHeaders, limiter } from './middleWare/security.js'
-/* import './util/cron.js' */
+
 try {
   dotenv.config()
   // Connect to MongoDB.
   await connectToDatabase(process.env.DB_CONNECTION_STRING)
+  await import('./util/cron.js')
 
   // Create Express application.
   const app = express()
