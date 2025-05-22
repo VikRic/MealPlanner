@@ -1,0 +1,11 @@
+{
+  "name": "my-fullstack-app",
+  "private": true,
+  "scripts": {
+    "install-all": "npm i && cd server && npm i && cd ../client && npm i",
+    "dev": "concurrently \"npm run dev --prefix client\" \"npm start --prefix server\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
