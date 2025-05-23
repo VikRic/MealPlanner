@@ -1,5 +1,5 @@
 import { Link, NavLink  } from 'react-router-dom'
-import { useUser } from '@clerk/clerk-react'
+import { useUser, SignIn, SignInButton, SignUp, SignUpButton, SignOutButton } from '@clerk/clerk-react'
 import { UserButton } from '@clerk/clerk-react'
 import './header.css'
 
@@ -19,7 +19,7 @@ function Header() {
             <Link to="/Recipe">Recipe</Link>
           </li>
           <li>
-            {/* To hide login button not being loaded in time */}
+
             {isLoaded &&
               (user ? <UserButton /> : <Link to="/login">Login</Link>)}
           </li>

@@ -18,6 +18,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <ClerkProvider
         publishableKey={publicKey}
+          signUpFallbackRedirectUrl ="/"
+          signInFallbackRedirectUrl ="/"
       >
         <div className="page-wrapper">
           <div className="overlay"></div>
