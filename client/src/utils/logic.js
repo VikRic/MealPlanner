@@ -91,7 +91,7 @@ export const deleteFromPlan = async (date, mealType, recipeId, token) => {
     }
     const data = await response.json()
     console.log(data)
-    /* showSuccessAlert('Recipe Removed') */
+    showSuccessAlert('Recipe Removed')
     return true
 
   } catch (err) {

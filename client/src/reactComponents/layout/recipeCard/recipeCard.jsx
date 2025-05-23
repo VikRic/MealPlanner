@@ -6,7 +6,7 @@ import './recipeList.css'
 import { useMealPlan } from '../../../contexts/MealPlanContext'
 
 
-const RecipeCard = ({ servings, recipe, buttonText }) => {
+const RecipeCard = ({ servings, recipe, buttonText, onRemove  }) => {
   const { fetchAndSetMeals } = useMealPlan()
   // Get actual day as default
   const [showModal, setShowModal] = useState(false)
@@ -58,6 +58,9 @@ const closeModal = () => {
       await addToPlan(selectedDay, mealType, recipe.spoonacularId, token)
     } else {
       await deleteFromPlan(selectedDay, mealType, recipe.spoonacularId, token)
+      if (onRemove) {
+        onRemove()
+      }
     }
     await fetchAndSetMeals() // update global state
   }

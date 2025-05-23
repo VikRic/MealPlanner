@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { getWeekBoundaries, formatWeekDisplay, getDaysInWeek } from '../../../utils/dateUtils'
-import RecipeCard from '../recipeCard/recipeCard'
+import RecipeCard from '../recipeCard/recipeCard.jsx'
 import { useMealPlan } from '../../../contexts/MealPlanContext'
 import './mealPlanner.css'
 
@@ -94,6 +94,8 @@ export default function MealPlannerApp() {
               recipe={selectedRecipe} 
               servings={selectedRecipe.servings}
               buttonText='Remove'
+              onRemove={closeModal}
+              
             />
           </div>
         </div>
