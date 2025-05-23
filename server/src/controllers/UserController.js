@@ -134,7 +134,6 @@ export class UserController {
   async deleteRecipe (req, res) {
     try {
       const servings = req.body.servings
-      console.log(servings)
       const userId = req.userId
       const validation = validateRecipeRequest(req.body)
       if (!validation.valid) {
@@ -145,6 +144,7 @@ export class UserController {
       // Find user or create if doesn't exist
       const meal = { date: dateObj, mealType, recipeId, servings }
       const recipe = await UserModel.findOne({ userId, mealPlan: meal })
+
       if (recipe) {
         await UserModel.updateOne(
           { userId },
@@ -159,7 +159,6 @@ export class UserController {
             }
           }
         )
-        console.log('Deleted')
       }
 
       res.status(200).json({ message: 'Recipe deleted from meal plan' })

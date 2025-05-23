@@ -27,6 +27,8 @@ for (const date in mealPlan) {
         const servingsFactor = userServings / originalServings
 
         for (const ingredient of recipe.ingredients) {
+          // Add console.warn after 1 recipe destroyed my site and cant seem to find why.
+          console.warn("Ingredient missing name:", ingredient, "in recipe:", recipe)
           const name = ingredient.name
           if (!name) continue
 
@@ -65,7 +67,6 @@ return (
         // Round the amount to a reasonable precision
         const roundedAmount = Math.round(ingredient.amount * 4) / 4
         const displayAmount = roundedAmount < 0.25 ? 0.25 : roundedAmount
-        console.log(roundedAmount, displayAmount)
         
         return (
           <li key={index}>
