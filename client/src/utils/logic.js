@@ -72,6 +72,7 @@ export const addToPlan = async (date, mealType, recipeId, token) => {
   }
 }
 
+
 export const deleteFromPlan = async (date, mealType, recipeId, token) => {
   try {
     console.log('date', date, 'type', mealType, 'id', recipeId)
