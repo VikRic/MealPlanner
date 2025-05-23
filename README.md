@@ -1,4 +1,4 @@
-# recipe_planner
+# meal_planner
 
 
 
@@ -15,14 +15,14 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
-git remote add origin https://gitlab.lnu.se/1dv613/student/vr222im/projects/recipe_planner.git
+git remote add origin https://gitlab.lnu.se/1dv613/student/vr222im/projects/meal_planner.git
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
 
-- [ ] [Set up project integrations](https://gitlab.lnu.se/1dv613/student/vr222im/projects/recipe_planner/-/settings/integrations)
+- [ ] [Set up project integrations](https://gitlab.lnu.se/1dv613/student/vr222im/projects/meal_planner/-/settings/integrations)
 
 ## Collaborate with your team
 
