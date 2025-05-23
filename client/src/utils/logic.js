@@ -82,7 +82,7 @@ export const deleteFromPlan = async (date, mealType, recipeId, token, servings) 
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({ date, mealType, recipeId })
+      body: JSON.stringify({ date, mealType, recipeId, servings })
     })
 
     if (!response.ok) {

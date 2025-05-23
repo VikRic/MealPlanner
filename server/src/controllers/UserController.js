@@ -133,6 +133,8 @@ export class UserController {
    */
   async deleteRecipe (req, res) {
     try {
+      const servings = req.body.servings
+      console.log(servings)
       const userId = req.userId
       const validation = validateRecipeRequest(req.body)
       if (!validation.valid) {
@@ -141,7 +143,7 @@ export class UserController {
       const { dateObj, mealType, recipeId } = validation
 
       // Find user or create if doesn't exist
-      const meal = { date: dateObj, mealType, recipeId }
+      const meal = { date: dateObj, mealType, recipeId, servings }
       const recipe = await UserModel.findOne({ userId, mealPlan: meal })
       if (recipe) {
         await UserModel.updateOne(
@@ -151,7 +153,8 @@ export class UserController {
               mealPlan: {
                 date: dateObj,
                 mealType,
-                recipeId
+                recipeId,
+                servings
               }
             }
           }

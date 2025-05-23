@@ -16,9 +16,9 @@ const RecipeCard = ({ servings, recipe, buttonText, onRemove  }) => {
   const [selectedDay, setSelectedDay] = useState(recipe.selectedDay || null)
   const [mealType, setMealType] = useState(recipe.selectedMealType || 'breakfast')
   const { getToken } = useAuth()
-/*   if (servings < 1) {
+  if (servings < 1) {
     servings = 1
-  } */
+  }
   
   // Array for actual week
   const days = getDaysInWeek(currentWeek.start)
@@ -60,7 +60,7 @@ const closeModal = () => {
     if (!buttonText) {
       await addToPlan(selectedDay, mealType, recipe.spoonacularId, token, servings)
     } else {
-      await deleteFromPlan(selectedDay, mealType, recipe.spoonacularId, token)
+      await deleteFromPlan(selectedDay, mealType, recipe.spoonacularId, token, servings)
       if (onRemove) {
         onRemove()
       }
