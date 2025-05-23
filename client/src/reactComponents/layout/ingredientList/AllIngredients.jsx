@@ -15,12 +15,25 @@ for (const date in mealPlan) {
   for (const mealType in mealPlan[date]) {
     const recipe = mealPlan[date][mealType]
       if (recipe?.ingredients?.length) {
+
+        // Use userServings if available, otherwise fallback to recipe servings or 1
+        let userServings = recipe.userServings || recipe.servings || 1
+        let originalServings = recipe.servings || 1
+        
+        if ( originalServings < 1 || userServings < 1) {
+          userServings = 1
+          originalServings = 1
+        }
+        const servingsFactor = userServings / originalServings
+
         for (const ingredient of recipe.ingredients) {
           const name = ingredient.name
           if (!name) continue
 
         const normalizedUnit = normalizeUnit(ingredient.unit)
         const key = `${name.toLowerCase()}__${normalizedUnit}`
+
+        const adjustedAmount = ingredient.amount * servingsFactor
 
         if (mergedIngredients[key]) {
           // Check for unit difference
@@ -32,7 +45,10 @@ for (const date in mealPlan) {
 
           mergedIngredients[key].amount += ingredient.amount
         } else {
-          mergedIngredients[key] = { ...ingredient, unit: normalizedUnit }
+          mergedIngredients[key] = {
+            ...ingredient,
+            unit: normalizedUnit,
+          amount: adjustedAmount}
         }
       }
     }
@@ -45,11 +61,18 @@ return (
   <div className='ing-container'>
     <h2>Weekly ingredients</h2>
     <ul>
-      {Object.entries(allMergedIngredients).map(([key, value]) => (
-        <li key={key}>
-          {value.amount} {value.unit} {value.name}
-        </li>
-      ))}
+      {allMergedIngredients.map((ingredient, index) => {
+        // Round the amount to a reasonable precision
+        const roundedAmount = Math.round(ingredient.amount * 4) / 4
+        const displayAmount = roundedAmount < 0.25 ? 0.25 : roundedAmount
+        console.log(roundedAmount, displayAmount)
+        
+        return (
+          <li key={index}>
+            {displayAmount} {ingredient.unit} {ingredient.name}
+          </li>
+        )
+      })}
     </ul>
   </div>
 )

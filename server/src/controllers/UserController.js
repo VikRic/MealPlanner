@@ -29,6 +29,9 @@ export class UserController {
       }
       const { dateObj, mealType, recipeId, date } = validation
 
+      // Get servings from request, default to 1 if not provided
+      const servings = req.body.servings || 1
+
       // Check if the recipe exists
       const recipeExists = await RecipeModel.exists({ spoonacularId: Number(recipeId) })
       if (!recipeExists) {
@@ -37,7 +40,7 @@ export class UserController {
 
       // Find user or create if doesn't exist
       const user = await UserModel.findOne({ userId })
-      const newMeal = { date: dateObj, mealType, recipeId }
+      const newMeal = { date: dateObj, mealType, recipeId, servings }
 
       if (!user) {
         await UserModel.create({
@@ -54,6 +57,7 @@ export class UserController {
         if (existingMealIndex >= 0) {
           // Update existing meal
           user.mealPlan[existingMealIndex].recipeId = recipeId
+          user.mealPlan[existingMealIndex].servings = servings
           await user.save()
         } else {
           // Add new meal
@@ -101,7 +105,16 @@ export class UserController {
           mealPlanMap[dateKey] = {}
         }
 
-        mealPlanMap[dateKey][mealType] = recipe ? recipe.toJSON() : { spoonacularId: entry.recipeId }
+        if (recipe) {
+          const recipeData = recipe.toJSON()
+          recipeData.userServings = entry.servings || recipe.servings
+          mealPlanMap[dateKey][mealType] = recipeData
+        } else {
+          mealPlanMap[dateKey][mealType] = {
+            spoonacularId: entry.recipeId,
+            userServings: entry.servings || 1
+          }
+        }
       }
 
       res.status(200).json({ existing: { mealPlan: mealPlanMap } })

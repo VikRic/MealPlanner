@@ -47,7 +47,7 @@ export const fetchRecipes = async (inputs, token) => {
   }
 }
 
-export const addToPlan = async (date, mealType, recipeId, token) => {
+export const addToPlan = async (date, mealType, recipeId, token, servings ) => {
   try {
     const response = await fetch(`${BASE_URL}/meal-plan`, {
       method: 'POST',
@@ -55,7 +55,7 @@ export const addToPlan = async (date, mealType, recipeId, token) => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({ date, mealType, recipeId })
+      body: JSON.stringify({ date, mealType, recipeId, servings })
     })
 
     if (!response.ok) {
@@ -73,7 +73,7 @@ export const addToPlan = async (date, mealType, recipeId, token) => {
 }
 
 
-export const deleteFromPlan = async (date, mealType, recipeId, token) => {
+export const deleteFromPlan = async (date, mealType, recipeId, token, servings) => {
   try {
     console.log('date', date, 'type', mealType, 'id', recipeId)
     const response = await fetch(`${BASE_URL}/meal-plan/delete`, {
@@ -134,7 +134,7 @@ export function normalizeUnit(unit) {
 
   const u = unit.toLowerCase()
   if (['tsp', 'tsps'].includes(u)) return 'tea spoon'
-  if (['tbsp', 'tbsps', 'tbs'].includes(u)) return 'table soon'
+  if (['tbsp', 'tbsps', 'tbs'].includes(u)) return 'table spoon'
   if (['g', 'gram', 'grams'].includes(u)) return 'g'
   if (['kg', 'kgs', 'kilo'].includes(u)) return 'kg'
 

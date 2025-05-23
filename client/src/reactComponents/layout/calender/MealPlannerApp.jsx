@@ -92,7 +92,7 @@ export default function MealPlannerApp() {
             <button className="close-modal-btn" onClick={closeModal}>✕</button>
             <RecipeCard 
               recipe={selectedRecipe} 
-              servings={selectedRecipe.servings}
+              servings={selectedRecipe.userServings || selectedRecipe.servings}
               buttonText='Remove'
               onRemove={closeModal}
               

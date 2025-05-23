@@ -15,6 +15,9 @@ const schema = new mongoose.Schema({
   recipeId: {
     type: String,
     required: true
+  },
+  servings: {
+    type: Number
   }
 }, { _id: false }) // _id is not needed
 
