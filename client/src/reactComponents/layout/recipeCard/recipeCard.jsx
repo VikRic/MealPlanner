@@ -155,7 +155,7 @@ const closeModal = () => {
             const factor = servings || 1
             const amount = ing.amount * (factor / recipe.servings)
             const rounded = Math.round(amount * 4) / 4
-            const adjusted = rounded < 0.25 && rounded !== 0 ? 0.25 : rounded
+            const adjusted = rounded < 0.25 ? 0.25 : rounded
             return (
               <li key={i}>
                 {adjusted} {ing.unit} {ing.name}

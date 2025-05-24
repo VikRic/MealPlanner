@@ -86,7 +86,7 @@ function InputForm({ inputs, setInputs, setRecipes, isLoading, setIsLoading }) {
           name="servings"
           value={inputs.servings}
           onChange={handleInputChange}
-          placeholder="Servings"
+          placeholder="How many servings"
         />
 
         {/* Allergies dropdown */}
@@ -106,7 +106,7 @@ function InputForm({ inputs, setInputs, setRecipes, isLoading, setIsLoading }) {
           name="cuisine"
           value={inputs.cuisine}
           onChange={handleInputChange}
-          placeholder="Cuisine"
+          placeholder="Cuisine (ex: Italian / Asian)"
         />
 
         {/* Time to cook dropdown */}
@@ -114,7 +114,7 @@ function InputForm({ inputs, setInputs, setRecipes, isLoading, setIsLoading }) {
           id={'cooktime'}
           onChange={handleDropdownChange('timeToCook')}
           options={[
-            { value: '', label: 'Timer' },
+            { value: '', label: 'Ready in' },
             { value: 15, label: 'Less than 15 min' },
             { value: 30, label: 'Less than 30 min' },
             { value: 60, label: 'Less than 60 mins' },

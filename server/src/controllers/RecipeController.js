@@ -136,21 +136,42 @@ export class RecipeController {
   buildQuery (recipeAmnt, allergies, cuisine, timeToCook, dishTypes, ingredientSearch) {
     const query = []
 
-    query.push({ $match: allergies ? { [allergies]: true } : {} })
-    query.push({ $match: cuisine ? { cuisines: cuisine } : {} })
-    query.push({ $match: timeToCook ? { readyInMinutes: { $lte: parseInt(timeToCook) } } : {} })
-    query.push({ $match: dishTypes?.length ? { dishTypes: { $in: dishTypes } } : {} })
+    // Capitalize cuisine if it exists
+    const formattedCuisine = cuisine
+      ? cuisine.charAt(0).toUpperCase() + cuisine.slice(1)
+      : null
 
-    const validIngredients = ingredientSearch
-      .filter(i => typeof i === 'string' && i !== '')
-      .map(i => i.toLowerCase())
-    query.push({
-      $match: validIngredients?.length
-        ? { 'ingredients.name': { $in: validIngredients } }
-        : {}
-    })
+    // Time filter direction
+    const cookTimeOperator = timeToCook > 60 ? '$gte' : '$lte'
+
+    // Clean up and normalize ingredients
+    const normalizedIngredients = (ingredientSearch || [])
+      .filter(i => typeof i === 'string' && i.trim() !== '')
+      .map(i => i.toLowerCase().trim())
+
+    // Conditionally add filters
+    if (allergies) {
+      query.push({ $match: { [allergies]: true } })
+    }
+
+    if (formattedCuisine) {
+      query.push({ $match: { cuisines: formattedCuisine } })
+    }
+
+    if (timeToCook) {
+      query.push({ $match: { readyInMinutes: { [cookTimeOperator]: parseInt(timeToCook) } } })
+    }
+
+    if (dishTypes?.length) {
+      query.push({ $match: { dishTypes: { $in: dishTypes } } })
+    }
+
+    if (normalizedIngredients.length) {
+      query.push({ $match: { 'ingredients.name': { $all: normalizedIngredients } } })
+    }
 
     query.push({ $sample: { size: parseInt(recipeAmnt) } })
+
     return query
   }
 
