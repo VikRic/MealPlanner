@@ -1,9 +1,3 @@
-/**
- * @file Defines the home router.
- * @module homeRouter
- * @author Mats Loock
- */
-
 import express from 'express'
 import { HomeController } from '../controllers/HomeController.js'
 

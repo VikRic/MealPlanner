@@ -1,12 +1,6 @@
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 /**
- * @file Defines the HomeController class.
- * @module HomeController
- * @author Mats Loock
- */
-
-/**
  * Encapsulates a controller.
  */
 export class HomeController {

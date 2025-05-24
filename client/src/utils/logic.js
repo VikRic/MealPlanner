@@ -16,6 +16,7 @@ export const validateInputs = (inputs) => {
 }
 
 export const fetchRecipes = async (inputs, token) => {
+  console.log(inputs)
   try {
     const response = await fetch(`${BASE_URL}/recipe`, {
       method: 'POST',

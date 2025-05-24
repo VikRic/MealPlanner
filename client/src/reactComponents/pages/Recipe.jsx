@@ -12,7 +12,8 @@ function Recipe() {
     dishTypes: [],
     cuisine: '',
     timeToCook: '',
-    servings: ''
+    servings: '',
+    ingredientSearch: []
   })
   const [isLoading, setIsLoading] = useState(false)
   const [showCalendar, setShowCalendar] = useState(false)

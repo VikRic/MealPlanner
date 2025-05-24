@@ -19,12 +19,12 @@ export const handleCheckboxChange = (setInputs) => (name, checked, value) => {
     let updatedDishTypes = [...prevState.dishTypes]
 
     if (checked) {
-      // Lägg till om den inte redan finns
+      // Add if doesnt exist
       if (!updatedDishTypes.includes(value)) {
         updatedDishTypes.push(value)
       }
     } else {
-      // Ta bort om den avmarkeras
+      // Remove if unmarked
       updatedDishTypes = updatedDishTypes.filter((dishType) => dishType !== value)
     }
 
@@ -33,4 +33,14 @@ export const handleCheckboxChange = (setInputs) => (name, checked, value) => {
       dishTypes: updatedDishTypes
     }
   })
+}
+
+export const handleArrayInputChange = (setInputs) => (e) => {
+  const { name, value } = e.target
+  setInputs((prevState) => ({
+    ...prevState,
+    [name]: name === 'ingredientSearch'
+    ? value.split(',')
+    : value
+  }))
 }

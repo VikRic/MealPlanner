@@ -130,19 +130,27 @@ export class RecipeController {
    * @param {string} [cuisine] - The preferred cuisine type (e.g., "Italian", "Mexican").
    * @param {number} [timeToCook] - The maximum cooking time in minutes.
    * @param {Array<string>} [dishTypes] - An array of dish types (e.g., ["main course", "dessert"]).
+   * @param {string|Array<string>} ingredientSearch - The ingredient or list of ingredients to search for in recipes.
    * @returns {Array<object>} The MongoDB aggregation query array.
    */
-  buildQuery (recipeAmnt, allergies, cuisine, timeToCook, dishTypes) {
+  buildQuery (recipeAmnt, allergies, cuisine, timeToCook, dishTypes, ingredientSearch) {
     const query = []
-    console.log(dishTypes)
+
     query.push({ $match: allergies ? { [allergies]: true } : {} })
     query.push({ $match: cuisine ? { cuisines: cuisine } : {} })
     query.push({ $match: timeToCook ? { readyInMinutes: { $lte: parseInt(timeToCook) } } : {} })
     query.push({ $match: dishTypes?.length ? { dishTypes: { $in: dishTypes } } : {} })
 
-    query.push({ $sample: { size: parseInt(recipeAmnt) } })
+    const validIngredients = ingredientSearch
+      .filter(i => typeof i === 'string' && i !== '')
+      .map(i => i.toLowerCase())
+    query.push({
+      $match: validIngredients?.length
+        ? { 'ingredients.name': { $in: validIngredients } }
+        : {}
+    })
 
-    console.log(query)
+    query.push({ $sample: { size: parseInt(recipeAmnt) } })
     return query
   }
 
@@ -155,10 +163,9 @@ export class RecipeController {
    */
   async frontEndPost (req, res) {
     try {
-      const { recipeAmnt, allergies, cuisine, timeToCook, dishTypes } = req.body
-
-      console.log(recipeAmnt, allergies, cuisine, timeToCook, dishTypes)
-      const query = this.buildQuery(recipeAmnt, allergies, cuisine, timeToCook, dishTypes)
+      const { recipeAmnt, allergies, cuisine, timeToCook, dishTypes, ingredientSearch } = req.body
+      console.log('RecipeAmnt:', recipeAmnt, 'allergies:', allergies, 'cuisine:', cuisine, 'timeToCook:', timeToCook, 'dishTypes:', dishTypes, 'ingredientSearch:', ingredientSearch)
+      const query = this.buildQuery(recipeAmnt, allergies, cuisine, timeToCook, dishTypes, ingredientSearch)
       const recipes = await RecipeModel.aggregate([query])
 
       return res.status(200).json({

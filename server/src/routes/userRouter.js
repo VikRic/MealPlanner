@@ -1,8 +1,3 @@
-/**
- * @file Defines the home router.
- * @module homeRouter
- * @author Mats Loock
- */
 import express from 'express'
 import { UserController } from '../controllers/UserController.js'
 import { requireAuth } from '../middleWare/requireAuth.js'

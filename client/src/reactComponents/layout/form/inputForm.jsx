@@ -7,7 +7,8 @@ import './form.css'
 import {
   handleInputChange as createInputfields,
   handleDropdownChange as createDropdown,
-  handleCheckboxChange as createCheckbox
+  handleCheckboxChange as createCheckbox,
+  handleArrayInputChange as createArray
 } from '../../../utils/handleInputs'
 
 import { showFailedAlert } from '../../../utils/toastifyAlert'
@@ -19,6 +20,7 @@ function InputForm({ inputs, setInputs, setRecipes, isLoading, setIsLoading }) {
   const handleInputChange = createInputfields(setInputs)
   const handleDropdownChange = createDropdown(setInputs)
   const handleCheckboxChange = createCheckbox(setInputs)
+  const handleArrayInputChange = createArray(setInputs)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -118,6 +120,14 @@ function InputForm({ inputs, setInputs, setRecipes, isLoading, setIsLoading }) {
             { value: 60, label: 'Less than 60 mins' },
             { value: 61, label: 'More than 60 mins' }
           ]}
+        />
+
+        {/* Search for specific food */}
+        <InputField
+          name="ingredientSearch"
+          value={inputs.ingredientSearch}
+          onChange={handleArrayInputChange}
+          placeholder="Search for ingredient in recipe"
         />
 
         <button

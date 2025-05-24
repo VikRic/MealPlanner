@@ -150,7 +150,8 @@ const closeModal = () => {
         </ul>
       ) : (
         <ul>
-          {recipe.ingredients.map((ing, i) => {
+          {/* Filter all recipes since some contain null values */}
+          {recipe.ingredients.filter(ing => ing !== null).map((ing, i) => {
             const factor = servings || 1
             const amount = ing.amount * (factor / recipe.servings)
             const rounded = Math.round(amount * 4) / 4

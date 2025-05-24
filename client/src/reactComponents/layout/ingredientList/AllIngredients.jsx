@@ -28,9 +28,11 @@ for (const date in mealPlan) {
 
         for (const ingredient of recipe.ingredients) {
           // Add console.warn after 1 recipe destroyed my site and cant seem to find why.
-          console.warn("Ingredient missing name:", ingredient, "in recipe:", recipe)
-          const name = ingredient.name
-          if (!name) continue
+          const name = ingredient?.name
+          if (!name){
+            console.warn("Ingredient missing name:", ingredient, "in recipe:", recipe)
+            continue
+          }
 
         const normalizedUnit = normalizeUnit(ingredient.unit)
         const key = `${name.toLowerCase()}__${normalizedUnit}`
