@@ -16,7 +16,6 @@ export const validateInputs = (inputs) => {
 }
 
 export const fetchRecipes = async (inputs, token) => {
-  console.log(inputs)
   try {
     const response = await fetch(`${BASE_URL}/recipe`, {
       method: 'POST',
@@ -139,6 +138,35 @@ export function normalizeUnit(unit) {
   if (['kg', 'kgs', 'kilo'].includes(u)) return 'kg'
 
   return u 
+}
+
+export const fetchCuisines = async (token) => {
+  try {
+    if (token) {
+    const response = await fetch(`${BASE_URL}/meal-plan/cuisines`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    if (response.ok) {
+      const data = await response.json()
+
+      return data.cuisines
+
+    } else {
+      console.error('Unable to get data', response)
+      showFailedAlert('Server error')
+      return null
+    }
+    }
+  } catch (error) {
+    console.error('Error while sending data to server:', error)
+    showFailedAlert('Please try again later.')
+    return null
+  }
 }
 
 

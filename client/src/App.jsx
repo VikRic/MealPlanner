@@ -1,4 +1,3 @@
-import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import 'styles/App.css'
 import Home from './reactComponents/pages/Home.jsx'
@@ -6,12 +5,14 @@ import Recipe from './reactComponents/pages/Recipe.jsx'
 import { SignIn } from '@clerk/clerk-react'
 import 'styles/clerkLogin.css'
 import { MealPlanProvider } from './contexts/MealPlanProvider.jsx'
+import { CuisineProvider } from './contexts/CuisineProvider.jsx'
 
 function App() {
   return (
      
     <div className="main-content">
       <MealPlanProvider>
+        <CuisineProvider>
       <Routes>
 
         <Route path="/" element={<Home />} />
@@ -33,7 +34,9 @@ function App() {
           }
         />
       </Routes>
+      </CuisineProvider>
       </MealPlanProvider>
+      
     </div>
   )
 }

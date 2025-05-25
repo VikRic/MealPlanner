@@ -30,7 +30,7 @@ for (const date in mealPlan) {
           // Add console.warn after 1 recipe destroyed my site and cant seem to find why.
           const name = ingredient?.name
           if (!name){
-            console.warn("Ingredient missing name:", ingredient, "in recipe:", recipe)
+            /* console.warn("Ingredient missing name:", ingredient, "in recipe:", recipe) */
             continue
           }
 

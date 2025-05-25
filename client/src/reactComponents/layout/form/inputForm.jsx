@@ -2,7 +2,11 @@ import { useAuth } from '@clerk/clerk-react'
 import InputField from '../../common/inpputField/inputField'
 import Checkbox from '../../common/checkbox/checkBox'
 import DropDownMenu from '../../common/dropdown/dropDownMenu'
+import ComboBox from '../../common/comboBox/comboBox.jsx'
 import './form.css'
+import { useCusines } from '../../../contexts/CuisineContext'
+import { showFailedAlert } from '../../../utils/toastifyAlert'
+import { validateInputs, fetchRecipes } from '../../../utils/logic'
 
 import {
   handleInputChange as createInputfields,
@@ -11,16 +15,15 @@ import {
   handleArrayInputChange as createArray
 } from '../../../utils/handleInputs'
 
-import { showFailedAlert } from '../../../utils/toastifyAlert'
-import { validateInputs, fetchRecipes } from '../../../utils/logic'
 
 function InputForm({ inputs, setInputs, setRecipes, isLoading, setIsLoading }) {
   const { getToken } = useAuth()
-
+  const { cuisineOptions } = useCusines()
   const handleInputChange = createInputfields(setInputs)
   const handleDropdownChange = createDropdown(setInputs)
   const handleCheckboxChange = createCheckbox(setInputs)
   const handleArrayInputChange = createArray(setInputs)
+
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -102,11 +105,16 @@ function InputForm({ inputs, setInputs, setRecipes, isLoading, setIsLoading }) {
         />
 
         {/* Cuisine input */}
-        <InputField
+{/*         <InputField
           name="cuisine"
           value={inputs.cuisine}
           onChange={handleInputChange}
           placeholder="Cuisine (ex: Italian / Asian)"
+        /> */}
+        <ComboBox
+          value={inputs.cuisine}
+          onChange={(value) => setInputs(prev => ({ ...prev, cuisine: value }))}
+          options={cuisineOptions}
         />
 
         {/* Time to cook dropdown */}
@@ -124,6 +132,7 @@ function InputForm({ inputs, setInputs, setRecipes, isLoading, setIsLoading }) {
 
         {/* Search for specific food */}
         <InputField
+        className="ingredientSearch"
           name="ingredientSearch"
           value={inputs.ingredientSearch}
           onChange={handleArrayInputChange}

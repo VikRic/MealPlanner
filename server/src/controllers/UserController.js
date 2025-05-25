@@ -167,4 +167,16 @@ export class UserController {
       res.status(500).json({ error: 'Server error while deleting meal plan' })
     }
   }
+
+  /**
+   * Retrieves a list of distinct cuisines from the RecipeModel.
+   *
+   * @param {object} req - The request object.
+   * @param {object} res - The response object used to send the HTTP response.
+   */
+  async findCuisine (req, res) {
+    const cuisines = await RecipeModel.distinct('cuisines')
+    console.log('Available cuisines:', cuisines)
+    res.status(200).json({ cuisines })
+  }
 }
