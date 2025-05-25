@@ -34,7 +34,7 @@ function ComboBox({onChange, options }) {
           onClick={() => {
             setQuery('')
             onChange('')
-            setShowDropdown(false) // 
+            setShowDropdown(false)  
           }}
         >
           ×
@@ -42,6 +42,15 @@ function ComboBox({onChange, options }) {
       )}
       {showDropdown && options.length > 0 && (
         <ul className="combobox-dropdown">
+          {/* Add (All) value to easier get rid of the dropdown */}
+          {query === '' && (
+          <li 
+            className="combobox-option"
+            onClick={() => handleSelect('')}
+          >
+            All
+          </li>
+          )}
           {filteredOptions.map((option, index) => (
             <li
               key={index}

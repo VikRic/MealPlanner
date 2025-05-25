@@ -15,6 +15,7 @@ button:focus-visible {
 }
 
 
+
 .form-container {
   display: flex;
   flex-direction: column;
@@ -46,6 +47,11 @@ button:focus-visible {
 select {
   padding: 5px;
   margin: 5px;
+  background-color: white;
+}
+
+select.placeholder {
+  color: #6f6f74;
 }
 
 img {

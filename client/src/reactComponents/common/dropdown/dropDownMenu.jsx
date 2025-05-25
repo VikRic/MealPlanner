@@ -10,7 +10,12 @@ function DropDownMenu({id, options = [], onChange, defaultValue = '' }) {
 
   return (
     <div>
-      <select id={id} value={value} onChange={handleChange}>
+      <select
+      id={id}
+      value={value}
+      onChange={handleChange}
+      className={value === '' ? 'placeholder' : ''
+      }>
         {options.map((opt, index) => (
           <option key={index} value={opt.value}>
             {opt.label}
