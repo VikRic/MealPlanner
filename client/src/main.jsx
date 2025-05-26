@@ -17,6 +17,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <ClerkProvider
+      // Removes text that it's dev mode
+      appearance={{
+    layout: {
+      unsafe_disableDevelopmentModeWarnings: true,
+    },
+  }}
         publishableKey={publicKey}
           signUpFallbackRedirectUrl ="/recipe"
           signInFallbackRedirectUrl ="/recipe"

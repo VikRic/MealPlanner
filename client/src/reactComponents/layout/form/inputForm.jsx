@@ -5,7 +5,6 @@ import DropDownMenu from '../../common/dropdown/dropDownMenu'
 import ComboBox from '../../common/comboBox/comboBox.jsx'
 import './form.css'
 import { useCusines } from '../../../contexts/CuisineContext'
-import { showFailedAlert } from '../../../utils/toastifyAlert'
 import { validateInputs, fetchRecipes } from '../../../utils/logic'
 
 import {
@@ -28,11 +27,6 @@ function InputForm({ inputs, setInputs, setRecipes, isLoading, setIsLoading }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const token = await getToken()
-
-    if (!token) {
-      showFailedAlert('You need to be logged in to get recipes.')
-      return
-    }
 
     if (!validateInputs(inputs)) return
 
@@ -104,13 +98,6 @@ function InputForm({ inputs, setInputs, setRecipes, isLoading, setIsLoading }) {
           ]}
         />
 
-        {/* Cuisine input */}
-{/*         <InputField
-          name="cuisine"
-          value={inputs.cuisine}
-          onChange={handleInputChange}
-          placeholder="Cuisine (ex: Italian / Asian)"
-        /> */}
         <ComboBox
           value={inputs.cuisine}
           onChange={(value) => setInputs(prev => ({ ...prev, cuisine: value }))}

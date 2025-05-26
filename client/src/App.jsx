@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import 'styles/App.css'
 import Home from './reactComponents/pages/Home.jsx'
 import Recipe from './reactComponents/pages/Recipe.jsx'
-import { SignIn } from '@clerk/clerk-react'
+import { SignIn, SignUp } from '@clerk/clerk-react'
 import 'styles/clerkLogin.css'
 import { MealPlanProvider } from './contexts/MealPlanProvider.jsx'
 import { CuisineProvider } from './contexts/CuisineProvider.jsx'
@@ -21,6 +21,22 @@ function App() {
           path="/login"
           element={
             <SignIn
+              appearance={{
+                variables: {
+                  colorPrimary: '#4f46e5',
+                  fontSize: '1.1rem'
+                },
+                elements: {
+                  rootBox: 'cl-rootBox'
+                }
+              }}
+            />
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <SignUp
               appearance={{
                 variables: {
                   colorPrimary: '#4f46e5',

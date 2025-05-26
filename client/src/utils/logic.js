@@ -15,13 +15,12 @@ export const validateInputs = (inputs) => {
   return true
 }
 
-export const fetchRecipes = async (inputs, token) => {
+export const fetchRecipes = async (inputs) => {
   try {
     const response = await fetch(`${BASE_URL}/recipe`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(inputs)
     })

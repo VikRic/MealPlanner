@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { addToPlan, deleteFromPlan } from '../../../utils/logic'
+import { showFailedAlert } from '../../../utils/toastifyAlert'
 import { useAuth } from '@clerk/clerk-react'
 import { getWeekBoundaries, getDaysInWeek } from '../../../utils/dateUtils'
 import './recipeList.css'
@@ -55,6 +56,10 @@ const closeModal = () => {
   
   const handleAdd = async () => {
     const token = await getToken()
+        if (!token) {
+      showFailedAlert('You need to be logged in to add recipes.')
+      return
+    }
     if (!selectedDay) return
 
     if (!buttonText) {
