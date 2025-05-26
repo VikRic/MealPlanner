@@ -1,0 +1,80 @@
+* {
+  box-sizing: border-box;
+}
+
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color: #213547;
+  background-color: #ffffff;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.main {
+  margin-left: 15px;
+}
+
+a {
+  font-weight: 500;
+  color: #ffffff;
+  text-decoration: inherit;
+}
+
+a:hover {
+  color: #646cff;
+}
+body, html {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+   overflow-x: hidden;
+}
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url('/logo.webp');
+  background-size: 600px auto; 
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-color: #e1ac5e; 
+  opacity: 0.4;
+  z-index: -1;
+}
+
+
+h1 {
+  text-align: center;
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+
+.cl-avatarBox {
+  width: 2.75rem;
+  height: 2.75rem;
+}
+
+
+
+
+
+.cl-rootBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+

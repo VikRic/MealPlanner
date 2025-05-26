@@ -1,0 +1,31 @@
+.cl-signIn-root, .cl-signUp-root {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  padding: 2rem;
+  background-color: #ffffff;
+  margin: auto;
+  margin-top: 5%;
+  font-size: 1.1rem; 
+  font-family: sans-serif;
+}
+
+.cl-headerTitle {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.cl-formFieldLabel {
+  margin: auto;
+}
+
+.cl-formButtonPrimary {
+  background-color: #646cff !important;
+  border-radius: 10px;
+  font-weight: 500;
+  border: none;
+}
+
+.cl-headerSubtitle, .cl-identityPreview {
+  display: none;
+}
+

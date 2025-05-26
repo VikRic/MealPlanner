@@ -1,0 +1,76 @@
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 5px;
+  max-width: 400px;
+  background-color: rgb(237, 230, 216);
+}
+
+.checkbox-group {
+  display: flex;
+  gap: 1rem;
+}
+
+.submit-button {
+  background-color: #95a584;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.submit-button:hover {
+  background-color: #7d8f6a;
+}
+
+select {
+  padding: 5px;
+  margin: 5px;
+  background-color: white;
+}
+
+select.placeholder {
+  color: #6f6f74;
+}
+
+img {
+  transition: transform 0.3s ease, transform-origin 0.3s ease;
+}
+
+h3 {
+  text-align: left;
+  margin: 0px;
+}
+
+.ingredientSearch {
+  min-width: 250px;
+}
+
+@media (max-width: 600px) {
+  .checkbox-group {
+  display: flex;
+  flex-direction: column;
+}
+}
+

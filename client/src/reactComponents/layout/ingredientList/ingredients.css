@@ -1,0 +1,38 @@
+.ing-container{
+  padding: 0 10px 10px 10px;
+
+
+  background-color: rgb(237, 230, 216);
+}
+.calendar-ingredients-wrapper {
+  display: flex;
+  gap: 20px;
+}
+
+.ingredientList-desktop ul {
+  max-height: 415px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.ingredientList-desktop h2 {
+  text-align: center;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.ingredientList-desktop ul {
+    margin: 0;
+
+}
+
+@media (max-width: 1650px) {
+  .calendar-ingredients-wrapper {
+    display: none;
+  }
+
+  .mobile-controls {
+    display: flex;
+    max-width: 400px;
+  }
+}

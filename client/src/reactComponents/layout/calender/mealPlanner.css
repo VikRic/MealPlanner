@@ -1,0 +1,162 @@
+.app-container {
+  position:relative;
+  max-width: 1200px;
+  margin: 0 20px;
+  padding-top: 20px;
+  overflow-x: hidden;
+}
+
+
+.calendar-header {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: #d4a373;
+  padding: 10px;
+  border-bottom: 1px solid #e5e7eb;
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.calendar-header .week-display {
+  font-weight: bold;
+  font-size: 25px;
+  margin: 5px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+
+.calendar-header button {
+  font-size: 20px;
+  background: none;
+  border: none;
+  color: #4b5563;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.calendar-header button:hover {
+  color: #1f2937;
+}
+
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-top: 1px solid #e5e7eb;
+  border-left: 1px solid #e5e7eb;
+}
+
+.calendar-day {
+  min-height: 200px;
+  padding: 12px;
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: white;
+}
+
+.calendar-day-header {
+  font-weight: bold;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.meal.lunch {
+  background-color: #ecfdf5;
+  border-left-color: #10b981;
+}
+
+.meal.dinner {
+  background-color: #fee2e2;
+  border-left-color: #ef4444;
+}
+
+.meal .label {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  color: #9ca3af;
+}
+.meal img {
+  width: 100px;
+}
+
+.meal {
+  min-width: 120px;
+  min-height: 110px;
+  margin-bottom: 8px;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 16px;
+  border-left: 4px solid #f59e0b;
+  background-color: #fff7ed;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.recipe-modal-overlay .plan-controls {
+  display: none;
+}
+
+.recipe-modal-overlay .add-btn {
+  display: block;
+}
+
+.recipe-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+
+.recipe-modal-content {
+  border-radius: 8px;
+  max-width: 50%;
+  position: relative;
+}
+
+.close-modal-btn {
+  position:absolute;
+  top: -3%;
+  right: -3%;
+
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+
+.meal {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.meal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .calendar-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding: 10px 0;
+  }
+
+  .calendar-day {
+    flex-shrink: 0;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+  }
+}
+

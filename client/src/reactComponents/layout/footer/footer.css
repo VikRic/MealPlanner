@@ -1,0 +1,48 @@
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 30px;
+  background-color: #95a584;
+  color: white;
+  text-align: left;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+  top: 0;
+}
+.footer p {
+  color: black;
+  margin: 0px;
+}
+
+@media (max-width: 600px) {
+  .footer {
+    text-align: center;
+  }
+}
+
+.footer a {
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+.social-icons a {
+  font-size: 35px;
+  color: #555;
+  transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: #0077cc;
+}
+
+.social-icons .facebook {
+  color: #1877f2;
+}
+
+.social-icons .linkedin {
+  color: #0077B5;
+}
+
