@@ -76,9 +76,10 @@ jobs:
     env:
       PRODUCTION_HOST: ${{ secrets.PRODUCTION_HOST }}
       USER: ${{ secrets.USER }}
-    needs: [unit-test, lint-test]
+    needs: [unit-test, lint-test, build]
     environment:
       name: production
+      url: http://${{ secrets.PRODUCTION_HOST }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -95,7 +96,16 @@ jobs:
 
       - name: Deploy with Docker
         run: |
+          export SESSION_NAME=${{ secrets.SESSION_NAME }}
+          export SESSION_SECRET=${{ secrets.SESSION_SECRET }}
+          export SPOONACULAR_API=${{ secrets.SPOONACULAR_API }}
+          export SPOONACULAR_APIKEY=${{ secrets.SPOONACULAR_APIKEY }}
+          export MONGODB_STRING=${{ secrets.MONGODB_STRING }}
+          export CLERK_SECRET=${{ secrets.CLERK_SECRET }}
+          export CLERK_KEY=${{ secrets.CLERK_KEY }}
+          export API_URL=${{ secrets.API_URL }}
           export DOCKER_HOST=ssh://$USER@$PRODUCTION_HOST
+
           docker compose -f docker-compose.yml down
           docker compose -f docker-compose.yml up -d
           docker image prune -f
