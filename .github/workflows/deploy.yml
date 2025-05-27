@@ -1,0 +1,92 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  PRODUCTION_HOST: ${{ secrets.PRODUCTION_HOST }}
+  USER: ${{ secrets.USER }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: SSH Setup
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add production host to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H $PRODUCTION_HOST >> ~/.ssh/known_hosts
+
+      - name: Build Docker images remotely
+        run: |
+          export DOCKER_HOST=ssh://$USER@$PRODUCTION_HOST
+          docker compose -f docker-compose.yml build
+
+  unit-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run test
+
+  lint-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Lint backend
+        run: |
+          cd server
+          npm ci
+          npx eslint .
+
+      - name: Lint frontend
+        run: |
+          cd client
+          npm ci
+          npx eslint .
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [unit-test, lint-test]
+    environment:
+      name: production
+      url: http://${{ secrets.PRODUCTION_HOST }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: SSH Setup
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add production host to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H $PRODUCTION_HOST >> ~/.ssh/known_hosts
+
+      - name: Deploy with Docker
+        run: |
+          export DOCKER_HOST=ssh://$USER@$PRODUCTION_HOST
+          docker compose -f docker-compose.yml down
+          docker compose -f docker-compose.yml up -d
+          docker image prune -f
