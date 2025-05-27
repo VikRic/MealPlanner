@@ -1,5 +1,4 @@
 import "./footer.css"
-import { AiFillFacebook, AiFillLinkedin } from "react-icons/ai"
 
 function Footer() {
   return (
@@ -11,11 +10,12 @@ function Footer() {
 
       <div className="footer-right social-icons">
         <a className="facebook" href="https://sv-se.facebook.com/viktor.rickardsson.91" target="_blank" rel="noopener noreferrer">
-          <AiFillFacebook />
+          <img src="https://upload.wikimedia.org/wikipedia/en/0/04/Facebook_f_logo_%282021%29.svg" alt="Facebook" />
 
         </a>
         <a className="linkedin" href="https://se.linkedin.com/in/viktor-rickardsson-08a323256" target="_blank" rel="noopener noreferrer">
-          <AiFillLinkedin />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" alt="Linkedin" />
+
         </a>
       </div>
     </footer>

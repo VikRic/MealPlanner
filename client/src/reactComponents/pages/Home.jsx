@@ -25,7 +25,6 @@ function Home() {
       <p>Enter ingredients to find recipes with that ingredient.</p>
 
       <h3>8. Click "Get recipes"</h3>
-      <p>You must be logged in — otherwise you'll see an error.</p>
     </div>
   )
 }

@@ -88,7 +88,8 @@ export const deleteFromPlan = async (date, mealType, recipeId, token, servings) 
       console.error(await response.text())
       return false
     }
-    await response.json()
+    const data = await response.json()
+    console.log(data)
     showSuccessAlert('Recipe Removed')
     return true
 
@@ -117,10 +118,10 @@ export const fetchMeals = async (token) => {
           
     if (data.existing?.mealPlan) {
       return data.existing.mealPlan
-      }
-    } else {
+      } else {
       console.log('No meal plan data found')
     }
+    } 
   } catch (error) {
     console.error('Error fetching meal plan:', error)
   }
