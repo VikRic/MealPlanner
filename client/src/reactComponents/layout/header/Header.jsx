@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useUser, SignOutButton } from '@clerk/clerk-react'
+import { useUser, SignOutButton, UserButton } from '@clerk/clerk-react'
 import './header.css'
 
 function Header() {
@@ -15,11 +15,8 @@ function Header() {
           
             {isLoaded && user ? (
               <li className='nav-auth'>
-
-                <SignOutButton>
-                  <button style={{padding: '10px'}} className="logout-btn">{user.username}</button>
-                </SignOutButton>
-
+                <UserButton>
+                </UserButton>
               </li>
             ) : (
               <>

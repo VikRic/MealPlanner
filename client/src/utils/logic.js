@@ -88,8 +88,7 @@ export const deleteFromPlan = async (date, mealType, recipeId, token, servings) 
       console.error(await response.text())
       return false
     }
-    const data = await response.json()
-    console.log(data)
+    await response.json()
     showSuccessAlert('Recipe Removed')
     return true
 
