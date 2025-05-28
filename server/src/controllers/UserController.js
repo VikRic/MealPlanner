@@ -22,6 +22,7 @@ export class UserController {
   async createRecipe (req, res) {
     try {
       const userId = req.userId
+      console.log('USER', userId)
 
       const validation = validateRecipeRequest(req.body)
       if (!validation.valid) {

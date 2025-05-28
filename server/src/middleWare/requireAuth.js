@@ -9,15 +9,17 @@ import { getAuth } from '@clerk/express'
  * @returns {void} Sends a 401 response if not authenticated, otherwise calls next().
  */
 export function requireAuth (req, res, next) {
-  const { userId } = getAuth(req)
+  console.log('Full auth object:', getAuth(req))
+  console.log('Headers:', req.headers)
+  const { userId, sessionId } = getAuth(req)
 
   console.log('AUTH HEADER:', req.headers.authorization)
   console.log('USERID: ', userId)
+  console.log('SESSION ID:', sessionId)
 
   if (!userId) {
     return res.status(401).json({ error: 'Not logged in' })
   }
-  console.log(userId)
 
   req.userId = userId
   next()
