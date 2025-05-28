@@ -26,7 +26,7 @@ try {
   app.use(express.json())
 
   console.log('CLERK SECRET:', process.env.CLERK_SECRET_KEY)
-  console.log('CLERK KEY:', process.envCLERK_PUBLISHABLE_KEY)
+
   // Set up middleware
   app.use(logger('dev'))
   app.use(express.urlencoded({ extended: false }))
