@@ -6,12 +6,18 @@ import { CuisineContext } from './CuisineContext'
 
 
 export const CuisineProvider = ({ children }) => {
-  const { getToken } = useAuth()
+  const { getToken, isLoaded } = useAuth()
     const [cuisineOptions, setCuisineOptions] = useState([])
 
 
   const fetchAllCuisines = async () => {
     const token = await getToken()
+
+      if (!token) {
+        console.warn("Ingen token tillgänglig än")
+        return
+      }
+
     const data = await fetchCuisines(token)
     if (data) {
       setCuisineOptions(data)
@@ -19,10 +25,12 @@ export const CuisineProvider = ({ children }) => {
   }
 // On page load or token changes, this runs and sets all recipes in mealPlan
   useEffect(() => {
+    if (isLoaded) {
     fetchAllCuisines()
+    }
 
 // eslint-disable-next-line 
-  }, [getToken])
+  }, [isLoaded])
 
   return (
     <CuisineContext.Provider value={{
