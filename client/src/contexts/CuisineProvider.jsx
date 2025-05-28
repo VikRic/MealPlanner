@@ -12,6 +12,7 @@ export const CuisineProvider = ({ children }) => {
 
   const fetchAllCuisines = async () => {
     const token = await getToken()
+     console.log(token)
 
       if (!token) {
         console.warn("Ingen token tillgänglig än")
