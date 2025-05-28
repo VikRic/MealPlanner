@@ -1,13 +1,13 @@
 import express from 'express'
 import session from 'express-session'
+import logger from 'morgan'
+import cors from 'cors'
+import dotenv from 'dotenv'
 import { join } from 'node:path'
 import { sessionOptions } from './config/sessionOptions.js'
 import { router } from './routes/router.js'
-import logger from 'morgan'
 import { clientBuildPath } from './config/pathConfig.js'
-import cors from 'cors'
 import { connectToDatabase } from './config/mongoose.js'
-import dotenv from 'dotenv'
 import { clerkMiddleware } from '@clerk/express'
 import { securityHeaders, limiter } from './middleWare/security.js'
 
@@ -20,7 +20,10 @@ try {
   // Create Express application.
   const app = express()
   app.use(clerkMiddleware())
-  app.use(cors({ origin: 'http://localhost:3000' }))
+  app.use(cors({
+    origin: ['http://localhost:3000', 'https://rickardssons.se'],
+    credentials: true
+  }))
   app.use(securityHeaders)
   app.use(limiter)
   app.use(express.json())

@@ -11,6 +11,7 @@ import { getAuth } from '@clerk/express'
 export function requireAuth (req, res, next) {
   const { userId } = getAuth(req)
   console.log(getAuth(req))
+  console.log('AUTH HEADER:', req.headers.authorization)
 
   if (!userId) {
     return res.status(401).json({ error: 'Not logged in' })
