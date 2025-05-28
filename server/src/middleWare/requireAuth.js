@@ -14,6 +14,7 @@ export function requireAuth (req, res, next) {
   if (!userId) {
     return res.status(401).json({ error: 'Not logged in' })
   }
+  console.log(userId)
 
   req.userId = userId
   next()
