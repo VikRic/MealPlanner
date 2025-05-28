@@ -5,9 +5,9 @@ export const router = express.Router()
 
 const controller = new UserController()
 
-router.get('/', requireAuth, (req, res, next) => controller.getRecipes(req, res, next))
+router.get('/', /* requireAuth, */ (req, res, next) => controller.getRecipes(req, res, next))
 
-router.get('/cuisines', requireAuth, (req, res, next) => controller.findCuisine(req, res, next))
+router.get('/cuisines', /* requireAuth, */ (req, res, next) => controller.findCuisine(req, res, next))
 
 router.post('/', requireAuth, (req, res, next) => controller.createRecipe(req, res, next))
 
