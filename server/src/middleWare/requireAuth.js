@@ -8,8 +8,8 @@ import { getAuth } from '@clerk/express'
  * @param {import('express').NextFunction} next - Express next middleware function.
  * @returns {void} Sends a 401 response if not authenticated, otherwise calls next().
  */
-export async function requireAuth (req, res, next) {
-  const { userId, sessionId } = await getAuth(req)
+export function requireAuth (req, res, next) {
+  const { userId, sessionId } = getAuth(req)
   console.log('USERID: ', userId)
   console.log('SESSION ID:', sessionId)
 

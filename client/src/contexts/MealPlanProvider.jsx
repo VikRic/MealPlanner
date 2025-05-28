@@ -4,35 +4,43 @@ import { useAuth } from '@clerk/clerk-react'
 import { MealPlanContext } from './MealPlanContext'
 import { getWeekBoundaries } from '../utils/dateUtils'
 
-
 export const MealPlanProvider = ({ children }) => {
-  const { getToken } = useAuth()
+  const { getToken, isLoaded } = useAuth()
   const [mealPlan, setMealPlan] = useState({})
   const [currentWeek, setCurrentWeek] = useState(getWeekBoundaries(new Date()))
 
   const fetchAndSetMeals = async () => {
-    const token = await getToken()
-    const data = await fetchMeals(token)
-    if (data) {
-      setMealPlan(data)
+    try {
+      if (!isLoaded) return
+
+      const token = await getToken()
+      if (!token) {
+        console.warn("No token available, skipping fetchMeals")
+        return
+      }
+
+      const data = await fetchMeals(token)
+      if (data) {
+        setMealPlan(data)
+      }
+    } catch (error) {
+      console.error("Error fetching meal plan:", error)
     }
   }
-// On page load or token changes, this runs and sets all recipes in mealPlan
+
   useEffect(() => {
     fetchAndSetMeals()
-
-// eslint-disable-next-line 
-  }, [getToken])
+    // eslint-disable-next-line 
+  }, [isLoaded, getToken])
 
   return (
     <MealPlanContext.Provider value={{
       mealPlan,
       fetchAndSetMeals,
       currentWeek,
-      setCurrentWeek }}>
+      setCurrentWeek
+    }}>
       {children}
     </MealPlanContext.Provider>
   )
 }
-
-
