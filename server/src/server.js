@@ -19,14 +19,13 @@ try {
 
   // Create Express application.
   const app = express()
+  console.log('CLERK SECRET:', process.env.CLERK_SECRET_KEY)
+  console.log('CLERK_PUBLISHABLE_KEY', process.env.CLERK_PUBLISHABLE_KEY)
   app.use(clerkMiddleware())
   app.use(cors({ origin: 'http://localhost:3000' }))
   app.use(securityHeaders)
   app.use(limiter)
   app.use(express.json())
-
-  console.log('CLERK SECRET:', process.env.CLERK_SECRET_KEY)
-  console.log('CLERK_PUBLISHABLE_KEY', process.env.CLERK_PUBLISHABLE_KEY)
 
   // Set up middleware
   app.use(logger('dev'))

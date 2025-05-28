@@ -11,11 +11,7 @@ import { getAuth } from '@clerk/express'
 export function requireAuth (req, res, next) {
   console.log('Full auth object:', getAuth(req))
   console.log('Headers:', req.headers)
-  const { userId, sessionId } = getAuth(req)
-
-  console.log('AUTH HEADER:', req.headers.authorization)
-  console.log('USERID: ', userId)
-  console.log('SESSION ID:', sessionId)
+  const { userId } = getAuth(req)
 
   if (!userId) {
     return res.status(401).json({ error: 'Not logged in' })
