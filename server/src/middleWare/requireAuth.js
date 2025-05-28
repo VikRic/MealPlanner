@@ -12,8 +12,8 @@ export async function requireAuth (req, res, next) {
   /* console.log('Full getAuth object:', getAuth(req)) */
 
   const { userId } = getAuth(req)
-  const user = await clerkClient.users.getUser(userId)
-  console.log('denna', user.id)
+  /* const user = await clerkClient.users.getUser(userId) */
+  console.log('denna', userId)
 
   if (!userId) {
     return res.status(401).json({ error: 'Not logged in' })
