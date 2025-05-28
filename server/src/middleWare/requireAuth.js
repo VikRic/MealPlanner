@@ -1,4 +1,4 @@
-import { getAuth, clerkClient } from '@clerk/express'
+import { getAuth } from '@clerk/express'
 
 /**
  * Middleware to ensure the user is authenticated before proceeding.
@@ -9,11 +9,9 @@ import { getAuth, clerkClient } from '@clerk/express'
  * @returns {void} Sends a 401 response if not authenticated, otherwise calls next().
  */
 export async function requireAuth (req, res, next) {
-  /* console.log('Full getAuth object:', getAuth(req)) */
-
-  const { userId } = getAuth(req)
-  /* const user = await clerkClient.users.getUser(userId) */
-  console.log('denna', userId)
+  const { userId, sessionId } = await getAuth(req)
+  console.log('USERID: ', userId)
+  console.log('SESSION ID:', sessionId)
 
   if (!userId) {
     return res.status(401).json({ error: 'Not logged in' })
