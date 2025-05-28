@@ -3,6 +3,8 @@ import { fetchCuisines } from '../utils/logic'
 import { useAuth } from '@clerk/clerk-react'
 import { CuisineContext } from './CuisineContext'
 
+
+
 export const CuisineProvider = ({ children }) => {
   const { getToken, isLoaded } = useAuth()
     const [cuisineOptions, setCuisineOptions] = useState([])
