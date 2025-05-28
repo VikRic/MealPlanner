@@ -47,10 +47,3 @@
   cursor: pointer;
 }
 
-svg {
-/*   background-color: white; */
-  fill: currentcolor;
-  stroke-width: 0;
-  height: 1em;
-  width: 1em;
-}

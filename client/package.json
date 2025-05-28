@@ -1,7 +1,8 @@
 {
-  "name": "my-app",
+  "name": "meal-planner-client",
+  "description": "1DV613 - MealPlanner",
   "private": true,
-  "version": "0.0.0",
+  "version": "3.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -17,6 +18,9 @@
     "react-router-dom": "^7.5.0",
     "react-toastify": "^11.0.5"
   },
+    "contributors": [
+    "Viktor Rickardsson <vr222im@student.lnu.se>"
+  ],
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@types/react": "^19.0.10",
