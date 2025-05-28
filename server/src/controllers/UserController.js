@@ -175,6 +175,7 @@ export class UserController {
    * @param {object} res - The response object used to send the HTTP response.
    */
   async findCuisine (req, res) {
+    console.log(req)
     const cuisines = await RecipeModel.distinct('cuisines')
     console.log('Available cuisines:', cuisines)
     res.status(200).json({ cuisines })
