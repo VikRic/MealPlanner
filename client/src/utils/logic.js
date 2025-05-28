@@ -88,8 +88,7 @@ export const deleteFromPlan = async (date, mealType, recipeId, token, servings) 
       console.error(await response.text())
       return false
     }
-    const data = await response.json()
-    console.log(data)
+    await response.json()
     showSuccessAlert('Recipe Removed')
     return true
 
@@ -102,6 +101,7 @@ export const deleteFromPlan = async (date, mealType, recipeId, token, servings) 
 export const fetchMeals = async (token) => {
   try {
     if (token) {
+      console.log(token)
     const res = await fetch(`${BASE_URL}/meal-plan`, {
       method: "GET", 
       headers: {
@@ -118,7 +118,7 @@ export const fetchMeals = async (token) => {
           
     if (data.existing?.mealPlan) {
       return data.existing.mealPlan
-      } 
+      }
     } else {
       console.log('No meal plan data found')
     }
@@ -159,7 +159,7 @@ export const fetchCuisines = async (token) => {
       console.error('Unable to get data', response)
       showFailedAlert('Server error')
       return null
-    }
+      }
     }
   } catch (error) {
     console.error('Error while sending data to server:', error)
@@ -167,8 +167,3 @@ export const fetchCuisines = async (token) => {
     return null
   }
 }
-
-
-
-   
-
