@@ -1,7 +1,7 @@
 {
-  "name": "recipefinder",
+  "name": "meal-planner-backend",
   "version": "3.0.0",
-  "description": "1DV613 - RecipeFinder",
+  "description": "1DV613 - MealPlanner",
   "type": "module",
   "main": "src/server.js",
   "jest": {
@@ -15,7 +15,7 @@
     "test": "npx --node-options=--experimental-vm-modules jest  || exit 0"
   },
   "contributors": [
-    "Viktor Rickardssson <vr222im@student.lnu.se>"
+    "Viktor Rickardsson <vr222im@student.lnu.se>"
   ],
   "license": "MIT",
   "private": true,
