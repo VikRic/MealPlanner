@@ -101,7 +101,6 @@ export const deleteFromPlan = async (date, mealType, recipeId, token, servings) 
 export const fetchMeals = async (token) => {
   try {
     if (token) {
-      console.log(token)
     const res = await fetch(`${BASE_URL}/meal-plan`, {
       method: "GET", 
       headers: {

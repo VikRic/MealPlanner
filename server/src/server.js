@@ -19,11 +19,11 @@ try {
 
   // Create Express application.
   const app = express()
+  app.use(clerkMiddleware())
   app.use(cors({ origin: 'http://localhost:3000' }))
   app.use(securityHeaders)
   app.use(limiter)
   app.use(express.json())
-  app.use(clerkMiddleware())
 
   // Set up middleware
   app.use(logger('dev'))
