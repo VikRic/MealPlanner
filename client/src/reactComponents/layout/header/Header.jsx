@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useUser, SignOutButton, UserButton } from '@clerk/clerk-react'
+import { useUser, UserButton } from '@clerk/clerk-react'
 import './header.css'
 
 function Header() {
