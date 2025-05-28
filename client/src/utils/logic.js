@@ -118,10 +118,10 @@ export const fetchMeals = async (token) => {
           
     if (data.existing?.mealPlan) {
       return data.existing.mealPlan
-      } else {
+      } 
+    } else {
       console.log('No meal plan data found')
     }
-    } 
   } catch (error) {
     console.error('Error fetching meal plan:', error)
   }
