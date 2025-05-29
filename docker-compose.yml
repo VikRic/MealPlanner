@@ -11,7 +11,7 @@ services:
     ports:
       - "3000:80"  # Värd:Container (React + Nginx exponerar port 80)
     networks:
-      - mealplanner_net
+      - recipe_net
     restart: always
     environment:
       VITE_REACT_APP_API_URL: $API_URL
@@ -25,7 +25,7 @@ services:
     ports:
       - "8080:8080"  # Express kör på port 3000
     networks:
-      - mealplanner_net
+      - recipe_net
     environment:
       SPOONACULAR_BASE_API: $SPOONACULAR_API
       SPOONACULAR_APIKEY: $SPOONACULAR_APIKEY
@@ -37,5 +37,5 @@ services:
     restart: always
 
 networks:
-  mealplanner_net:
+  recipe_net:
     driver: bridge

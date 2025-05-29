@@ -88,7 +88,8 @@ export const deleteFromPlan = async (date, mealType, recipeId, token, servings) 
       console.error(await response.text())
       return false
     }
-    await response.json()
+    const data = await response.json()
+    console.log(data)
     showSuccessAlert('Recipe Removed')
     return true
 
@@ -100,10 +101,6 @@ export const deleteFromPlan = async (date, mealType, recipeId, token, servings) 
 
 export const fetchMeals = async (token) => {
   try {
-    if (!token) {
-      console.warn("Token not done yet, wating")
-      return
-    }
     if (token) {
     const res = await fetch(`${BASE_URL}/meal-plan`, {
       method: "GET", 
@@ -144,11 +141,7 @@ export function normalizeUnit(unit) {
 
 export const fetchCuisines = async (token) => {
   try {
-    if (!token) {
-      console.warn("Cuisine token not done yet, wating")
-      return
-    }
-    
+    if (token) {
     const response = await fetch(`${BASE_URL}/meal-plan/cuisines`, {
       method: 'GET',
       headers: {
@@ -159,16 +152,23 @@ export const fetchCuisines = async (token) => {
 
     if (response.ok) {
       const data = await response.json()
+
       return data.cuisines
+
     } else {
       console.error('Unable to get data', response)
       showFailedAlert('Server error')
       return null
-      }
-    
+    }
+    }
   } catch (error) {
     console.error('Error while sending data to server:', error)
     showFailedAlert('Please try again later.')
     return null
   }
 }
+
+
+
+   
+
