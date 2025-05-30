@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import 'styles/App.css'
 import Home from './reactComponents/pages/Home.jsx'
 import Recipe from './reactComponents/pages/Recipe.jsx'
+import Terms from './reactComponents/pages/Terms.jsx'
 import { SignIn, SignUp } from '@clerk/clerk-react'
 import 'styles/clerkLogin.css'
 import { MealPlanProvider } from './contexts/MealPlanProvider.jsx'
@@ -49,6 +50,7 @@ function App() {
             />
           }
         />
+        <Route path="/Terms" element={<Terms />} />
       </Routes>
       </CuisineProvider>
       </MealPlanProvider>

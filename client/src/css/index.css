@@ -66,15 +66,14 @@ h1 {
 }
 
 
-
-
-
 .cl-rootBox {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-
+.terms h3, .terms p, .terms h2 {
+  text-align: center;
+}
 
 
